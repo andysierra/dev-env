@@ -1,0 +1,1 @@
+ --enable-features=msEnableEdgeBarOnWin11ForTesting,msEdgeBarAutoHideIntoTheRightFringe
