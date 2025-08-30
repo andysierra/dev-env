@@ -1,0 +1,20 @@
+{
+  "default_config": {
+    "linux": null,
+    "osx": null,
+    "windows": "Git Bash"
+  },
+
+  "shell_configs": [
+    {
+      "name": "Git Bash",
+      "cmd": ["C:/Program Files/Git/bin/bash.exe", "-i", "-l"],
+      "env": { "TERM": "xterm-256color" },
+      "enable": true,
+      "platforms": ["windows"]
+    }
+  ],
+
+  // ⬇️ Ajuste global
+  "size": [null, 25]
+}
