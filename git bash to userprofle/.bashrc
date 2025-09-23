@@ -1,9 +1,13 @@
 alias helloworld="echo me gusta la pepitoria"
 alias tf="terraform"
 alias l="ls -lat"
-alias gfp="git fetch -a --prune && git pull && git status"
+alias gfp="git fetch -a --prune && git pull --all && git status"
 alias gb="git branch -la"
 alias gl="git log --oneline"
+alias gup="git switch develop && git fetch -a --prune && git pull --all && git status && git switch release && git fetch -a --prune && git pull --all && git status && git switch stage && git fetch -a --prune && git pull --all && git status && git switch main && git fetch -a --prune && git pull --all && git status"
+alias gdiff="git diff release develop && git diff stage release"
+alias gdiffm="git diff release develop && git diff stage release && git diff main stage"
+
 gcp() {
         git add .
         git commit -m "$1"
@@ -23,3 +27,5 @@ gcp() {
 gch() {
         git checkout -b "$1"
 }
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path bash)"
