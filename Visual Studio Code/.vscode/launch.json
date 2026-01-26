@@ -1,0 +1,16 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "Lanza EGDE modo debug con auto devools",
+      "url": "http://127.0.0.1:5173/",  //cambiar según localhost
+      "webRoot": "${workspaceFolder}",
+      "runtimeArgs": ["--auto-open-devtools-for-tabs"]
+    }
+  ]
+}

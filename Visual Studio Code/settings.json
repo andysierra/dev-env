@@ -1,0 +1,135 @@
+{
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "terminal.integrated.shellArgs.windows": ["--login"],
+
+
+
+  "workbench.list.openMode": "doubleClick",
+  "editor.wordWrap": "on",
+  "workbench.startupEditor": "none",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "explorer.confirmDelete": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDragAndDrop": false,
+  "vsicons.dontShowNewVersionMessage": true,
+  "php.suggest.basic": false,
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": {
+      "fontStyle": ""
+    },
+    "[Monokai]": {
+      "textMateRules": [
+        {
+          "name": "Class name",
+          "scope": "entity.name.type",
+          "settings": {
+            "fontStyle": ""
+          }
+        }
+      ]
+    }
+  },
+  "editor.fontSize": 15,
+  "workbench.editor.restoreViewState": false,
+  "files.hotExit": "off",
+  "terminal.integrated.lineHeight": 0.5,
+  "terminal.integrated.cursorStyle": "line",
+  "task.problemMatchers.neverPrompt": {
+    "npm": true
+  },
+  "kite.showWelcomeNotificationOnStartup": false,
+  "liveServer.settings.donotVerifyTags": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "prettier.tabWidth": 4,
+  "debug.onTaskErrors": "showErrors",
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.detectIndentation": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.editor.enablePreview": false,
+  "python.languageServer": "Default",
+  "workbench.tree.indent": 12,
+  "editor.renderLineHighlight": "all",
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#00000000",
+    "editor.lineHighlightBorder": "#999999",
+    "editorWarning.foreground": "#5a5a5aa1",
+    "editorWarning.border": "#5a5a5a00"
+  },
+  "autoHide.autoHidePanel": false,
+  "autoHide.panelDelay": 1,
+  "autoHide.sideBarDelay": 1,
+  "breadcrumbs.enabled": false,
+  "editor.tabSize": 2,
+  "typescript.implementationsCodeLens.enabled": true,
+  "javascript.referencesCodeLens.enabled": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "javascript.referencesCodeLens.showOnAllFunctions": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.renderWhitespace": "none",
+  "editor.rulers": [],
+  "zenMode.hideLineNumbers": false,
+  "editor.codeLens": false,
+  "emmet.syntaxProfiles": {
+    "javascript": "jsx",
+    "html": {
+      "inline_break": 1
+    }
+  },
+  "bracket-pair-colorizer-2.depreciation-notice": false,
+  "workbench.preferredDarkColorTheme": "Default High Contrast",
+  "workbench.colorTheme": "Default High Contrast",
+  "redhat.telemetry.enabled": false,
+  "editor.linkedEditing": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "editor.minimap.enabled": false,
+  "files.associations": {
+    "*.js": "javascriptreact"
+  },
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.guides.indentation": false,
+  "editor.semanticTokenColorCustomizations": {},
+  "debug.console.fontSize": 12,
+  "terminal.integrated.scrollback": 1000000,
+  "terminal.integrated.persistentSessionScrollback": 100000,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "editor.accessibilitySupport": "off",
+  "workbench.activityBar.location": "top",
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+  "workbench.settings.applyToAllProfiles": [
+    "workbench.list.openMode"
+  ],
+  "explorer.compactFolders": false,
+  "jupyter.askForKernelRestart": false,
+  "terminal.integrated.fontSize": 12,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "sonarlint.rules": {
+    "java:S1854": {
+      "level": "off"
+    }
+  }
+}

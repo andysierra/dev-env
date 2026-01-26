@@ -1,0 +1,17 @@
+Windows Registry Editor Version 5.00
+
+; --- Click derecho SOBRE una carpeta ---
+[HKEY_CURRENT_USER\Software\Classes\Directory\shell\Abrir con Kiro]
+@="Abrir con Kiro"
+"Icon"="C:\\Users\\andressierrah\\AppData\\Local\\Programs\\Kiro\\Kiro.exe"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\shell\Abrir con Kiro\command]
+@="\"C:\\Users\\andressierrah\\AppData\\Local\\Programs\\Kiro\\Kiro.exe\" \"%1\""
+
+; --- Click derecho en el FONDO de una carpeta (espacio vacío) ---
+[HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\Abrir con Kiro]
+@="Abrir con Kiro"
+"Icon"="C:\\Users\\andressierrah\\AppData\\Local\\Programs\\Kiro\\Kiro.exe"
+
+[HKEY_CURRENT_USER\Software\Classes\Directory\Background\shell\Abrir con Kiro\command]
+@="\"C:\\Users\\andressierrah\\AppData\\Local\\Programs\\Kiro\\Kiro.exe\" \"%V\""
