@@ -1,0 +1,10 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\SublimeText]
+
+@="Abrir con Sublime Text"
+"Icon"="\"C:\\Program Files\\Sublime Text\\sublime_text.exe\""
+
+[HKEY_CURRENT_USER\Software\Classes\directory\shell\SublimeText\command]
+
+@="\"C:\\Program Files\\Sublime Text\\sublime_text.exe\" \"%1\""

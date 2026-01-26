@@ -1,0 +1,2 @@
+CMD ADMIN:
+winget uninstall "windows web experience pack"

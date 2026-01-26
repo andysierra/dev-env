@@ -1,0 +1,2 @@
+https://github.com/gpakosz/.tmux
+[no clonar, solo instalar] https://github.com/tmux-plugins/tmux-cpu

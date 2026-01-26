@@ -1,0 +1,15 @@
+{
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"font_size": 12,
+	"open_files_in_new_window": true,
+	"remember_open_files": false,
+	"hot_exit": false,
+	"theme": "gruvbox.sublime-theme",
+	"gruvbox_tabs_xxs": true,
+	"gruvbox_statusbar_xxs": true,
+	"color_scheme": "gruvbox (Dark) (Hard).sublime-color-scheme",
+	"index_files": false,
+}

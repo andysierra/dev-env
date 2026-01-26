@@ -1,0 +1,6 @@
+[
+	{ "keys": ["ctrl+shift+o"], "command": "prompt_open_folder" },
+	{ "keys": ["alt+1"], "command": "toggle_side_bar"},
+	{ "keys": ["alt+3"], "command": "toggle_terminus_panel"},
+	{ "keys": ["ctrl+q"], "command": "show_overlay", "args": {"overlay": "goto", "show_files": true} }
+]
