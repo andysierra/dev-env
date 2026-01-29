@@ -1,0 +1,123 @@
+{
+  "multiCommand.commands": [
+    {
+      "command": "multiCommand.toggleSidebarAndOpenAntigravity",
+      "sequence": [
+        "workbench.action.toggleSidebarVisibility",
+        "antigravity.openAgent"
+      ]
+    }
+  ],
+
+
+
+
+
+
+
+  "workbench.list.openMode": "doubleClick",
+  "editor.wordWrap": "on",
+  "workbench.startupEditor": "none",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+  "explorer.confirmDelete": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "explorer.confirmDragAndDrop": false,
+  "php.suggest.basic": false,
+  "editor.suggestSelection": "first",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "editor.tokenColorCustomizations": {
+    "comments": {
+      "fontStyle": ""
+    },
+    "[Monokai]": {
+      "textMateRules": [
+        {
+          "name": "Class name",
+          "scope": "entity.name.type",
+          "settings": {
+            "fontStyle": ""
+          }
+        }
+      ]
+    }
+  },
+  "editor.fontSize": 15,
+  "workbench.editor.restoreViewState": false,
+  "files.hotExit": "off",
+  "terminal.integrated.lineHeight": 0.5,
+  "terminal.integrated.cursorStyle": "line",
+  "task.problemMatchers.neverPrompt": {
+    "npm": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "debug.onTaskErrors": "showErrors",
+  "editor.detectIndentation": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "workbench.editor.enablePreview": false,
+  "workbench.tree.indent": 12,
+  "editor.renderLineHighlight": "all",
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#00000000",
+    "editor.lineHighlightBorder": "#999999",
+    "editorWarning.foreground": "#5a5a5aa1",
+    "editorWarning.border": "#5a5a5a00"
+  },
+  "breadcrumbs.enabled": false,
+  "editor.tabSize": 2,
+  "typescript.implementationsCodeLens.enabled": true,
+  "javascript.referencesCodeLens.enabled": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "javascript.referencesCodeLens.showOnAllFunctions": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "editor.renderWhitespace": "none",
+  "editor.rulers": [],
+  "zenMode.hideLineNumbers": false,
+  "editor.codeLens": false,
+  "emmet.syntaxProfiles": {
+    "javascript": "jsx",
+    "html": {
+      "inline_break": 1
+    }
+  },
+  "workbench.preferredDarkColorTheme": "Default High Contrast",
+  "workbench.colorTheme": "Default High Contrast",
+  "editor.linkedEditing": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "editor.minimap.enabled": false,
+  "files.associations": {
+    "*.js": "javascriptreact"
+  },
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.guides.indentation": false,
+  "editor.semanticTokenColorCustomizations": {},
+  "debug.console.fontSize": 12,
+  "terminal.integrated.scrollback": 1000000,
+  "terminal.integrated.persistentSessionScrollback": 100000,
+  "terminal.integrated.enableMultiLinePasteWarning": false,
+  "editor.accessibilitySupport": "off",
+  "workbench.activityBar.location": "top",
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+  "workbench.settings.applyToAllProfiles": [
+    "workbench.list.openMode"
+  ],
+  "explorer.compactFolders": false,
+  "terminal.integrated.fontSize": 12,
+  "editor.formatOnSave": false
+}
