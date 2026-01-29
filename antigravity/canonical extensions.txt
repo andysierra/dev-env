@@ -1,0 +1,7 @@
+Name: multi-command
+Id: ryuta46.multi-command
+Description: Invoke multiple commands as one command.
+Version: 1.6.0
+Publisher: ryuta46
+VS Marketplace Link: https://open-vsx.org/vscode/item?itemName=ryuta46.multi-command
+
