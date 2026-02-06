@@ -1,15 +1,24 @@
 {
+	"folder_exclude_patterns": [                                         
+        "build",                                         
+        ".git",                                                         
+        "node_modules"                                                          
+    ],                                               
+    "index_exclude_patterns": [                                                               
+        "build/*"                                          
+    ],
 	"ignored_packages":
 	[
+		"Package Control",
 		"Vintage",
 	],
 	"font_size": 12,
-	"open_files_in_new_window": true,
+	"open_files_in_new_window": false,
 	"remember_open_files": false,
 	"hot_exit": false,
-	"theme": "gruvbox.sublime-theme",
+	"theme": "Adaptive.sublime-theme",
 	"gruvbox_tabs_xxs": true,
 	"gruvbox_statusbar_xxs": true,
-	"color_scheme": "gruvbox (Dark) (Hard).sublime-color-scheme",
+	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).sublime-color-scheme",
 	"index_files": false,
 }
