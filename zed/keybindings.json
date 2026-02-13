@@ -3,6 +3,7 @@
   {
     "use_key_equivalents": true,
     "bindings": {
+      "alt-f1": ["pane::ActivateItem", 0],
       "home": "menu::SelectFirst",
       "shift-pageup": "menu::SelectFirst",
       "pageup": "menu::SelectFirst",
