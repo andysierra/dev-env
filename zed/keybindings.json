@@ -1118,6 +1118,11 @@
     "context": "Terminal",
     "use_key_equivalents": true,
     "bindings": {
+      "alt-1": "workspace::ToggleLeftDock",
+      "alt-2": "workspace::ToggleRightDock",
+      "alt-3": "workspace::ToggleBottomDock",
+      "alt-f1": ["pane::ActivateItem", 0],
+      "ctrl-q": "file_finder::Toggle",
       "ctrl-alt-space": "terminal::ShowCharacterPalette",
       "ctrl-insert": "terminal::Copy",
       "ctrl-shift-c": "terminal::Copy",
@@ -1133,11 +1138,6 @@
       // Overrides for conflicting keybindings
       "ctrl-b": ["terminal::SendKeystroke", "ctrl-b"],
       "ctrl-c": ["terminal::SendKeystroke", "ctrl-c"],
-      "ctrl-e": ["terminal::SendKeystroke", "ctrl-e"],
-      "ctrl-o": ["terminal::SendKeystroke", "ctrl-o"],
-      "ctrl-w": ["terminal::SendKeystroke", "ctrl-w"],
-      "ctrl-q": ["terminal::SendKeystroke", "ctrl-q"],
-      "ctrl-r": ["terminal::SendKeystroke", "ctrl-r"],
       "ctrl-backspace": ["terminal::SendKeystroke", "ctrl-w"],
       "ctrl-shift-a": "editor::SelectAll",
       "ctrl-shift-f": "buffer_search::Deploy",
@@ -1166,6 +1166,11 @@
   {
     "context": "Terminal && selection",
     "bindings": {
+      "alt-1": "workspace::ToggleLeftDock",
+      "alt-2": "workspace::ToggleRightDock",
+      "alt-3": "workspace::ToggleBottomDock",
+      "alt-f1": ["pane::ActivateItem", 0],
+      "ctrl-q": "file_finder::Toggle",
       "ctrl-c": "terminal::Copy"
     }
   },
