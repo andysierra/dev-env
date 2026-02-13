@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "base_keymap": "None",
   "buffer_font_family": "Fira Code",
   "preview_tabs": {
     "enable_preview_from_project_panel": false,
