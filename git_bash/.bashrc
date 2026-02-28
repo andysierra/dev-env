@@ -8,6 +8,7 @@ alias gl="git log --oneline"
 alias gup="git switch develop && git fetch -a --prune && git pull --all && git status && git switch release && git fetch -a --prune && git pull --all && git status && git switch stage && git fetch -a --prune && git pull --all && git status && git switch main && git fetch -a --prune && git pull --all && git status"
 alias gdiff="git diff release develop && git diff stage release"
 alias gdiffm="git diff release develop && git diff stage release && git diff main stage"
+alias jq="$HOME/Desktop/DEV/dev-env/git_bash/jq.exe"
 set enable-bracketed-paste on
 
 gcp() {
