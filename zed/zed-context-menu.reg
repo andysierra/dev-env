@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithZed]
+@="Abrir en Zed"
+"Icon"="C:\\Users\\andysierra\\AppData\\Local\\Programs\\Zed\\zed.exe"
+
+[HKEY_CLASSES_ROOT\Directory\shell\OpenWithZed\command]
+@="\"C:\\Users\\andysierra\\AppData\\Local\\Programs\\Zed\\zed.exe\" \"%1\""
