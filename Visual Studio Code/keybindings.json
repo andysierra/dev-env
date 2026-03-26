@@ -5,7 +5,7 @@
     "args": {
       "mode": "files"
     }
-  }
+  },
 
 
 
@@ -43,7 +43,7 @@
     "when": "openFolderWorkspaceSupport"
   },
   {
-    "key": "ctrl+shift+s",
+    "key": "ctrl+s",
     "command": "saveAll"
   },
   {
@@ -174,5 +174,9 @@
     "key": "ctrl+alt+i",
     "command": "-workbench.panel.chat",
     "when": "workbench.panel.chat.view.copilot.active"
+  },
+  {
+    "key": "ctrl+s",
+    "command": "-workbench.action.files.save"
   }
 ]
