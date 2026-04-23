@@ -1,2 +1,3 @@
 new file menu lite
 linearmouse
+maccy
