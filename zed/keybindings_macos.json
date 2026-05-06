@@ -1432,5 +1432,10 @@
       "cmd-shift-r": "notebook::RestartKernel",
       "cmd-c": "notebook::InterruptKernel"
     }
+  },
+  {
+    "bindings": {
+      "ctrl-tab": "tab_switcher::Toggle"
+    }
   }
 ]
