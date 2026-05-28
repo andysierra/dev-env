@@ -26,7 +26,7 @@
       "cmd-alt-enter": ["picker::ConfirmInput", { "secondary": true }],
       "cmd-shift-w": "workspace::CloseWindow",
       "shift-escape": "workspace::ToggleZoom",
-      "cmd-o": "workspace::OpenFiles",
+      "cmd-shift-o": "workspace::OpenFiles",
       "cmd-=": ["zed::IncreaseBufferFontSize", { "persist": false }],
       "cmd-shift-=": ["zed::IncreaseBufferFontSize", { "persist": false }],
       "cmd--": ["zed::DecreaseBufferFontSize", { "persist": false }],
@@ -73,9 +73,12 @@
       "shift-tab": "editor::Backtab",
       "cmd-k ctrl-q": "editor::Rewrap",
       "cmd-k q": "editor::Rewrap",
-      "cmd-backspace": [
+      "alt-backspace": [
         "editor::DeleteToPreviousWordStart",
-        { "ignore_newlines": false, "ignore_brackets": false }
+        {
+          "ignore_newlines": false,
+          "ignore_brackets": false
+        }
       ],
       "cmd-delete": [
         "editor::DeleteToNextWordEnd",
@@ -107,8 +110,8 @@
       "end": ["editor::MoveToEndOfLine", { "stop_at_soft_wraps": true }],
       "left": "editor::MoveLeft",
       "right": "editor::MoveRight",
-      "cmd-left": "editor::MoveToPreviousWordStart",
-      "cmd-right": "editor::MoveToNextWordEnd",
+      "alt-left": "editor::MoveToPreviousWordStart",
+      "alt-right": "editor::MoveToNextWordEnd",
       "cmd-home": "editor::MoveToBeginning",
       "cmd-end": "editor::MoveToEnd",
       "shift-up": "editor::SelectUp",
@@ -449,11 +452,9 @@
       "cmd-k w": ["pane::CloseAllItems", { "close_pinned": false }],
       "cmd-k ctrl-w": "workspace::CloseAllItemsAndPanes",
       "back": "pane::GoBack",
-      "alt--": "pane::GoBack",
-      "alt-left": "pane::GoBack",
+      "cmd-left": "pane::GoBack",
       "forward": "pane::GoForward",
       "alt-=": "pane::GoForward",
-      "alt-right": "pane::GoForward",
       "f3": "search::SelectNextMatch",
       "shift-f3": "search::SelectPreviousMatch",
       "cmd-shift-f": "project_search::ToggleFocus",
@@ -608,7 +609,7 @@
       "cmd-q": "file_finder::Toggle",
       "cmd-shift-tab": ["tab_switcher::Toggle", { "select_last": true }],
       "cmd-tab": "tab_switcher::Toggle",
-      "cmd-e": "file_finder::Toggle",
+      "cmd-o": "file_finder::Toggle",
       "f1": "command_palette::Toggle",
       "cmd-shift-p": "command_palette::Toggle",
       "cmd-shift-m": "diagnostics::Deploy",
@@ -859,7 +860,6 @@
     "use_key_equivalents": true,
     "bindings": {
       "left": "project_panel::CollapseSelectedEntry",
-      "cmd-left": "project_panel::CollapseAllEntries",
       "right": "project_panel::ExpandSelectedEntry",
       "cmd-n": "project_panel::NewFile",
       "alt-n": "project_panel::NewDirectory",
@@ -1254,8 +1254,7 @@
       "cmd-k": "keymap_editor::OpenCreateKeybindingModal",
       "cmd-c": "keymap_editor::CopyAction",
       "cmd-shift-c": "keymap_editor::CopyContext",
-      "cmd-t": "keymap_editor::ShowMatchingKeybinds",
-      "cmd-e": "zed::OpenKeymapFile"
+      "cmd-t": "keymap_editor::ShowMatchingKeybinds"
     }
   },
   {
@@ -1436,6 +1435,12 @@
   {
     "bindings": {
       "ctrl-tab": "tab_switcher::Toggle"
+    }
+  },
+  {
+    "context": "Pane",
+    "bindings": {
+      "cmd-right": "pane::GoForward"
     }
   }
 ]
