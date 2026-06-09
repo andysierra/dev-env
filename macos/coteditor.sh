@@ -8,4 +8,9 @@
 # Optional parameters:
 # @raycast.icon 🤖
 
-open -n -a CotEditor
+osascript <<EOF
+tell application "CotEditor"
+    make new document
+    activate
+end tell
+EOF
