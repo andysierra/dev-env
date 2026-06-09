@@ -7,17 +7,30 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "git_panel": {
+    "dock": "left"
+  },
   "soft_wrap": "editor_width",
   "format_on_save": "off",
   "colorize_brackets": true,
   "on_last_window_closed": "quit_app",
   "when_closing_with_no_tabs": "close_window",
-  "icon_theme": "Material Icon Theme",
+  "icon_theme": {
+    "mode": "light",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme"
+  },
   "base_keymap": "None",
   "buffer_font_family": "Fira Code",
   "preview_tabs": {
-    "enable_preview_from_project_panel": false,
-    "enabled": false,
+    "enable_preview_from_project_panel": true,
+    "enabled": true,
   },
   "indent_guides": {
     "background_coloring": "disabled",
@@ -40,12 +53,11 @@
   "title_bar": {
     "show_menus": false,
     "show_branch_name": true,
-    "show_branch_icon": false,
   },
   "tab_bar": {
     "show_nav_history_buttons": false,
     "show_tab_bar_buttons": false,
-    "show": false,
+    "show": true,
   },
   "toolbar": {
     "breadcrumbs": false,
@@ -53,6 +65,7 @@
   },
   "buffer_line_height": "standard",
   "project_panel": {
+    "dock": "left",
     "bold_folder_labels": true,
     "hide_hidden": false,
     "hide_root": true,
@@ -65,25 +78,26 @@
     "entry_spacing": "standard",
   },
   "terminal": {
-    "option_as_meta": true,
+    "option_as_meta": false,
     "copy_on_select": true,
     "button": false,
     "shell": {
       "program": "/bin/zsh",
     },
-    "font_size": 10.0,
+    "font_size": 14.0,
   },
   "ui_font_weight": 400.0,
   "agent": {
+    "single_file_review": true,
     "dock": "right",
     "button": false,
     "favorite_models": [],
     "model_parameters": [],
     "tool_permissions": {
       "tools": {
-        "web_search": {
-          "default_mode": "allow",
-        },
+        "search_web": {
+          "default": "allow"
+        }
       },
     },
   },
@@ -95,16 +109,19 @@
   "session": {
     "trust_all_worktrees": true,
   },
-  "ui_font_size": 12.0,
-  "buffer_font_size": 12.0,
-  "theme": "GitHub Dark High Contrast",
+  "ui_font_size": 15.0,
+  "buffer_font_size": 16.0,
+  "theme": {
+    "mode": "light",
+    "light": "Ayu Light",
+    "dark": "One Dark"
+  },
 
   "lsp": {
     "jdtls": {
-      "binary": {
-        "path": "/opt/homebrew/bin/jdtls",
-        "arguments": [],
-      },
+        "binary": {
+          "path": "/opt/homebrew/opt/jdtls/bin/jdtls"
+        }
     },
     "terraform-ls": {
       "binary": {
