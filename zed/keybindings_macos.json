@@ -259,7 +259,6 @@
     "context": "AgentPanel",
     "use_key_equivalents": true,
     "bindings": {
-      "cmd-n": "agent::NewThread",
       "shift-alt-n": "agent::NewThread",
       "shift-alt-c": "agent::OpenSettings",
       "shift-alt-l": "agent::OpenRulesLibrary",
@@ -272,7 +271,6 @@
       "shift-alt-escape": "agent::ExpandMessageEditor",
       "cmd-shift-.": "agent::AddSelectionToThread",
       "cmd-shift-e": "project_panel::ToggleFocus",
-      "cmd-shift-enter": "agent::ContinueThread",
       "shift-alt-a": "agent::AllowOnce",
       "cmd-alt-a": "agent::OpenPermissionDropdown",
       "shift-alt-z": "agent::RejectOnce"
@@ -297,7 +295,6 @@
     "context": "AgentPanel && acp_thread",
     "use_key_equivalents": true,
     "bindings": {
-      "cmd-n": "agent::NewExternalAgentThread",
       "cmd-alt-t": "agent::NewThread"
     }
   },
@@ -498,7 +495,7 @@
       "cmd-k ctrl-i": "editor::Hover",
       "cmd-k ctrl-b": "editor::BlameHover",
       "cmd-k ctrl-f": "editor::FormatSelections",
-      "cmd-/": ["editor::ToggleComments", { "advance_downwards": false }],
+      "cmd-shift-c": ["editor::ToggleComments", { "advance_downwards": false }],
       "cmd-k ctrl-c": [
         "editor::ToggleComments",
         { "advance_downwards": false }
@@ -795,7 +792,7 @@
     "context": "!Terminal",
     "use_key_equivalents": true,
     "bindings": {
-      "cmd-shift-c": "collab_panel::ToggleFocus"
+      "cmd-shift-alt-c": "collab_panel::ToggleFocus"
     }
   },
   {
@@ -845,7 +842,6 @@
     "bindings": {
       "left": "outline_panel::CollapseSelectedEntry",
       "right": "outline_panel::ExpandSelectedEntry",
-      "shift-alt-c": "outline_panel::CopyPath",
       "cmd-shift-alt-c": "workspace::CopyRelativePath",
       "cmd-alt-r": "outline_panel::RevealInFileManager",
       "space": "outline_panel::OpenSelectedEntry",
@@ -868,7 +864,6 @@
       "cmd-c": "project_panel::Copy",
       "shift-insert": "project_panel::Paste",
       "cmd-v": "project_panel::Paste",
-      "shift-alt-c": "project_panel::CopyPath",
       "cmd-k ctrl-shift-c": "workspace::CopyRelativePath",
       "enter": "project_panel::Rename",
       "f2": "project_panel::Rename",
