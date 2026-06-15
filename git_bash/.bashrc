@@ -30,3 +30,11 @@ gcp() {
 gch() {
         git checkout -b "$1"
 }
+
+go() {
+    if [[ -n "$1" ]]; then
+        cd "$1" && ls -la
+    else
+        ls -la
+    fi
+}
