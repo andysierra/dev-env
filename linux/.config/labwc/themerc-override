@@ -1,0 +1,10 @@
+window.button.height: 18
+window.button.width: 18
+window.titlebar.padding.height: 2
+border.width: 2
+window.active.border.color: #aaaaaa
+window.inactive.border.color: #444444
+window.active.title.bg.color: #aaaaaa
+window.inactive.title.bg.color: #2a2a2a
+window.active.label.text.color: #000000
+window.inactive.label.text.color: #888888
