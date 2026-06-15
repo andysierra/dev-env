@@ -33,7 +33,7 @@ Compartí este archivo con Claude Code y pedile: *"implementa la sección IA de 
 ### Contexto del setup
 - Compositor Wayland: **labwc** (sin DE)
 - Terminal: **foot**
-- Shell: **fish**
+- Shell: **bash**
 - Explorador de archivos: **yazi**
 - Lanzador: **bemenu** + **j4-dmenu-desktop**
 - Clipboard: **cliphist** + **wtype**
@@ -46,7 +46,7 @@ Compartí este archivo con Claude Code y pedile: *"implementa la sección IA de 
 ### Paquetes
 
 ```sh
-sudo pacman -S --noconfirm labwc foot fish yazi 7zip \
+sudo pacman -S --noconfirm labwc foot bash yazi 7zip \
   bemenu-wayland j4-dmenu-desktop \
   wl-clipboard cliphist wtype \
   grim slurp swappy otf-font-awesome \
@@ -60,18 +60,31 @@ Fuente del terminal (Iosevka Term):
 fc-cache -fv
 ```
 
-### Arranque de labwc desde fish
+### Arranque de labwc desde bash
 
-`~/.config/fish/config.fish` — la línea `source` es específica de CachyOS, eliminarla o adaptarla en otras distros:
+Bash usa dos archivos: `.bash_profile` para shells de login (TTY), `.bashrc` para shells interactivos (terminales). El `.bash_profile` llama al `.bashrc`.
 
-```fish
-source /usr/share/cachyos-fish-config/cachyos-config.fish  # solo CachyOS
+Cambiar shell por defecto: `chsh -s /bin/bash`
 
-if status is-login; and test -z "$WAYLAND_DISPLAY"; and test "$XDG_VTNR" = 1
+**`~/.bash_profile`:**
+```bash
+[[ -f ~/.bashrc ]] && source ~/.bashrc
+
+# Launch labwc on TTY1
+if [[ -z "$WAYLAND_DISPLAY" && "$XDG_VTNR" == "1" ]]; then
     exec dbus-run-session labwc
-end
+fi
+```
+
+**`~/.bashrc`:**
+```bash
+[[ $- != *i* ]] && return
+
 export PATH="$HOME/.local/bin:$PATH"
-set -gx EDITOR vim
+export EDITOR=vim
+
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 
 # aliases
 alias c="NO_COLOR=1 TERM=dumb claude"
@@ -87,40 +100,53 @@ alias gdiff="git diff release develop && git diff stage release"
 alias gdiffm="git diff release develop && git diff stage release && git diff main stage"
 alias gup="git switch develop && git fetch -a --prune && git pull --all && git status && git switch release && git fetch -a --prune && git pull --all && git status && git switch stage && git fetch -a --prune && git pull --all && git status && git switch main && git fetch -a --prune && git pull --all && git status"
 
-function gcp
+gcp() {
     git add .
-    git commit -m "$argv[1]"
+    git commit -m "$1"
     git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null
-    if test $status -ne 0
-        set branch (git symbolic-ref --short HEAD)
+    if [ $? -ne 0 ]; then
+        branch=$(git symbolic-ref --short HEAD)
         echo "No upstream branch detected. Setting upstream to origin/$branch"
         git push --set-upstream origin "$branch"
     else
         git push
-    end
-end
+    fi
+}
 
-function gch
-    git checkout -b $argv[1]
-end
+gch() {
+    git checkout -b "$1"
+}
 
-function go
-    cd $argv[1] && ls -la
-end
+go() {
+    if [[ -n "$1" ]]; then
+        cd "$1" && ls -la
+    else
+        ls -la
+    fi
+}
 
-function y
-    set tmp (mktemp -t yazi-cwd.XXXXXX)
-    yazi $argv --cwd-file=$tmp
-    if set cwd (cat -- $tmp 2>/dev/null); and test -n "$cwd"; and test "$cwd" != "$PWD"
-        cd -- $cwd
-    end
-    rm -f -- $tmp
-end
+y() {
+    local tmp
+    tmp=$(mktemp -t yazi-cwd.XXXXXX)
+    yazi "$@" --cwd-file="$tmp"
+    local cwd
+    cwd=$(cat -- "$tmp" 2>/dev/null)
+    if [[ -n "$cwd" && "$cwd" != "$PWD" ]]; then
+        cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
+}
+
+complete -d go
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 ```
 
 ### ~/.local/bin/f
 
-`f` abre una nueva ventana foot desde cualquier contexto — terminal, yazi (`:shell`), etc. Debe ser un script ejecutable en PATH, no una función fish, porque las funciones fish no están disponibles fuera de sesiones interactivas de fish.
+`f` abre una nueva ventana foot desde cualquier contexto — terminal, yazi (`:shell`), etc.
 
 ```bash
 #!/bin/bash
@@ -131,12 +157,23 @@ foot &
 chmod +x ~/.local/bin/f
 ```
 
-### ~/.config/fish/completions/go.fish
+### SDKMAN — gestión de JDKs y SDKs
 
-El autocompletado de `go` debe vivir en su propio archivo — fish no aplica `complete` definido en `config.fish` a tiempo. Este archivo le dice a fish que use las mismas completions que `cd`:
+Instalación (requiere `zip`): `sudo pacman -S --noconfirm zip`
 
-```fish
-complete -c go --wraps cd
+```bash
+curl -s "https://get.sdkman.io" | bash
+```
+
+El instalador agrega automáticamente su bloque al final de `.bashrc` (debe estar al final). Comandos principales:
+
+```bash
+sdk list java                  # ver versiones disponibles
+sdk install java 21.0.7-tem   # instalar Java 21 (Temurin)
+sdk install gradle             # instalar Gradle
+sdk current java               # ver versión activa
+sdk use java 17.x.x-tem       # cambiar versión en sesión actual
+sdk default java 21.x.x-tem   # cambiar versión por defecto
 ```
 
 ### ~/.config/labwc/environment
@@ -285,7 +322,7 @@ grim -g "$(slurp)" - | swappy -f -
 
 ```bash
 #!/bin/bash
-exec foot --app-id yazi fish -c "y ~"
+exec foot --app-id yazi bash -i -c "y ~; exec bash"
 ```
 
 ### ~/.config/labwc/scripts/yazi_edit.sh
