@@ -1,0 +1,17 @@
+# ANDYSIERRA
+
+# config de ventanas:
+# debes tener instalado primero wlr-randr:
+# sudo pacman -S --noconfirm wlr-randr
+LID_STATE=$(cat /proc/acpi/button/lid/LID0/state 2>/dev/null || cat /proc/acpi/button/lid/LID/state 2>/dev/null)
+if echo "$LID_STATE" | grep -q "closed"; then
+    wlr-randr --output HDMI-A-1 --pos 0,0 --output eDP-1 --off
+else
+    wlr-randr --output HDMI-A-1 --pos 0,0 --output eDP-1 --pos 277,1080
+fi &
+
+# historial de portapapeles (win+v)
+wl-paste --watch cliphist store &
+
+# claude code siempre disponible al iniciar
+foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions &

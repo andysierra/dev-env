@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+
+<labwc_config>
+	<core>
+		<gap>0</gap>
+		<decoration>server</decoration>
+	</core>
+
+	<windowSwitcher preview="yes" outlines="yes" order="focus">
+		<osd show="yes" style="thumbnail" />
+	</windowSwitcher>
+
+<theme>
+		<dropShadows>no</dropShadows>
+		<font place="ActiveWindow">
+			<name>Sans</name>
+			<size>9</size>
+		</font>
+		<font place="InactiveWindow">
+			<name>Sans</name>
+			<size>9</size>
+		</font>
+	</theme>
+
+	<windowRules>
+		<windowRule identifier="claude-code">
+			<action name="ToggleFullscreen" />
+		</windowRule>
+		<windowRule identifier="yazi">
+			<action name="ToggleMaximize" />
+		</windowRule>
+	</windowRules>
+
+	<keyboard>
+		<default />
+		<keybind key="W-Return">
+			<action name="Execute" command="foot" />
+		</keybind>
+		<keybind key="W-c">
+			<action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions'" />
+		</keybind>
+		<keybind key="W-e">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" />
+		</keybind>
+		<keybind key="A-F4">
+			<action name="Close" />
+		</keybind>
+		<keybind key="A-q">
+			<action name="Close" />
+		</keybind>
+		<keybind key="W-m">
+			<action name="Execute" command="wlr-randr --output HDMI-A-1 --pos 0,0 --output eDP-1 --pos 277,1080" />
+		</keybind>
+		<keybind key="A-Tab">
+			<action name="NextWindow" />
+		</keybind>
+		<keybind key="A-S-Tab">
+			<action name="PreviousWindow" />
+		</keybind>
+		<keybind key="A-F3">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" />
+		</keybind>
+		<keybind key="W-space">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" />
+		</keybind>
+		<keybind key="W-v">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/clipboard.sh'" />
+		</keybind>
+		<keybind key="W-S-s">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" />
+		</keybind>
+		<keybind key="XF86MonBrightnessUp">
+			<action name="Execute" command="brightnessctl set 10%+" />
+		</keybind>
+		<keybind key="XF86MonBrightnessDown">
+			<action name="Execute" command="brightnessctl set 10%-" />
+		</keybind>
+		<keybind key="XF86AudioRaiseVolume">
+			<action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+" />
+		</keybind>
+		<keybind key="XF86AudioLowerVolume">
+			<action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%-" />
+		</keybind>
+		<keybind key="XF86AudioMute">
+			<action name="Execute" command="wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" />
+		</keybind>
+	</keyboard>
+</labwc_config>
