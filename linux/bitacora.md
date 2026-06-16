@@ -85,6 +85,11 @@ fi
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=vim
 
+# git-aware prompt (muestra la rama actual; bash no la trae por defecto como fish)
+source /usr/share/git/completion/git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE=1
+PS1='\[\e[32m\]\w\[\e[33m\]$(__git_ps1 " (%s)")\[\e[0m\] \$ '
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 
