@@ -8,6 +8,7 @@ alias grep='grep --color=auto'
 
 # aliases
 alias c="NO_COLOR=1 TERM=dumb claude"
+alias claudia="claude --dangerously-skip-permissions"
 alias tf="terraform"
 alias l="ls -lat"
 alias helloworld="echo 'me gusta la pepitoria'"

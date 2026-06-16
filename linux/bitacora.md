@@ -90,6 +90,7 @@ alias grep='grep --color=auto'
 
 # aliases
 alias c="NO_COLOR=1 TERM=dumb claude"
+alias claudia="claude --dangerously-skip-permissions"
 alias tf="terraform"
 alias l="ls -lat"
 alias helloworld="echo 'me gusta la pepitoria'"
@@ -178,6 +179,49 @@ sdk use java 17.x.x-tem       # cambiar versión en sesión actual
 sdk default java 21.x.x-tem   # cambiar versión por defecto
 ```
 
+### ~/.vimrc — yank de vim al clipboard del sistema
+
+El vim de Arch viene compilado con `-clipboard` (sin soporte nativo). El registro `"` de vim queda aislado del portapapeles de Wayland. Este autocmd copia a `wl-copy` después de cada yank. `g:clipboard` (estilo Neovim) **no** funciona en este vim.
+
+```vim
+autocmd TextYankPost * call system('wl-copy', @")
+```
+
+- `@"` = registro donde vim deja lo copiado
+- `wl-copy` = escribe en el clipboard de Wayland (paquete `wl-clipboard`)
+
+### Zed — instalación e ícono personalizado
+
+Instalación (script oficial, queda en `~/.local/zed.app/`):
+```sh
+curl -f https://zed.dev/install.sh | sh
+```
+
+El instalador crea `~/.local/share/applications/dev.zed.Zed.desktop`. El **app_id** real de la ventana es `dev.zed.Zed` (verificable con `strings ~/.local/zed.app/bin/zed | grep app_id`).
+
+Para que labwc muestre un ícono propio, dos pasos:
+
+1. **El ícono va en el tema de iconos, NO en `applications/`.** Copiar el SVG a:
+   ```
+   ~/.local/share/icons/hicolor/scalable/apps/zed.svg
+   ```
+2. **El `.desktop` referencia el ícono por NOMBRE, no por ruta absoluta.** labwc resuelve iconos vía el tema (libsfdo), no acepta bien rutas absolutas en `Icon=`:
+   ```ini
+   Icon=zed
+   StartupWMClass=dev.zed.Zed
+   ```
+
+`StartupWMClass` debe igualar el app_id para que labwc asocie la ventana con el `.desktop`.
+
+**Gotcha del caché de iconos:** `~/.local/share/icons/hicolor/icon-theme.cache` actúa como índice. Si quedó apuntando a un archivo viejo/borrado, labwc cae al ícono por defecto aunque el SVG correcto exista. Como no hay `index.theme` en ese dir, `gtk-update-icon-cache` falla y no lo regenera — la solución es **borrar el caché** para forzar escaneo en vivo, y reiniciar labwc:
+
+```sh
+rm -f ~/.local/share/icons/hicolor/icon-theme.cache
+labwc --reconfigure
+```
+
+Mismo procedimiento aplica a cualquier app instalada fuera de pacman (IntelliJ, etc.): SVG en `hicolor/scalable/apps/`, `Icon=<nombre>` + `StartupWMClass=<app_id>` en el `.desktop`.
+
 ### ~/.config/labwc/environment
 
 ```
@@ -217,7 +261,7 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
   </core>
 
   <windowSwitcher preview="yes" outlines="yes" order="focus">
-    <osd show="yes" style="thumbnail" />
+    <osd show="yes" style="classic" />
   </windowSwitcher>
 
   <theme>
@@ -465,3 +509,5 @@ exit
 - **Clipboard imágenes**: Wayland no permite auto-paste de datos binarios con wtype. Solo `Ctrl+V`.
 - **Wallpaper sin daemon**: labwc no tiene soporte nativo de wallpaper. Requiere `swaybg` u otro daemon. Se dejó el fondo negro por defecto.
 - **`show_hidden` en yazi.toml**: ignorado en 26.x, workaround via `init.lua`.
+- **windowSwitcher `style="thumbnail"`**: las flechas arriba/abajo no navegan la grilla (solo izquierda/derecha) y el OSD puede aparecer descentrado en multi-monitor. Se usa `style="classic"` (lista vertical, flechas funcionales).
+- **Iconos por ruta absoluta en `.desktop`**: labwc (libsfdo) resuelve iconos por nombre vía tema, no por ruta. Usar `Icon=<nombre>` con el archivo en `hicolor/scalable/apps/`.
