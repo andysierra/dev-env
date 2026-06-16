@@ -7,7 +7,7 @@
 	</core>
 
 	<windowSwitcher preview="yes" outlines="yes" order="focus">
-		<osd show="yes" style="thumbnail" />
+		<osd show="yes" style="classic" />
 	</windowSwitcher>
 
 <theme>
