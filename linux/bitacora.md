@@ -227,6 +227,49 @@ labwc --reconfigure
 
 Mismo procedimiento aplica a cualquier app instalada fuera de pacman (IntelliJ, etc.): SVG en `hicolor/scalable/apps/`, `Icon=<nombre>` + `StartupWMClass=<app_id>` en el `.desktop`.
 
+### Bruno — cliente de API (AppImage)
+
+Cliente de API open-source y *offline-first* (colecciones como archivos planos, sin nube ni cuenta). Elegido sobre Insomnia: 158 MB vs 1.6 GB, más liviano en RAM.
+
+**Requisito: libfuse2.** Los AppImage necesitan `libfuse.so.2`; CachyOS trae solo fuse3. Sin esto el AppImage falla en silencio (no abre desde el lanzador). fuse2 es solo una librería, **no un daemon** — se usa solo mientras el AppImage está montado.
+```sh
+sudo pacman -S --noconfirm fuse2
+```
+
+Instalación: dejar el AppImage en `~/.local/share/bruno/bruno.AppImage` y darle permiso:
+```sh
+chmod +x ~/.local/share/bruno/bruno.AppImage
+```
+
+Extraer el ícono del propio AppImage (trae `.desktop` + iconos hicolor dentro):
+```sh
+cd /tmp
+~/.local/share/bruno/bruno.AppImage --appimage-extract 'usr/share/icons/*'
+cp /tmp/squashfs-root/usr/share/icons/hicolor/512x512/apps/bruno.png \
+   ~/.local/share/icons/hicolor/512x512/apps/bruno.png
+rm -rf /tmp/squashfs-root ~/.local/share/icons/hicolor/icon-theme.cache
+```
+
+El `.desktop` interno del AppImage da los datos exactos (`StartupWMClass=Bruno`, requiere `--no-sandbox`).
+
+**`~/.local/share/applications/bruno.desktop`:**
+```ini
+[Desktop Entry]
+Name=Bruno
+GenericName=API Client
+Comment=Opensource API Client for Exploring and Testing APIs
+Exec=/home/andysierra/.local/share/bruno/bruno.AppImage --no-sandbox %U
+Icon=bruno
+Type=Application
+Terminal=false
+Categories=Development;
+MimeType=x-scheme-handler/bruno;
+StartupWMClass=Bruno
+StartupNotify=true
+```
+
+**Actualizar**: reemplazar `bruno.AppImage` por la versión nueva con el mismo nombre. Nada más que tocar.
+
 ### ~/.config/labwc/environment
 
 ```
