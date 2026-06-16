@@ -18,7 +18,9 @@ Los nombres de salida de video (`HDMI-A-1`, `eDP-1`) y la posición del monitor 
 | `Super+V` | Historial de clipboard |
 | `Super+Shift+S` | Captura de área |
 | `Super+M` | Reposicionar monitores (dual) |
-| `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas |
+| `Super+1` / `Super+2` | Cambiar escritorio virtual |
+| `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
+| `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas (todos los escritorios) |
 | `Alt+F4` / `Alt+Q` | Cerrar ventana |
 | `Fn+Brillo↑↓` | Brillo |
 | `Fn+Vol↑↓` / `Fn+Mute` | Volumen |
@@ -224,6 +226,14 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <font place="InactiveWindow"><name>Sans</name><size>9</size></font>
   </theme>
 
+  <desktops>
+    <names>
+      <name>1</name>
+      <name>2</name>
+    </names>
+    <popupTime>500</popupTime>
+  </desktops>
+
   <windowRules>
     <windowRule identifier="claude-code">
       <action name="ToggleFullscreen" />
@@ -235,14 +245,18 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
 
   <keyboard>
     <default />
+    <keybind key="W-1"><action name="GoToDesktop" to="1" /></keybind>
+    <keybind key="W-2"><action name="GoToDesktop" to="2" /></keybind>
+    <keybind key="W-S-1"><action name="SendToDesktop" to="1" /></keybind>
+    <keybind key="W-S-2"><action name="SendToDesktop" to="2" /></keybind>
     <keybind key="W-Return"><action name="Execute" command="foot" /></keybind>
     <keybind key="W-c"><action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions'" /></keybind>
     <keybind key="W-e"><action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" /></keybind>
     <keybind key="A-F4"><action name="Close" /></keybind>
     <keybind key="A-q"><action name="Close" /></keybind>
     <keybind key="W-m"><action name="Execute" command="wlr-randr --output HDMI-A-1 --pos 0,0 --output eDP-1 --pos 277,1080" /></keybind>
-    <keybind key="A-Tab"><action name="NextWindow" /></keybind>
-    <keybind key="A-S-Tab"><action name="PreviousWindow" /></keybind>
+    <keybind key="A-Tab"><action name="NextWindow" workspace="all" /></keybind>
+    <keybind key="A-S-Tab"><action name="PreviousWindow" workspace="all" /></keybind>
     <keybind key="A-F3"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
     <keybind key="W-space"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
     <keybind key="W-v"><action name="Execute" command="sh -c '~/.config/labwc/scripts/clipboard.sh'" /></keybind>

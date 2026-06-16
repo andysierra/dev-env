@@ -31,8 +31,28 @@
 		</windowRule>
 	</windowRules>
 
+	<desktops>
+		<names>
+			<name>1</name>
+			<name>2</name>
+		</names>
+		<popupTime>500</popupTime>
+	</desktops>
+
 	<keyboard>
 		<default />
+		<keybind key="W-1">
+			<action name="GoToDesktop" to="1" />
+		</keybind>
+		<keybind key="W-2">
+			<action name="GoToDesktop" to="2" />
+		</keybind>
+		<keybind key="W-S-1">
+			<action name="SendToDesktop" to="1" />
+		</keybind>
+		<keybind key="W-S-2">
+			<action name="SendToDesktop" to="2" />
+		</keybind>
 		<keybind key="W-Return">
 			<action name="Execute" command="foot" />
 		</keybind>
@@ -52,10 +72,10 @@
 			<action name="Execute" command="wlr-randr --output HDMI-A-1 --pos 0,0 --output eDP-1 --pos 277,1080" />
 		</keybind>
 		<keybind key="A-Tab">
-			<action name="NextWindow" />
+			<action name="NextWindow" workspace="all" />
 		</keybind>
 		<keybind key="A-S-Tab">
-			<action name="PreviousWindow" />
+			<action name="PreviousWindow" workspace="all" />
 		</keybind>
 		<keybind key="A-F3">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" />
