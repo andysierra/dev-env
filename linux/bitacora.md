@@ -12,9 +12,9 @@ Los nombres de salida de video (`HDMI-A-1`, `eDP-1`) y la posición del monitor 
 | Atajo | Acción |
 |---|---|
 | `Super+Enter` | Terminal (foot) |
-| `Super+C` | Claude Code (foot fullscreen, lanza claude automáticamente) |
+| `Super+C` | Claude Code (foot, attach/crea sesión tmux `CLAUDIA`) |
 | `Super+E` | Explorador de archivos (yazi, maximizado) |
-| `Super+Space` / `Alt+F3` | Lanzador de apps |
+| `Alt+Space` / `Alt+F3` | Lanzador de apps (estilo Spotlight de macOS) |
 | `Super+V` | Historial de clipboard |
 | `Super+Shift+S` | Captura de área |
 | `Super+M` | Reposicionar monitores (dual) |
@@ -293,7 +293,9 @@ fi &
 
 wl-paste --watch cliphist store &
 
-foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions &
+# Claude Code dentro de tmux (sesión CLAUDIA), persistente al cerrar la ventana.
+# bash -ic carga .bashrc para resolver el alias `claudia` (= claude --dangerously-skip-permissions).
+foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -s CLAUDIA bash -ic claudia &
 ```
 
 ### ~/.config/labwc/rc.xml
@@ -342,7 +344,7 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <keybind key="W-S-1"><action name="SendToDesktop" to="1" /></keybind>
     <keybind key="W-S-2"><action name="SendToDesktop" to="2" /></keybind>
     <keybind key="W-Return"><action name="Execute" command="foot" /></keybind>
-    <keybind key="W-c"><action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions'" /></keybind>
+    <keybind key="W-c"><action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -A -s CLAUDIA bash -ic claudia'" /></keybind>
     <keybind key="W-e"><action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" /></keybind>
     <keybind key="A-F4"><action name="Close" /></keybind>
     <keybind key="A-q"><action name="Close" /></keybind>
@@ -350,7 +352,7 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <keybind key="A-Tab"><action name="NextWindow" workspace="all" /></keybind>
     <keybind key="A-S-Tab"><action name="PreviousWindow" workspace="all" /></keybind>
     <keybind key="A-F3"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
-    <keybind key="W-space"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
+    <keybind key="A-space"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
     <keybind key="W-v"><action name="Execute" command="sh -c '~/.config/labwc/scripts/clipboard.sh'" /></keybind>
     <keybind key="W-S-s"><action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" /></keybind>
     <keybind key="XF86MonBrightnessUp"><action name="Execute" command="brightnessctl set 10%+" /></keybind>
