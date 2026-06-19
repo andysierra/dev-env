@@ -467,6 +467,47 @@ background=0d0010
 foreground=ffffff
 ```
 
+### ~/.config/tmux/tmux.conf
+
+Claude Code corre dentro de una sesión tmux `CLAUDIA` (ver `autostart` y `W-c`), así que esta config aplica a ese entorno. Prefix `C-a`, modo vi, mouse, e indicador visual cuando el prefix está esperando. `extended-keys`/`foot:extkeys` son clave para que `Shift+Enter` y similares lleguen a las apps de adentro (p. ej. para pegar multilínea sin que se dispare).
+
+```tmux
+set -g prefix C-a			# prefix C-a instead of C-b
+unbind C-b
+bind C-a send-prefix			# C-a C-a sends a literal C-a
+
+set -g mouse on				# wheel scrolls, click selects pane
+setw -g mode-keys vi			# vim keys for tmux
+
+# --- look of copy/scroll mode ---
+set -g mode-style "bg=colour208,fg=black,bold"
+set -g copy-mode-match-style "bg=colour237,fg=white"
+set -g copy-mode-current-match-style "bg=colour208,fg=black"
+
+# flash an indicator when the prefix (C-a) is pressed and waiting
+set -g status-left "#{?client_prefix,#[bg=colour208#,fg=black#,bold] ^A #[default],#[bg=colour237#,fg=white] #S #[default]} "
+
+# show scroll % in the status bar while in copy mode
+set -g status-right "#{?pane_in_mode,#[bg=colour208#,fg=black#,bold] SCROLL #{e|/:#{e|*:#{scroll_position},100},#{history_size}}%% #[default] ,}%H:%M"
+
+# highlight the active window in the status bar (instead of the *)
+set -g window-status-current-style "bg=colour208,fg=black,bold"
+set -g window-status-current-format " #I:#W "
+set -g window-status-format " #I:#W "
+
+set -g history-limit 10000
+set -g base-index 1			# window numbering starts in 1
+setw -g pane-base-index 1
+set -g default-terminal "tmux-256color"
+set -s extended-keys on			# pass Shift+Enter etc. through to apps
+set -as terminal-features 'foot:extkeys'	# foot speaks extended keys
+
+bind v copy-mode			# enter copy/scroll mode (easier than [)
+bind c new-window -c "#{pane_current_path}"
+bind % split-window -h -c "#{pane_current_path}"
+bind '"' split-window -v -c "#{pane_current_path}"
+```
+
 ### ~/.config/yazi/yazi.toml
 
 ```toml
