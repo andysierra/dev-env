@@ -57,7 +57,7 @@
 			<action name="Execute" command="foot" />
 		</keybind>
 		<keybind key="W-c">
-			<action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions'" />
+			<action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -A -s CLAUDIA bash -ic claudia'" />
 		</keybind>
 		<keybind key="W-e">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" />
@@ -80,7 +80,7 @@
 		<keybind key="A-F3">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" />
 		</keybind>
-		<keybind key="W-space">
+		<keybind key="A-space">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" />
 		</keybind>
 		<keybind key="W-v">

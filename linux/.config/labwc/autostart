@@ -13,5 +13,5 @@ fi &
 # historial de portapapeles (win+v)
 wl-paste --watch cliphist store &
 
-# claude code siempre disponible al iniciar
-foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e claude --dangerously-skip-permissions &
+# claude code siempre disponible al iniciar (dentro de tmux, sesión CLAUDIA)
+foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -s CLAUDIA bash -ic claudia &
