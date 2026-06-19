@@ -24,6 +24,8 @@ Los nombres de salida de video (`HDMI-A-1`, `eDP-1`) y la posición del monitor 
 | `Alt+F4` / `Alt+Q` | Cerrar ventana |
 | `Fn+Brillo↑↓` | Brillo |
 | `Fn+Vol↑↓` / `Fn+Mute` | Volumen |
+| Botón encendido (toque corto) | Suspender |
+| Botón encendido (mantener) | Apagar |
 
 ### Para replicar en sistema nuevo
 Compartí este archivo con Claude Code y pedile: *"implementa la sección IA de esta bitácora en este sistema"*.
@@ -532,6 +534,31 @@ fi
 sudo chmod +x /etc/acpi/actions/lid.sh
 sudo systemctl restart acpid
 ```
+
+### /etc/systemd/logind.conf.d/power-key.conf — botón de encendido suspende
+
+Hacer que el **botón físico de encendido suspenda** en vez de apagar. Drop-in (no toca el `logind.conf` principal, sobrevive a updates):
+
+```ini
+[Login]
+HandlePowerKey=suspend            # toque corto → suspende
+HandlePowerKeyLongPress=poweroff  # mantener pulsado → apaga (válvula de escape)
+```
+
+Instalar:
+```sh
+sudo install -Dm644 power-key.conf /etc/systemd/logind.conf.d/power-key.conf
+```
+
+**Aplicar el cambio: reiniciar la PC** (recomendado). ⚠️ NO usar `systemctl restart systemd-logind` con la sesión gráfica abierta — logind administra el seat y al reiniciarse **tumba labwc y te deja en el TTY** (el drop-in en disco ya queda permanente igual).
+
+Verificar el valor efectivo (es config de logind, no del unit → `systemctl show` no sirve, va por D-Bus):
+```sh
+busctl get-property org.freedesktop.login1 /org/freedesktop/login1 \
+  org.freedesktop.login1.Manager HandlePowerKey   # → s "suspend"
+```
+
+> Nota sobre hibernación: requiere swap en disco ≥ RAM. Este equipo solo tiene **zram** (swap comprimida en RAM, inútil para hibernar) y el disco está sin espacio libre para partición → habría que montar un **swapfile en btrfs** (subvolumen sin CoW + `resume=`/`resume_offset=`). Pendiente.
 
 ### Chromium — escala
 
