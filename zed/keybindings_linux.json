@@ -1425,5 +1425,28 @@
       "ctrl-c": "notebook::InterruptKernel",
     },
   },
+  // ===== Custom user bindings =====
+  // Motions de Vim: salto por etiquetas (estilo EasyMotion) y Sneak (2 caracteres)
+  {
+    "context": "vim_mode == normal || vim_mode == visual",
+    "bindings": {
+      "g w": "vim::HelixJumpToWord",
+      "s": "vim::PushSneak",
+      "shift-s": "vim::PushSneakBackward",
+    },
+  },
+  // Toggles de docks dentro del modo Vim.
+  // En modo Vim el editor captura los keystrokes (los dígitos son `count`), así
+  // que alt-1/2/3 deben asignarse a nivel del editor en contexto Vim para que se
+  // resuelvan aquí y no se filtren al manejo de count. VimControl cubre
+  // normal/visual/operator/replace; vim_mode == insert cubre inserción.
+  {
+    "context": "VimControl || vim_mode == insert",
+    "bindings": {
+      "alt-1": "workspace::ToggleLeftDock",
+      "alt-2": "workspace::ToggleRightDock",
+      "alt-3": "workspace::ToggleBottomDock",
+    },
+  },
 ]
 
