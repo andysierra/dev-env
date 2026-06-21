@@ -1,0 +1,133 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "indent_guides": {
+    "background_coloring": "indent_aware",
+    "coloring": "indent_aware"
+  },
+  "vim": {
+    "toggle_relative_line_numbers": true
+  },
+  "helix_mode": false,
+  "vim_mode": true,
+  "ensure_final_newline_on_save": false,
+  "remove_trailing_whitespace_on_save": false,
+  "minimap": {
+    "display_in": "all_editors",
+    "show": "always",
+  },
+  "cli_default_open_behavior": "existing_window",
+  "disable_ai": false,
+  "agent_servers": {
+    "claude-acp": {
+      "type": "registry",
+    },
+  },
+  "outline_panel": {
+    "dock": "right",
+  },
+  "collaboration_panel": {
+    "dock": "right",
+  },
+  "git_panel": {
+    "dock": "right",
+  },
+  "autosave": "on_focus_change",
+  "icon_theme": {
+    "mode": "light",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme"
+  },
+  "soft_wrap": "editor_width",
+  "format_on_save": "off",
+  "edit_predictions": {
+    "provider": "none",
+  },
+  "when_closing_with_no_tabs": "close_window",
+  "base_keymap": "VSCode",
+  "centered_layout": {
+    "left_padding": 0.2,
+  },
+  "tabs": {
+    "show_close_button": "always",
+    "git_status": true,
+  },
+  "debugger": {
+    "button": false,
+  },
+  "search": {
+    "button": false,
+  },
+  "bottom_dock_layout": "full",
+  "title_bar": {
+    "show_branch_status_icon": true,
+    "show_menus": false,
+    "show_branch_name": true,
+  },
+  "tab_bar": {
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false,
+    "show": false,
+  },
+  "toolbar": {
+    "code_actions": true,
+    "breadcrumbs": true,
+    "quick_actions": true,
+  },
+  "buffer_line_height": "standard",
+  "project_panel": {
+    "dock": "left",
+    "bold_folder_labels": true,
+    "hide_hidden": false,
+    "hide_root": true,
+    "folder_icons": true,
+    "file_icons": true,
+    "button": true,
+    "indent_guides": {
+      "show": "always",
+    },
+    "entry_spacing": "standard",
+  },
+  "terminal": {
+    "button": false,
+    "shell": {
+      "program": "sh"
+    },
+    "font_size": 12.0,
+  },
+  "ui_font_weight": 400.0,
+  "agent": {
+    "dock": "right",
+    "button": true,
+    "favorite_models": [],
+    "model_parameters": [],
+    "tool_permissions": {
+      "tools": {
+        "search_web": {
+          "default": "allow",
+        },
+      },
+    },
+  },
+  "restore_on_startup": "empty_tab",
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "ui_font_size": 13.0,
+  "buffer_font_size": 13.0,
+  "theme": {
+    "mode": "dark",
+    "light": "One Light",
+    "dark": "Ayu Dark"
+  },
+}
