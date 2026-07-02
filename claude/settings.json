@@ -1,0 +1,21 @@
+{
+  "model": "opus",
+  "tui": "fullscreen",
+  "skipDangerousModePermissionPrompt": true,
+  "theme": "dark-daltonized",
+  "autoScrollEnabled": false,
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 /home/andysierra/.claude/hooks/show-mermaid.py",
+            "timeout": 10,
+            "statusMessage": "Renderizando diagramas Mermaid"
+          }
+        ]
+      }
+    ]
+  }
+}
