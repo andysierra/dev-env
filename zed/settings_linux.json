@@ -1,56 +1,59 @@
-// Zed settings
+// Zed settings — Linux (adaptado desde la config de macOS)
 //
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
+// Docs: https://zed.dev/docs/configuring-zed
+// Ver defaults: paleta de comandos -> `zed: open default settings`
 {
-  "indent_guides": {
-    "background_coloring": "indent_aware",
-    "coloring": "indent_aware"
-  },
-  "vim": {
-    "toggle_relative_line_numbers": true
-  },
-  "helix_mode": false,
-  "vim_mode": true,
-  "ensure_final_newline_on_save": false,
-  "remove_trailing_whitespace_on_save": false,
-  "minimap": {
-    "display_in": "all_editors",
-    "show": "always",
-  },
-  "cli_default_open_behavior": "existing_window",
-  "disable_ai": false,
+  "agent_buffer_font_size": 12.0,
+  "agent_ui_font_size": 17.0,
+  "buffer_font_weight": 400.0,
   "agent_servers": {
     "claude-acp": {
+      "favorite_config_option_values": {
+        "mode": ["bypassPermissions"],
+        "model": ["opus[1m]"],
+        "effort": ["medium"],
+        "fast": ["on"],
+      },
+      "default_config_options": {
+        "mode": "bypassPermissions",
+        "effort": "medium",
+        "fast": "on",
+        "model": "opus[1m]",
+      },
       "type": "registry",
     },
   },
   "outline_panel": {
-    "dock": "right",
+    "default_width": 300.0,
+    "dock": "left",
   },
   "collaboration_panel": {
-    "dock": "right",
+    "dock": "left",
   },
   "git_panel": {
-    "dock": "right",
-  },
-  "autosave": "on_focus_change",
-  "icon_theme": {
-    "mode": "light",
-    "light": "Material Icon Theme",
-    "dark": "Material Icon Theme"
+    "dock": "left",
   },
   "soft_wrap": "editor_width",
   "format_on_save": "off",
-  "edit_predictions": {
-    "provider": "none",
-  },
+  "colorize_brackets": true,
+  "on_last_window_closed": "quit_app",
   "when_closing_with_no_tabs": "close_window",
+  "icon_theme": {
+    "mode": "dark",
+    "light": "Material Icon Theme",
+    "dark": "Material Icon Theme",
+  },
   "base_keymap": "VSCode",
+  "buffer_font_family": "Fira Code",
+  "preview_tabs": {
+    "enable_preview_from_project_panel": true,
+    "enabled": true,
+  },
+  "indent_guides": {
+    "coloring": "indent_aware",
+    "background_coloring": "indent_aware",
+    "enabled": true,
+  },
   "centered_layout": {
     "left_padding": 0.2,
   },
@@ -66,7 +69,6 @@
   },
   "bottom_dock_layout": "full",
   "title_bar": {
-    "show_branch_status_icon": true,
     "show_menus": false,
     "show_branch_name": true,
   },
@@ -76,12 +78,12 @@
     "show": false,
   },
   "toolbar": {
-    "code_actions": true,
-    "breadcrumbs": true,
-    "quick_actions": true,
+    "breadcrumbs": false,
+    "quick_actions": false,
   },
   "buffer_line_height": "standard",
   "project_panel": {
+    "auto_fold_dirs": false,
     "dock": "left",
     "bold_folder_labels": true,
     "hide_hidden": false,
@@ -95,16 +97,19 @@
     "entry_spacing": "standard",
   },
   "terminal": {
+    "copy_on_select": true,
     "button": false,
-    "shell": {
-      "program": "sh"
-    },
-    "font_size": 12.0,
+    // "system" usa tu shell de login (fish/zsh/bash de CachyOS) con todo tu entorno.
+    // Si quieres forzar uno: { "program": "/usr/bin/fish" } o "/usr/bin/zsh"
+    "shell": "system",
+    "font_size": 14.0,
   },
-  "ui_font_weight": 400.0,
+  "ui_font_weight": 550.0,
   "agent": {
+    "sidebar_side": "right",
+    "single_file_review": true,
     "dock": "right",
-    "button": true,
+    "button": false,
     "favorite_models": [],
     "model_parameters": [],
     "tool_permissions": {
@@ -123,11 +128,27 @@
   "session": {
     "trust_all_worktrees": true,
   },
-  "ui_font_size": 13.0,
-  "buffer_font_size": 13.0,
+  "ui_font_size": 12.0,
+  "buffer_font_size": 16.0,
   "theme": {
     "mode": "dark",
-    "light": "One Light",
-    "dark": "Ayu Dark"
+    "light": "Ayu Light",
+    "dark": "One Dark",
+  },
+  "lsp": {
+    "jdtls": {
+      "binary": {
+        // VERIFICA la ruta: `which jdtls` (en macOS era /opt/homebrew/opt/jdtls/bin/jdtls)
+        // Si prefieres que Zed autogestione jdtls, borra todo este bloque "jdtls".
+        "path": "/usr/bin/jdtls",
+      },
+    },
+    "terraform-ls": {
+      "binary": {
+        // VERIFICA la ruta: `which terraform-ls`
+        "path": "/usr/bin/terraform-ls",
+        "arguments": ["serve"],
+      },
+    },
   },
 }

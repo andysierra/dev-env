@@ -60,6 +60,7 @@ Ruta: `~/.claude/CLAUDE.md` (macOS/Linux) o `%USERPROFILE%\.claude\CLAUDE.md`
   - **Árbol / jerarquía** → **ASCII en texto plano** (```text con `├── └──`). No es un diagrama; nunca en Mermaid.
   - **Diagrama** (flujo, secuencia, arquitectura, máquina de estados, relaciones, clases, componentes) → **SIEMPRE en Mermaid**, escrito como bloque ```mermaid inline. Nunca ASCII, nunca PUML/PNG. No confundir diagrama con tabla ni con árbol.
   - **Resumen de una línea** (`A → B → C`) en prosa: ok.
+- **Estilo "parafernalia" rico (preferido).** Cuando el tema lo amerite, no te limites a un solo diagrama: combina VARIOS tipos de Mermaid (flowchart, sequence, state, class, ER, mindmap, etc.) junto con tablas y árboles en ASCII, priorizando lo visual sobre la prosa. Elige cada tipo según lo que mejor explique cada faceta del tema.
 - **Mostrar los diagramas Mermaid renderizados en el chat** cuando el cliente los soporte (Zed, claude.ai, extensiones IDE); en una terminal pura, el bloque ```mermaid es el entregable (portable a cualquier visor Mermaid). Al renderizar archivos `.md` que contengan Mermaid, mostrarlos siempre renderizados en el chat.
 ```
 
@@ -88,9 +89,10 @@ Abrir el PNG en el visor del SO:
 
 ## Paso 3 — Verificar
 
-Pídele a Claude un diagrama de prueba y confirma que responde con un bloque
-` ```mermaid ` bien formado. Comprueba que una tabla y un árbol ASCII se alinean en
-tu terminal. Si instalaste `mmdc`, renderiza un `.mmd` de prueba y ábrelo.
+Pídele a Claude una respuesta rica sobre un tema random y confirma que responde con
+**varios** bloques ` ```mermaid ` de tipos distintos, bien formados. Comprueba que una
+tabla y un árbol ASCII se alinean en tu terminal. Si instalaste `mmdc`, renderiza un
+`.mmd` de prueba y ábrelo.
 
 ---
 
@@ -98,8 +100,8 @@ tu terminal. Si instalaste `mmdc`, renderiza un `.mmd` de prueba y ábrelo.
 
 ```text
 [ ] SO detectado (macOS / Linux / Windows) → ruta del CLAUDE.md
-[ ] ~/.claude/CLAUDE.md escrito con las reglas (Mermaid inline + ASCII tablas/árboles)
-[ ] Prueba: Claude responde diagramas en bloque ```mermaid; tabla/árbol ASCII alineados
+[ ] ~/.claude/CLAUDE.md escrito con las reglas (Mermaid inline + ASCII tablas/árboles + estilo multi-diagrama)
+[ ] Prueba: Claude responde VARIOS diagramas de tipos distintos en bloque ```mermaid; tabla/árbol ASCII alineados
 [ ] (Opcional) mmdc instalado si se quieren PNG en terminal pura
 [ ] (No aplica) sin Java / PlantUML / Graphviz: Mermaid no necesita ese toolchain
 ```
