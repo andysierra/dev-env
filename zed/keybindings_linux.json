@@ -1446,12 +1446,14 @@
       "alt-3": "workspace::ToggleBottomDock",
     },
   },
-  // Preview de Markdown. alt-shift-m para no chocar con ctrl-shift-m (Problems)
-  // ni ctrl-shift-v (pegar). ctrl-k v abre el preview en un split a la derecha.
+  // Preview de Markdown. Se evita alt-shift-* (en Linux lo captura el cambio de
+  // distribucion de teclado) y ctrl-shift-m (panel Problems).
+  // ctrl-k r  -> render/preview reemplazando el tab.
+  // ctrl-k v  -> preview en un split a la derecha (ya definido en defaults).
   {
-    "context": "Editor && mode == full && language == Markdown",
+    "context": "Editor && extension == md",
     "bindings": {
-      "alt-shift-m": "markdown::OpenPreview",
+      "ctrl-k r": "markdown::OpenPreview",
       "ctrl-k v": "markdown::OpenPreviewToTheSide",
     },
   },
