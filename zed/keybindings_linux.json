@@ -1461,5 +1461,14 @@
       "shift-f7": "markdown::OpenPreviewToTheSide",
     },
   },
+  // Toggle docks global: sin "context" para que funcionen aunque el foco
+  // esté en el vacío (sin editor ni panel abierto).
+  {
+    "bindings": {
+      "alt-1": "workspace::ToggleLeftDock",
+      "alt-2": "workspace::ToggleRightDock",
+      "alt-3": "workspace::ToggleBottomDock",
+    },
+  },
 ]
 
