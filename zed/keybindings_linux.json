@@ -1446,15 +1446,19 @@
       "alt-3": "workspace::ToggleBottomDock",
     },
   },
-  // Preview de Markdown. Se evita alt-shift-* (en Linux lo captura el cambio de
-  // distribucion de teclado) y ctrl-shift-m (panel Problems).
-  // ctrl-k r  -> render/preview reemplazando el tab.
-  // ctrl-k v  -> preview en un split a la derecha (ya definido en defaults).
+  // Preview de Markdown con teclas UNICAS (sin chord).
+  // Se evita ctrl-k <x> porque ctrl-k solo ya dispara pane::SplitUp y el chord
+  // nunca se completa; alt-shift-* lo captura el cambio de layout en Linux;
+  // ctrl-shift-m es el panel Problems.
+  // ctrl-shift-v -> preview reemplazando el tab (estilo VS Code).
+  // f7           -> preview reemplazando el tab.
+  // shift-f7     -> preview en un split a la derecha.
   {
     "context": "Editor && extension == md",
     "bindings": {
-      "ctrl-k r": "markdown::OpenPreview",
-      "ctrl-k v": "markdown::OpenPreviewToTheSide",
+      "ctrl-shift-v": "markdown::OpenPreview",
+      "f7": "markdown::OpenPreview",
+      "shift-f7": "markdown::OpenPreviewToTheSide",
     },
   },
 ]
