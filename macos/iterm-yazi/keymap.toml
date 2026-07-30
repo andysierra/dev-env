@@ -2,7 +2,15 @@
 # Ver teclas ocupadas por defecto: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/keymap-default.toml
 # OJO: en yazi >= 25 la seccion es [mgr], no [manager] (renombrada).
 
+# OJO 2: la tecla es "T" MAYUSCULA (shift+t). La "t" minuscula es el prefijo de
+# tabs del preset (t t = new tab), por eso se agrega <C-t> como alias.
+
 [[mgr.prepend_keymap]]
 on   = "T"
+run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
+desc = "Abrir iTerm (ventana nueva) en el directorio actual"
+
+[[mgr.prepend_keymap]]
+on   = "<C-t>"
 run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
 desc = "Abrir iTerm (ventana nueva) en el directorio actual"

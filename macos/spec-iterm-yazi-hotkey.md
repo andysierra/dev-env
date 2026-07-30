@@ -14,8 +14,9 @@ AL SALIR (q)   la ventana se cierra sola; el siguiente ⌥⌘E abre una limpia
 ICONOS         los da la fuente Nerd Font del perfil de iTerm (no un plugin de yazi)
 
 DENTRO DE YAZI
-T              abre una ventana NUEVA de iTerm en el directorio donde estás,
-               sin cerrar ni bloquear yazi
+T (Shift+t)    abre una ventana NUEVA de iTerm en el directorio donde estás,
+Ctrl+T         sin cerrar ni bloquear yazi. OJO: la "t" minúscula NO es esto;
+               es el prefijo de tabs del preset (t t = new tab)
 ;              shell de yazi (espera a que termine el comando)
 :              shell de yazi bloqueante (el que se usaba para meterle "zsh")
 ```
@@ -40,7 +41,7 @@ Hotkey global          Karabiner-Elements (complex_modification -> shell_command
 Pegamento             AppleScript/JXA (osascript -l JavaScript) para controlar iTerm
 Fuente del terminal   Cascadia Code NF (Nerd Font) -> de ahí salen los iconos
 Estado del singleton  ~/.cache/yazi-desktop-window (id de ventana de iTerm)
-Terminal desde yazi   tecla T -> open -a iTerm <cwd> (keymap.toml, shell --orphan)
+Terminal desde yazi   Shift+T o Ctrl+T -> open -a iTerm <cwd> (keymap.toml, shell --orphan)
 ```
 
 ### Paso 1 — Software
@@ -234,16 +235,26 @@ open -na iTerm <dir>   INSTANCIA nueva de la app (duplica el proceso) <- no usar
    Contenido:
    ```toml
    [[mgr.prepend_keymap]]
-   on   = "T"
+   on   = "T"          # Shift+t
+   run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
+   desc = "Abrir iTerm (ventana nueva) en el directorio actual"
+
+   [[mgr.prepend_keymap]]
+   on   = "<C-t>"      # alias, para no depender del shift
    run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
    desc = "Abrir iTerm (ventana nueva) en el directorio actual"
    ```
 3. Detalles que importan:
    - **`[mgr]`, no `[manager]`**: la sección se renombró en yazi 25.x. Con `[manager]` en
      yazi 26 el keymap no aplica (o avisa de config obsoleta).
-   - `prepend_keymap` se suma al preset y gana sobre el default. `T` está **libre** en el
-     preset de 26.5.6 (verificado contra `yazi-config/preset/keymap-default.toml`); si en una
-     versión futura se ocupa, esta regla lo pisa igual.
+   - `prepend_keymap` se suma al preset y gana sobre el default. `T` y `<C-t>` están
+     **libres** en el preset de 26.5.6 (verificado contra
+     `yazi-config/preset/keymap-default.toml`); si en una versión futura se ocupan, esta
+     regla los pisa igual.
+   - **La tecla es `T` mayúscula (Shift+t)**. La `t` minúscula es un *prefijo* del preset
+     (`t t` = new tab, `t r`), así que pulsar `t` solo muestra el menú de tabs: es el error
+     más fácil de cometer. Por eso también se bindea `<C-t>`.
+   - yazi lee el keymap **al arrancar**: después de editarlo hay que salir (`q`) y reabrir.
    - `--orphan` desacopla el proceso: yazi no espera nada. (`--block` haría lo contrario.)
    - yazi lanza el comando **con cwd = el directorio que estás viendo**, por eso el script
      no recibe argumentos y usa `$PWD`.
@@ -263,8 +274,9 @@ cerrar la ventana y volver a pulsar         crea una nueva, sigue habiendo 1    
 cerrar la ventana y pulsar al instante      sin error (refs muertas toleradas)    verificado
 iTerm cerrado del todo (arranque en frío)   1 ventana con yazi, sin fantasma      verificado
 salir de yazi con q                         la ventana se cierra sola             verificado
-pulsar T dentro de yazi                     ventana nueva con cwd = dir de yazi,  verificado
+pulsar Shift+T dentro de yazi               ventana nueva con cwd = dir de yazi,  verificado
                                             yazi sigue vivo
+pulsar Ctrl+T dentro de yazi                idem                                  verificado
 navegar (gh) y pulsar T                     la ventana nueva abre en el nuevo cwd verificado
 ventana movida a otro monitor + ⌥⌘E         se maximiza en ESE monitor            sin probar
                                                                                   (1 pantalla)
@@ -355,7 +367,7 @@ NUEVOS
 ~/bin/yazi-desktop.sh                 wrapper + estado (chmod +x)
 ~/bin/yazi-desktop.js                 lógica JXA
 ~/bin/iterm-here.sh                   terminal nueva en el cwd (chmod +x)
-~/.config/yazi/keymap.toml            tecla T -> iterm-here.sh
+~/.config/yazi/keymap.toml            teclas T / Ctrl+T -> iterm-here.sh
 
 MODIFICADO
 ~/.config/karabiner/karabiner.json    regla ⌥⌘E prepuesta
