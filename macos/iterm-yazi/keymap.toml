@@ -1,0 +1,8 @@
+# yazi — keymap propio (se suma al preset; prepend gana sobre el default)
+# Ver teclas ocupadas por defecto: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/keymap-default.toml
+# OJO: en yazi >= 25 la seccion es [mgr], no [manager] (renombrada).
+
+[[mgr.prepend_keymap]]
+on   = "T"
+run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
+desc = "Abrir iTerm (ventana nueva) en el directorio actual"

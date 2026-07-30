@@ -12,11 +12,17 @@ QUÉ HACE       abre iTerm con yazi en ~/Desktop, ventana maximizada
 SI YA ESTÁ     no abre otra: trae al frente la misma ventana y la re-maximiza
 AL SALIR (q)   la ventana se cierra sola; el siguiente ⌥⌘E abre una limpia
 ICONOS         los da la fuente Nerd Font del perfil de iTerm (no un plugin de yazi)
+
+DENTRO DE YAZI
+T              abre una ventana NUEVA de iTerm en el directorio donde estás,
+               sin cerrar ni bloquear yazi
+;              shell de yazi (espera a que termine el comando)
+:              shell de yazi bloqueante (el que se usaba para meterle "zsh")
 ```
 
 ### Para replicar en un mac nuevo
 Compartí este archivo con Claude Code y pedile: *"implementá la sección **Para la IA** de este
-spec en este mac"*. Los 3 archivos que hay que copiar están en `macos/iterm-yazi/`.
+spec en este mac"*. Los archivos que hay que copiar están en `macos/iterm-yazi/`.
 
 ---
 
@@ -34,6 +40,7 @@ Hotkey global          Karabiner-Elements (complex_modification -> shell_command
 Pegamento             AppleScript/JXA (osascript -l JavaScript) para controlar iTerm
 Fuente del terminal   Cascadia Code NF (Nerd Font) -> de ahí salen los iconos
 Estado del singleton  ~/.cache/yazi-desktop-window (id de ventana de iTerm)
+Terminal desde yazi   tecla T -> open -a iTerm <cwd> (keymap.toml, shell --orphan)
 ```
 
 ### Paso 1 — Software
@@ -198,7 +205,53 @@ La **primera** pulsación de ⌥⌘E hace que macOS pregunte si
 el hotkey no hace nada silenciosamente. Si se negó por error:
 System Settings > Privacy & Security > **Automation** > karabiner_console_user_server > iTerm ✓.
 
-### Paso 7 — Verificación
+### Paso 7 — Abrir una terminal desde yazi (tecla `T`)
+
+Problema: si dentro de yazi usás `:` (shell bloqueante) y escribís `zsh`, yazi queda
+"congelado" detrás de ese shell. Lo que se quiere es una **terminal aparte**, con yazi vivo.
+
+En Linux se lanza el emulador por CLI (`kitty`, `ghostty`, `wezterm`…). **iTerm2 no tiene
+binario CLI**, pero está registrado como handler de carpetas, así que el equivalente exacto es:
+
+```sh
+open -a iTerm "<dir>"      # ventana nueva de iTerm con cwd en <dir>
+```
+
+```text
+open -a iTerm <dir>    ventana nueva en la MISMA instancia de iTerm   <- lo que queremos
+open -na iTerm <dir>   INSTANCIA nueva de la app (duplica el proceso) <- no usar
+```
+
+1. Copiar el script (no necesita argumentos: usa el cwd con el que yazi lo lanza):
+   ```sh
+   cp macos/iterm-yazi/iterm-here.sh ~/bin/ && chmod +x ~/bin/iterm-here.sh
+   ```
+2. Copiar el keymap de yazi:
+   ```sh
+   mkdir -p ~/.config/yazi
+   cp macos/iterm-yazi/keymap.toml ~/.config/yazi/keymap.toml
+   ```
+   Contenido:
+   ```toml
+   [[mgr.prepend_keymap]]
+   on   = "T"
+   run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
+   desc = "Abrir iTerm (ventana nueva) en el directorio actual"
+   ```
+3. Detalles que importan:
+   - **`[mgr]`, no `[manager]`**: la sección se renombró en yazi 25.x. Con `[manager]` en
+     yazi 26 el keymap no aplica (o avisa de config obsoleta).
+   - `prepend_keymap` se suma al preset y gana sobre el default. `T` está **libre** en el
+     preset de 26.5.6 (verificado contra `yazi-config/preset/keymap-default.toml`); si en una
+     versión futura se ocupa, esta regla lo pisa igual.
+   - `--orphan` desacopla el proceso: yazi no espera nada. (`--block` haría lo contrario.)
+   - yazi lanza el comando **con cwd = el directorio que estás viendo**, por eso el script
+     no recibe argumentos y usa `$PWD`.
+   - No hace falta permiso de Automatización acá: `open` no es AppleScript.
+4. Verificar: abrir yazi (⌥⌘E), navegar a cualquier carpeta, pulsar `T`. Debe aparecer una
+   ventana nueva de iTerm con el prompt **en esa carpeta**, y yazi seguir vivo en su ventana.
+
+### Paso 8 — Verificación
 
 Casos que hay que probar:
 
@@ -210,6 +263,9 @@ cerrar la ventana y volver a pulsar         crea una nueva, sigue habiendo 1    
 cerrar la ventana y pulsar al instante      sin error (refs muertas toleradas)    verificado
 iTerm cerrado del todo (arranque en frío)   1 ventana con yazi, sin fantasma      verificado
 salir de yazi con q                         la ventana se cierra sola             verificado
+pulsar T dentro de yazi                     ventana nueva con cwd = dir de yazi,  verificado
+                                            yazi sigue vivo
+navegar (gh) y pulsar T                     la ventana nueva abre en el nuevo cwd verificado
 ventana movida a otro monitor + ⌥⌘E         se maximiza en ESE monitor            sin probar
                                                                                   (1 pantalla)
 ```
@@ -263,6 +319,10 @@ coordenadas invertidas        bounds de AppleScript = origen arriba-izquierda de
                               y_bounds = alturaPrimaria - (vis.origin.y + vis.size.height)
 multi-monitor                 elegir la pantalla por el centro de la ventana
                               (NSPointInRect), no mainScreen a ciegas.
+yazi [manager] vs [mgr]       en yazi >= 25 la seccion del keymap es [mgr]; con
+                              [manager] el binding no aplica.
+open -na iTerm                crea otra INSTANCIA de la app. Para "otra ventana"
+                              es open -a iTerm <dir> (sin -n).
 ```
 
 ### Extra opcional — `y` en el shell (cd al salir de yazi)
@@ -282,7 +342,8 @@ y() {
 ### Revertir
 
 ```sh
-rm -f ~/bin/yazi-desktop.sh ~/bin/yazi-desktop.js ~/.cache/yazi-desktop-window
+rm -f ~/bin/yazi-desktop.sh ~/bin/yazi-desktop.js ~/bin/iterm-here.sh \
+      ~/.cache/yazi-desktop-window ~/.config/yazi/keymap.toml
 cp ~/.config/karabiner/automatic_backups/karabiner-pre-yazi-hotkey.json \
    ~/.config/karabiner/karabiner.json
 ```
@@ -293,6 +354,8 @@ cp ~/.config/karabiner/automatic_backups/karabiner-pre-yazi-hotkey.json \
 NUEVOS
 ~/bin/yazi-desktop.sh                 wrapper + estado (chmod +x)
 ~/bin/yazi-desktop.js                 lógica JXA
+~/bin/iterm-here.sh                   terminal nueva en el cwd (chmod +x)
+~/.config/yazi/keymap.toml            tecla T -> iterm-here.sh
 
 MODIFICADO
 ~/.config/karabiner/karabiner.json    regla ⌥⌘E prepuesta
