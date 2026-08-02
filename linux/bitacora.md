@@ -277,9 +277,18 @@ StartupNotify=true
 ```
 XKB_DEFAULT_LAYOUT=latam
 GDK_DPI_SCALE=0.8
-QT_SCALE_FACTOR=0.8
+QT_FONT_DPI=77
 EDITOR=vim
 ```
+
+> **UI compacta en Qt — usar `QT_FONT_DPI`, NO `QT_SCALE_FACTOR`.**
+> `QT_SCALE_FACTOR=0.8` (multiplicador bruto, escala fraccionaria) rompe apps Qt5
+> viejas bajo XWayland: clipea texto de menús y colapsa barras (p.ej. VLC mostraba
+> "Playba" sin barra de tiempo). Sustituido por `QT_FONT_DPI=77` (≈ 0.8×96), que
+> encoge solo la fuente sin deformar los widgets — misma densidad, sin el bug.
+> Para densidades distintas POR monitor, usar `wlr-randr --output X --scale N`
+> (no una escala global). GTK sigue con `GDK_DPI_SCALE`; Chromium con
+> `--force-device-scale-factor=0.8` (ambos toleran bien el 0.8).
 
 ### ~/.config/labwc/autostart
 
