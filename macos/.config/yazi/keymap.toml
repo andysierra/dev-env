@@ -1,0 +1,40 @@
+# yazi — keymap propio (se suma al preset; prepend gana sobre el default)
+# Ver teclas ocupadas por defecto: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/keymap-default.toml
+# OJO: en yazi >= 25 la seccion es [mgr], no [manager] (renombrada).
+
+# OJO 2: la tecla es "T" MAYUSCULA (shift+t). La "t" minuscula es el prefijo de
+# tabs del preset (t t = new tab), por eso se agrega <C-t> como alias.
+
+# Salto rapido de 5 en 5, estilo { } de vim.
+# OJO: en el preset { y } son tab_swap -1 / +1 (reordenar pestanas): se pierden.
+# El analogo real de "llegar a un archivo" sigue siendo / (find --smart) + n / N.
+[[mgr.prepend_keymap]]
+on   = "}"
+run  = "arrow 5"
+desc = "Bajar 5 (estilo vim })"
+
+[[mgr.prepend_keymap]]
+on   = "{"
+run  = "arrow -5"
+desc = "Subir 5 (estilo vim {)"
+
+[[mgr.prepend_keymap]]
+on   = "T"
+run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
+desc = "Abrir iTerm (ventana nueva) en el directorio actual"
+
+[[mgr.prepend_keymap]]
+on   = "<C-t>"
+run  = 'shell --orphan "$HOME/bin/iterm-here.sh"'
+desc = "Abrir iTerm (ventana nueva) en el directorio actual"
+
+# "F" (shift+f) esta libre en el preset. "f" minuscula es filter.
+[[mgr.prepend_keymap]]
+on   = "F"
+run  = 'shell --orphan "open -R \"$@\""'
+desc = "Reveal en Finder (archivo bajo el cursor / seleccion)"
+
+[[mgr.prepend_keymap]]
+on   = "<C-o>"
+run  = 'shell --orphan "open -R \"$@\""'
+desc = "Reveal en Finder (archivo bajo el cursor / seleccion)"

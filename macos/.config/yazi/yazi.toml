@@ -1,0 +1,17 @@
+# yazi — config propia (se suma al preset; prepend gana sobre el default)
+
+[mgr]
+show_hidden = true
+
+[opener]
+readdown = [
+  { run = 'open -a "Readdown" "$@"', desc = "Readdown", orphan = true, for = "macos" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.md",       use = ["readdown", "edit", "reveal"] },
+  { url = "*.markdown", use = ["readdown", "edit", "reveal"] },
+  { url = "*.mdx",      use = ["readdown", "edit", "reveal"] },
+  { mime = "text/markdown", use = ["readdown", "edit", "reveal"] },
+]
