@@ -12,9 +12,10 @@ Los nombres de salida de video (`HDMI-A-1`, `eDP-1`) y la posición del monitor 
 | Atajo | Acción |
 |---|---|
 | `Super+Enter` | Terminal (foot) |
-| `Super+C` | Claude Code (foot, attach/crea sesión tmux `CLAUDIA`) |
-| `Super+E` | Explorador de archivos (yazi, maximizado) |
-| `Alt+Space` / `Alt+F3` | Lanzador de apps (estilo Spotlight de macOS) |
+| `Super+C` | Zed abierto en `~/work` (Claude vive en su panel de agente) |
+| `Super+E` | Explorador de archivos (yazi, maximizado) — instancia única: si ya hay una abierta, le da foco en vez de crear otra |
+| `Alt+Space` / `Alt+F3` | Lanzador de apps (estilo Spotlight de macOS) — escribir `claudia` abre terminal con Claude sin restricciones; `word`/`excel`/`powerpoint` abren FreeOffice |
+| `Alt+N` | Escribe el símbolo `~` (tilde) — atajo cómodo en reemplazo de AltGr+4 |
 | `Super+V` | Historial de clipboard |
 | `Super+Shift+S` | Captura de área |
 | `Super+M` | Reposicionar monitores (dual) |
@@ -97,7 +98,7 @@ alias grep='grep --color=auto'
 
 # aliases
 alias c="NO_COLOR=1 TERM=dumb claude"
-alias claudia="claude --dangerously-skip-permissions"
+alias claudia="claude --dangerously-skip-permissions"  # terminal lanzada desde bemenu (ver claudia.desktop)
 alias tf="terraform"
 alias l="ls -lat"
 alias helloworld="echo 'me gusta la pepitoria'"
@@ -272,6 +273,50 @@ StartupNotify=true
 
 **Actualizar**: reemplazar `bruno.AppImage` por la versión nueva con el mismo nombre. Nada más que tocar.
 
+### claudia — terminal Claude Code sin restricciones (bemenu)
+
+Lanzador para abrir rápido una terminal ejecutando `claude --dangerously-skip-permissions` desde el buscador de apps (`Alt+Space`, escribir `claudia`). Usa el mismo patrón de `foot --app-id ... bash -i -c "..."` que `yazi_cd.sh`, para que `bash -i` cargue el `.bashrc` y resuelva el alias `claudia`.
+
+**`~/.local/share/applications/claudia.desktop`:**
+```ini
+[Desktop Entry]
+Name=claudia
+GenericName=Claude Code (skip permissions)
+Comment=Abre una terminal ejecutando claude --dangerously-skip-permissions
+Exec=foot --app-id claudia bash -i -c "claudia; exec bash"
+Icon=utilities-terminal
+Type=Application
+Terminal=false
+Categories=Development;Utility;
+StartupNotify=true
+```
+
+### FreeOffice 2024 — suite ofimática (Word/Excel/PowerPoint)
+
+Instalado en `~/freeoffice2024` (binarios de lanzamiento: `~/textmaker24free`, `~/planmaker24free`, `~/presentations24free`).
+
+**Dependencia faltante tras instalar:** PlanMaker fallaba con `error while loading shared libraries: libXmu.so.6: cannot open shared object file`.
+```sh
+sudo pacman -S --noconfirm libxmu
+```
+
+**Asociaciones de archivos por defecto**, cubriendo todos los MimeType que trae cada `.desktop` (doc/docx/odt → TextMaker, xls/xlsx/ods → PlanMaker, ppt/pptx/odp → Presentations):
+```sh
+xdg-mime default textmaker-free24.desktop application/msword application/vnd.openxmlformats-officedocument.wordprocessingml.document application/vnd.oasis.opendocument.text application/rtf # + resto de MimeType del .desktop
+xdg-mime default planmaker-free24.desktop application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet application/vnd.oasis.opendocument.spreadsheet text/csv # + resto
+xdg-mime default presentations-free24.desktop application/vnd.ms-powerpoint application/vnd.openxmlformats-officedocument.presentationml.presentation application/vnd.oasis.opendocument.presentation # + resto
+```
+Verificar con `xdg-mime query default <mimetype>`.
+
+**Nombres para bemenu**: los `.desktop` que trae el instalador se llaman "FreeOffice 2024 TextMaker/PlanMaker/Presentations" — no coinciden con lo que la gente realmente escribe en un lanzador. Se editó el campo `Name=` de cada uno (en `~/.local/share/applications/`) para que aparezcan al escribir "word", "excel" o "powerpoint":
+```
+textmaker-free24.desktop:     Name=Word (FreeOffice TextMaker)
+planmaker-free24.desktop:     Name=Excel (FreeOffice PlanMaker)
+presentations-free24.desktop: Name=PowerPoint (FreeOffice Presentations)
+```
+
+**Gotcha:** el `.desktop` de TextMaker traía una línea con un único espacio (inválida según el spec). `j4-dmenu-desktop` descarta el archivo completo en silencio ante esto (sin error visible) — por eso "word" no aparecía en bemenu mientras "excel"/"powerpoint" sí. Diagnosticado con `desktop-file-validate archivo.desktop`; se corrigió borrando la línea.
+
 ### ~/.config/labwc/environment
 
 ```
@@ -304,9 +349,10 @@ fi &
 
 wl-paste --watch cliphist store &
 
-# Claude Code dentro de tmux (sesión CLAUDIA), persistente al cerrar la ventana.
-# bash -ic carga .bashrc para resolver el alias `claudia` (= claude --dangerously-skip-permissions).
-foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -s CLAUDIA bash -ic claudia &
+# Zed abierto en ~/work. Claude se usa desde su panel de agente (claude-acp),
+# que renderiza Mermaid, tablas y árboles — cosa que una terminal no puede hacer.
+# Ruta absoluta: labwc no garantiza ~/.local/bin en PATH.
+/home/andysierra/.local/zed.app/bin/zed /home/andysierra/work &
 ```
 
 ### ~/.config/labwc/rc.xml
@@ -340,9 +386,6 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
   </desktops>
 
   <windowRules>
-    <windowRule identifier="claude-code">
-      <action name="ToggleFullscreen" />
-    </windowRule>
     <windowRule identifier="yazi">
       <action name="ToggleMaximize" />
     </windowRule>
@@ -355,8 +398,20 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <keybind key="W-S-1"><action name="SendToDesktop" to="1" /></keybind>
     <keybind key="W-S-2"><action name="SendToDesktop" to="2" /></keybind>
     <keybind key="W-Return"><action name="Execute" command="foot" /></keybind>
-    <keybind key="W-c"><action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -A -s CLAUDIA bash -ic claudia'" /></keybind>
-    <keybind key="W-e"><action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" /></keybind>
+    <keybind key="W-c"><action name="Execute" command="/home/andysierra/.local/zed.app/bin/zed /home/andysierra/work" /></keybind>
+    <!-- ForEach + query + none = run-or-raise nativo: si ya hay ventana "yazi", enfoca; si no, la lanza -->
+    <keybind key="W-e">
+      <action name="ForEach">
+        <query identifier="yazi" />
+        <then>
+          <action name="Focus" />
+          <action name="Raise" />
+        </then>
+        <none>
+          <action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" />
+        </none>
+      </action>
+    </keybind>
     <keybind key="A-F4"><action name="Close" /></keybind>
     <keybind key="A-q"><action name="Close" /></keybind>
     <keybind key="W-m"><action name="Execute" command="wlr-randr --output HDMI-A-1 --pos 0,0 --output eDP-1 --pos 277,1080" /></keybind>
@@ -364,6 +419,8 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <keybind key="A-S-Tab"><action name="PreviousWindow" workspace="all" /></keybind>
     <keybind key="A-F3"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
     <keybind key="A-space"><action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" /></keybind>
+    <!-- Alt izquierdo puro: el layout latam ya usa Alt derecho (AltGr) como level3 para "~" -->
+    <keybind key="A-n"><action name="Execute" command="sh -c '~/.config/labwc/scripts/type_tilde.sh'" /></keybind>
     <keybind key="W-v"><action name="Execute" command="sh -c '~/.config/labwc/scripts/clipboard.sh'" /></keybind>
     <keybind key="W-S-s"><action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" /></keybind>
     <keybind key="XF86MonBrightnessUp"><action name="Execute" command="brightnessctl set 10%+" /></keybind>
@@ -451,6 +508,15 @@ exec foot --app-id yazi bash -i -c "y ~; exec bash"
 /usr/bin/vim -- "$@"
 ```
 
+### ~/.config/labwc/scripts/type_tilde.sh
+
+labwc expande literalmente cualquier `~` dentro del atributo `command` de `Execute` (lo convierte en `$HOME`) **antes** de pasarlo a `execvp()` — no solo en rutas. Por eso `wtype -- '~'` directo en el keybind escribía `/home/andysierra` en vez del símbolo. Solución: mover el `~` real a un script aparte, fuera del alcance de ese preprocesamiento.
+
+```bash
+#!/bin/bash
+wtype -- '~'
+```
+
 Hacer ejecutables todos los scripts:
 ```sh
 chmod +x ~/.config/labwc/scripts/*.sh
@@ -464,21 +530,9 @@ font=Iosevka Term:size=12
 initial-window-size-pixels=960x1080
 ```
 
-### ~/.config/foot/claude-code.ini
-
-```ini
-[main]
-font=Iosevka Term:size=12
-initial-window-size-pixels=960x1080
-
-[colors-dark]
-background=0d0010
-foreground=ffffff
-```
-
 ### ~/.config/tmux/tmux.conf
 
-Claude Code corre dentro de una sesión tmux `CLAUDIA` (ver `autostart` y `W-c`), así que esta config aplica a ese entorno. Prefix `C-a`, modo vi, mouse, e indicador visual cuando el prefix está esperando. `extended-keys`/`foot:extkeys` son clave para que `Shift+Enter` y similares lleguen a las apps de adentro (p. ej. para pegar multilínea sin que se dispare).
+Config general de tmux para cualquier sesión lanzada desde foot. Prefix `C-a`, modo vi, mouse, e indicador visual cuando el prefix está esperando. `extended-keys`/`foot:extkeys` son clave para que `Shift+Enter` y similares lleguen a las apps de adentro (p. ej. para pegar multilínea sin que se dispare).
 
 ```tmux
 set -g prefix C-a			# prefix C-a instead of C-b
@@ -530,25 +584,6 @@ show_hidden = true
 
 ```lua
 ya.emit("hidden", { "toggle" })
-```
-
-### ~/.local/share/applications/claude-code.desktop
-
-```ini
-[Desktop Entry]
-Name=Claude Code
-Exec=foot --app-id claude-code --title "Claude Code"
-Icon=claude-code
-Type=Application
-```
-
-### ~/.local/share/icons/hicolor/scalable/apps/claude-code.svg
-
-```svg
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <circle cx="50" cy="50" r="50" fill="#D4622A"/>
-  <text x="50" y="62" font-family="Sans" font-size="36" font-weight="bold" fill="white" text-anchor="middle">CC</text>
-</svg>
 ```
 
 ### /etc/acpi/ — cierre de tapa (requiere sudo)
@@ -638,3 +673,6 @@ exit
 - **`show_hidden` en yazi.toml**: ignorado en 26.x, workaround via `init.lua`.
 - **windowSwitcher `style="thumbnail"`**: las flechas arriba/abajo no navegan la grilla (solo izquierda/derecha) y el OSD puede aparecer descentrado en multi-monitor. Se usa `style="classic"` (lista vertical, flechas funcionales).
 - **Iconos por ruta absoluta en `.desktop`**: labwc (libsfdo) resuelve iconos por nombre vía tema, no por ruta. Usar `Icon=<nombre>` con el archivo en `hicolor/scalable/apps/`.
+- **labwc `Execute` expande `~` literalmente**: no solo en rutas — cualquier `~` en el atributo `command` se convierte en `$HOME` antes de ejecutar. Si un comando necesita el carácter `~` de verdad (ej. `wtype -- '~'`), moverlo a un script aparte referenciado por ruta.
+- **labwc no relee `rc.xml` solo — hay que recargarlo**: los cambios no aplican hasta enviar `SIGHUP` al proceso (`labwc --reconfigure`, `killall -HUP labwc`, o vía el menú raíz). Fácil de olvidar al editar keybinds.
+- **`j4-dmenu-desktop` descarta `.desktop` inválidos en silencio**: un solo error de sintaxis (ej. línea con un espacio suelto) hace que el archivo entero no aparezca en bemenu, sin ningún mensaje. Verificar con `desktop-file-validate archivo.desktop`.

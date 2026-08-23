@@ -23,9 +23,6 @@
 	</theme>
 
 	<windowRules>
-		<windowRule identifier="claude-code">
-			<action name="ToggleFullscreen" />
-		</windowRule>
 		<windowRule identifier="yazi">
 			<action name="ToggleMaximize" />
 		</windowRule>
@@ -57,10 +54,19 @@
 			<action name="Execute" command="foot" />
 		</keybind>
 		<keybind key="W-c">
-			<action name="Execute" command="sh -c 'foot --config ~/.config/foot/claude-code.ini --app-id claude-code --title Claude-Code -e tmux new -A -s CLAUDIA bash -ic claudia'" />
+			<action name="Execute" command="/home/andysierra/.local/zed.app/bin/zed /home/andysierra/work" />
 		</keybind>
 		<keybind key="W-e">
-			<action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" />
+			<action name="ForEach">
+				<query identifier="yazi" />
+				<then>
+					<action name="Focus" />
+					<action name="Raise" />
+				</then>
+				<none>
+					<action name="Execute" command="sh -c '~/.config/labwc/scripts/yazi_cd.sh'" />
+				</none>
+			</action>
 		</keybind>
 		<keybind key="A-F4">
 			<action name="Close" />
@@ -82,6 +88,9 @@
 		</keybind>
 		<keybind key="A-space">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/launcher_chromium_apps.sh'" />
+		</keybind>
+		<keybind key="A-n">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/type_tilde.sh'" />
 		</keybind>
 		<keybind key="W-v">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/clipboard.sh'" />

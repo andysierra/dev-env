@@ -110,6 +110,8 @@
     "single_file_review": true,
     "dock": "right",
     "button": false,
+    "expand_edit_card": false,
+    "expand_terminal_card": false,
     "favorite_models": [],
     "model_parameters": [],
     "tool_permissions": {

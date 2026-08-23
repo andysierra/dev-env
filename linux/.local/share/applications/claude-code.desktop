@@ -1,5 +1,0 @@
-[Desktop Entry]
-Name=Claude Code
-Exec=foot --app-id claude-code --title "Claude Code"
-Icon=claude-code
-Type=Application
