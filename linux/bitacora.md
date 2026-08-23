@@ -496,9 +496,11 @@ grim -g "$(slurp)" - | swappy -f -
 
 ### ~/.config/labwc/scripts/yazi_cd.sh
 
+Abre yazi en `~/work` en vez de `$HOME` — es donde vive casi todo el trabajo diario.
+
 ```bash
 #!/bin/bash
-exec foot --app-id yazi bash -i -c "y ~; exec bash"
+exec foot --app-id yazi bash -i -c "y /home/andysierra/work; exec bash"
 ```
 
 ### ~/.config/labwc/scripts/yazi_edit.sh
