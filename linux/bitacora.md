@@ -13,7 +13,7 @@ Los nombres de salida de video (`HDMI-A-1`, `eDP-1`) y la posición del monitor 
 |---|---|
 | `Super+Enter` | Terminal (foot) |
 | `Super+C` | Zed abierto en `~/work` (Claude vive en su panel de agente) |
-| `Super+E` | Explorador de archivos (yazi, maximizado) — instancia única: si ya hay una abierta, le da foco en vez de crear otra |
+| `Super+Alt+E` | Explorador de archivos (yazi, maximizado) — instancia única: si ya hay una abierta, le da foco en vez de crear otra |
 | `Alt+Space` / `Alt+F3` | Lanzador de apps (estilo Spotlight de macOS) — escribir `claudia` abre terminal con Claude sin restricciones; `word`/`excel`/`powerpoint` abren FreeOffice |
 | `Alt+N` | Escribe el símbolo `~` (tilde) — atajo cómodo en reemplazo de AltGr+4 |
 | `Super+V` | Historial de clipboard |
@@ -400,7 +400,7 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <keybind key="W-Return"><action name="Execute" command="foot" /></keybind>
     <keybind key="W-c"><action name="Execute" command="/home/andysierra/.local/zed.app/bin/zed /home/andysierra/work" /></keybind>
     <!-- ForEach + query + none = run-or-raise nativo: si ya hay ventana "yazi", enfoca; si no, la lanza -->
-    <keybind key="W-e">
+    <keybind key="W-A-e">
       <action name="ForEach">
         <query identifier="yazi" />
         <then>
@@ -578,7 +578,26 @@ bind '"' split-window -v -c "#{pane_current_path}"
 ```toml
 [manager]
 show_hidden = true
+
+[opener]
+vlc = [
+  { run = 'vlc %s', orphan = true, desc = "Reproducir en VLC", for = "unix" },
+]
+md-viewer = [
+  { run = 'md-viewer-fresh %s', orphan = true, desc = "Ver en md-viewer", for = "unix" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.ts", use = "vlc" },
+  { url = "*.TS", use = "vlc" },
+  { mime = "video/mp2t", use = "vlc" },
+  { url = "*.md", use = "md-viewer" },
+  { url = "*.MD", use = "md-viewer" },
+]
 ```
+
+**Placeholder de `run` en `[opener]`: `%s`, no `"$@"`.** Yazi sustituye el token `%s` (o `%s1`, `%S`, `%S1`) directamente en el string del comando; nunca pasa los archivos como argv al shell. Poner `"$@"` hace que el opener se ejecute igual pero **sin ningún archivo** (0 args) — el error es silencioso, no tira nada a stderr.
 
 ### ~/.config/yazi/init.lua
 
@@ -587,6 +606,49 @@ show_hidden = true
 ```lua
 ya.emit("hidden", { "toggle" })
 ```
+
+### md-viewer — visor de markdown, abierto por default al seleccionar *.md en yazi
+
+Instalación (deja el binario en `~/.local/bin/md-viewer`):
+```sh
+curl -fsSL https://raw.githubusercontent.com/aydiler/md-viewer/main/scripts/install.sh | sh
+```
+
+`md-viewer` tiene instancia única: si ya hay una ventana abierta, un segundo lanzamiento le pasa el foco a esa ventana pero **no le reenvía el archivo nuevo** (bug de la app — confirmado inspeccionando `/proc/<pid>/cmdline`, queda sin argumentos). Además restaura la sesión anterior (`open_tabs` en `~/.local/share/md-viewer/app.ron`) al arrancar en frío, pisando igual el archivo pasado por CLI. El wrapper de abajo mata cualquier instancia previa y limpia ese estado antes de lanzar, para que cada apertura muestre siempre el archivo correcto.
+
+**`~/.local/bin/md-viewer-fresh`:**
+```bash
+#!/bin/bash
+# Lanza md-viewer con el archivo pasado, siempre en una instancia nueva.
+#
+# md-viewer tiene un lock de instancia unica: si ya hay un proceso vivo,
+# el segundo lanzamiento cede el foco a esa ventana pero NO le reenvia el
+# archivo (bug de la app, verificado via /proc/<pid>/cmdline). Ademas
+# restaura open_tabs de app.ron al arrancar en frio, lo que tambien pisa
+# el argumento. Se mata cualquier instancia previa y se limpia el estado
+# guardado antes de lanzar, para que cada apertura sea realmente limpia.
+
+pkill -x md-viewer 2>/dev/null
+for _ in $(seq 1 20); do
+    pgrep -x md-viewer >/dev/null || break
+    sleep 0.1
+done
+
+STATE="$HOME/.local/share/md-viewer/app.ron"
+if [[ -f "$STATE" ]]; then
+    sed -i \
+        -e 's/open_tabs:Some(\[[^]]*\])/open_tabs:Some([])/' \
+        -e 's/active_tab:Some([0-9]*)/active_tab:Some(0)/' \
+        "$STATE"
+fi
+
+exec md-viewer "$@"
+```
+```sh
+chmod +x ~/.local/bin/md-viewer-fresh
+```
+
+El opener de yazi (sección anterior, `[opener].md-viewer` + regla `*.md`) apunta a este wrapper, no al binario directo.
 
 ### /etc/acpi/ — cierre de tapa (requiere sudo)
 
