@@ -23,6 +23,8 @@ Los nombres de salida de video (`HDMI-A-1`, `eDP-1`) y la posición del monitor 
 | `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
 | `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas (todos los escritorios) |
 | `Alt+F4` / `Alt+Q` | Cerrar ventana |
+| `Alt+C` / `Alt+V` *(opcional)* | Copiar / Pegar estilo macOS — requiere `keyd`, ver [`spec-keyd-cmd-copypaste.md`](spec-keyd-cmd-copypaste.md) |
+| `Alt+Shift+S` *(opcional)* | Captura de área, alias de `Super+Shift+S` — mismo spec de arriba |
 | `Fn+Brillo↑↓` | Brillo |
 | `Fn+Vol↑↓` / `Fn+Mute` | Volumen |
 | Botón encendido (toque corto) | Suspender |
@@ -423,6 +425,8 @@ labwc **no expande** `$HOME` ni `~` en `command`. Siempre usar `sh -c '~/.config
     <keybind key="A-n"><action name="Execute" command="sh -c '~/.config/labwc/scripts/type_tilde.sh'" /></keybind>
     <keybind key="W-v"><action name="Execute" command="sh -c '~/.config/labwc/scripts/clipboard.sh'" /></keybind>
     <keybind key="W-S-s"><action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" /></keybind>
+    <!-- opcional, ver linux/spec-keyd-cmd-copypaste.md -->
+    <keybind key="A-S-s"><action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" /></keybind>
     <keybind key="XF86MonBrightnessUp"><action name="Execute" command="brightnessctl set 10%+" /></keybind>
     <keybind key="XF86MonBrightnessDown"><action name="Execute" command="brightnessctl set 10%-" /></keybind>
     <keybind key="XF86AudioRaiseVolume"><action name="Execute" command="wpctl set-volume @DEFAULT_AUDIO_SINK@ 10%+" /></keybind>
@@ -726,6 +730,11 @@ trust <MAC>
 connect <MAC>
 exit
 ```
+
+### Extras opcionales
+
+- **Alt como "Cmd" para Copiar/Pegar/Screenshot** (estilo macOS, vía `keyd`):
+  spec aparte, autocontenido → [`spec-keyd-cmd-copypaste.md`](spec-keyd-cmd-copypaste.md).
 
 ### Limitaciones conocidas
 

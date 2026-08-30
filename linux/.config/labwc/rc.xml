@@ -98,6 +98,10 @@
 		<keybind key="W-S-s">
 			<action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" />
 		</keybind>
+		<!-- opcional, ver linux/spec-keyd-cmd-copypaste.md -->
+		<keybind key="A-S-s">
+			<action name="Execute" command="sh -c '~/.config/labwc/scripts/screenshot.sh'" />
+		</keybind>
 		<keybind key="XF86MonBrightnessUp">
 			<action name="Execute" command="brightnessctl set 10%+" />
 		</keybind>
