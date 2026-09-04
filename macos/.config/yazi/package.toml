@@ -1,0 +1,7 @@
+[[plugin.deps]]
+use = "mikavilpas/easyjump.yazi:easyjump"
+rev = "d8093b9"
+hash = "49625b69287597c3b8093c9f1a2f7241"
+
+[flavor]
+deps = []
