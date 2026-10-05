@@ -79,6 +79,8 @@ linux-mint/
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
 ├── bin/screenshot-save.sh      → ~/.local/bin/screenshot-save.sh  (chmod +x)
+├── bin/zed-icon.py             → ~/.local/bin/zed-icon.py  (chmod +x) + applications/zed-icon-autostart.desktop
+│                                 → ~/.config/autostart/zed-icon.desktop
 ├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
 ├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
 ├── icons/zed.svg               → ~/.local/share/icons/hicolor/scalable/apps/zed.svg
@@ -199,8 +201,18 @@ grep -q '^StartupWMClass=' "$F" || sed -i '0,/^Icon=zed$/s//Icon=zed\nStartupWMC
 ```
 
 - `Icon=` por **nombre** (resuelto vía tema hicolor), no por ruta: igual que en la bitácora CachyOS.
-- La ventana de Zed **no publica ícono propio** (`xprop _NET_WM_ICON` vacío) → el escritorio usa el del `.desktop`;
-  `StartupWMClass=dev.zed.Zed` (= `WM_CLASS`) asocia la ventana con él.
+- Con eso cambia el ícono en rofi y en el menú, **pero no en la barra de tareas**: la ventana de Zed no publica
+  ícono propio (`xprop _NET_WM_ICON` vacío) y la lista de ventanas de MATE usa el ícono **de la ventana**, no el
+  del `.desktop` → cuadro gris genérico. `bin/zed-icon.py` (python3-xlib, ya viene en Mint) corre en segundo
+  plano, escucha `_NET_CLIENT_LIST` del root y a cada ventana `WM_CLASS=dev.zed.Zed` le escribe `_NET_WM_ICON`
+  con el ícono `zed` del tema (16…128 px):
+  ```sh
+  cp bin/zed-icon.py ~/.local/bin/ && chmod +x ~/.local/bin/zed-icon.py
+  cp applications/zed-icon-autostart.desktop ~/.config/autostart/zed-icon.desktop
+  setsid ~/.local/bin/zed-icon.py >/dev/null 2>&1 &     # ya, sin esperar al próximo login
+  ```
+  Verificar: `xprop -id <ventana zed> _NET_WM_ICON` debe mostrar "Icon (16 x 16)…".
+- `StartupWMClass=dev.zed.Zed` (= `WM_CLASS`) asocia la ventana con el `.desktop`.
 - Si se reinstala Zed con `install.sh`, se regenera el `.desktop`: volver a correr los `sed`.
 - Verificar: `python3 -c "import gi; gi.require_version('Gtk','3.0'); from gi.repository import Gtk; print(Gtk.IconTheme.get_default().lookup_icon('zed',48,0).get_filename())"`.
 

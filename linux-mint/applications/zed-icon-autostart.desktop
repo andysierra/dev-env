@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=zed-icon
+Comment=Pone el ícono de Zed en sus ventanas (Zed no publica _NET_WM_ICON en X11)
+Exec=/home/andysierra/.local/bin/zed-icon.py
+X-MATE-Autostart-enabled=true
+NoDisplay=true
