@@ -74,6 +74,7 @@ linux-mint/
 ├── bashrc-devenv.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
+├── hide-screensavers.sh       → correr una vez (idempotente): saca de rofi los ~250 salvapantallas
 ├── mate-no-lock.sh            → correr una vez (idempotente): la sesión nunca se bloquea
 ├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night + cerrar sin confirmar
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
@@ -149,6 +150,11 @@ Tema `gruvbox-dark-hard` (incluido en `/usr/share/rofi/themes`, mismo esquema qu
 PolYOminoes (el default `normal` acepta el texto en cualquier parte). Solo en el lanzador: `clipboard.sh`
 pasa `-matching normal` para buscar en medio del texto copiado. Probar sin interfaz:
 `printf 'Polyominoes\nYouTube\n' | rofi -dmenu -i -filter yo -dump` (en dmenu `-i` es necesario).
+**Salvapantallas en rofi:** "Braid", "Polyominoes", etc. no son apps: son los ~250 salvapantallas de
+xscreensaver (`/usr/share/applications/screensavers/`, paquetes `xscreensaver-data*`/`-gl*` que trae
+mate-screensaver) y rofi escanea subcarpetas. `./hide-screensavers.sh` los tapa con `.desktop`
+`NoDisplay=true` en `~/.local/share/applications/screensavers/` (mismo id → gana el del usuario). rofi no
+puede excluir por categoría (`drun-categories` es lista blanca). Revertir: `rm -r` de esa carpeta.
 En rofi 1.7.5 la opción es `modes` (`modi` es el alias viejo). Verificar: `rofi -dump-config | grep -E 'modes|show-icons'`.
 
 ### 5. claudia — terminal Claude Code sin restricciones
