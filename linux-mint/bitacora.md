@@ -75,7 +75,7 @@ linux-mint/
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
 ├── mate-no-lock.sh            → correr una vez (idempotente): la sesión nunca se bloquea
-├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night
+├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night + cerrar sin confirmar
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
 ├── bin/screenshot-save.sh      → ~/.local/bin/screenshot-save.sh  (chmod +x)
@@ -203,7 +203,7 @@ Puntos de `greenclip.toml`:
 ```sh
 sudo ./install-yazi.sh      # apt: xclip ffmpeg jq fd-find ripgrep zoxide 7zip poppler-utils
                             # GitHub: yazi+ya, fzf, resvg → /usr/local/bin ; IosevkaTerm Nerd Font
-./mate-terminal.sh          # sin Nerd Font en la terminal, yazi muestra símbolos raros en vez de íconos
+./mate-terminal.sh          # Nerd Font (sin ella yazi muestra símbolos raros) + tokyo-night + cerrar sin preguntar
 
 mkdir -p ~/.config/yazi
 cp ../yazi/config/{theme.toml,init.lua,package.toml} ~/.config/yazi/
