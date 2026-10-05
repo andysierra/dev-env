@@ -1,0 +1,55 @@
+# yazi — keymap Linux Mint (variante de ../../yazi/config/keymap.toml, que es la del Mac)
+# Ver teclas ocupadas por defecto: https://github.com/sxyazi/yazi/blob/main/yazi-config/preset/keymap-default.toml
+# OJO: en yazi >= 25 la seccion es [mgr], no [manager] (renombrada).
+
+# OJO 2: la tecla es "T" MAYUSCULA (shift+t). La "t" minuscula es el prefijo de
+# tabs del preset (t t = new tab), por eso se agrega <C-t> como alias.
+
+# Salto rapido de 5 en 5, estilo { } de vim.
+# OJO: en el preset { y } son tab_swap -1 / +1 (reordenar pestanas): se pierden.
+[[mgr.prepend_keymap]]
+on   = "}"
+run  = "arrow 5"
+desc = "Bajar 5 (estilo vim })"
+
+[[mgr.prepend_keymap]]
+on   = "{"
+run  = "arrow -5"
+desc = "Subir 5 (estilo vim {)"
+
+# mate-terminal reutiliza un proceso servidor: sin --working-directory abriria en
+# el cwd de ese servidor, no en la carpeta actual de yazi. `shell` corre en el cwd de yazi.
+[[mgr.prepend_keymap]]
+on   = "T"
+run  = 'shell --orphan "mate-terminal --window --working-directory=\"$PWD\""'
+desc = "Abrir terminal (ventana nueva) en el directorio actual"
+
+[[mgr.prepend_keymap]]
+on   = "<C-t>"
+run  = 'shell --orphan "mate-terminal --window --working-directory=\"$PWD\""'
+desc = "Abrir terminal (ventana nueva) en el directorio actual"
+
+# "F" (shift+f) esta libre en el preset. "f" minuscula es filter.
+[[mgr.prepend_keymap]]
+on   = "F"
+run  = 'shell --orphan "caja --select %s1"'
+desc = "Revelar en Caja (archivo bajo el cursor)"
+
+[[mgr.prepend_keymap]]
+on   = "<C-o>"
+run  = 'shell --orphan "caja --select %s1"'
+desc = "Revelar en Caja (archivo bajo el cursor)"
+
+# easyjump: etiqueta cada archivo visible con 1-2 teclas y salta al pulsarlas
+# (estilo easymotion/hop.nvim).
+# OJO: "j" pisa el "bajar 1" del preset. Para bajar quedan la flecha abajo
+# y "}" (bajar 5). "k" (subir 1) sigue intacta.
+[[mgr.prepend_keymap]]
+on   = "j"
+run  = "plugin easyjump-enter"
+desc = "easyjump: saltar (y entrar si es carpeta)"
+
+[[mgr.prepend_keymap]]
+on   = "I"
+run  = "plugin easyjump"
+desc = "easyjump: saltar sin entrar"

@@ -1,0 +1,20 @@
+# yazi — config Linux Mint (variante de ../../yazi/config/yazi.toml, que es la del Mac)
+# yazi >= 26: los openers usan %s / %s1 / %d1, no "$@" (con "$@" el comando corre sin archivos).
+
+[mgr]
+show_hidden = true
+linemode = "none"
+
+[opener]
+# Ruta absoluta: si yazi se lanza desde un atajo de MATE, ~/.local/bin no está en el PATH
+zed = [
+  { run = '"$HOME/.local/bin/zed" %s', desc = "Zed", orphan = true, for = "linux" },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.md",           use = ["zed", "edit", "reveal"] },
+  { url = "*.markdown",     use = ["zed", "edit", "reveal"] },
+  { url = "*.mdx",          use = ["zed", "edit", "reveal"] },
+  { mime = "text/markdown", use = ["zed", "edit", "reveal"] },
+]

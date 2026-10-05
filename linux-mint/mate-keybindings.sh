@@ -19,5 +19,6 @@ bind custom0 'rofi lanzador (Alt+Space)' 'rofi -show drun' '<Alt>space'
 bind custom1 'rofi lanzador (Alt+F3)'    'rofi -show drun' '<Alt>F3'
 # Ruta absoluta: la sesión de MATE puede no tener ~/.local/bin en el PATH
 bind custom2 'Historial de clipboard (greenclip + rofi) Alt+V' "$HOME/.local/bin/clipboard.sh" '<Alt>v'
+bind custom3 'yazi en terminal maximizada (Alt+E)' "$HOME/.local/bin/yazi-term.sh" '<Alt>e'
 
 dconf dump /org/mate/desktop/keybindings/

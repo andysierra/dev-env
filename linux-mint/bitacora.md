@@ -14,7 +14,19 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 |---|---|
 | `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones |
 | `Alt+V` | Historial de clipboard (greenclip en rofi, con miniaturas de imágenes) — auto-pega lo elegido |
+| `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
+
+Dentro de yazi (además del preset):
+
+```text
+{ / }          subir / bajar 5 filas
+j              easyjump: saltar a un archivo visible con 1-2 teclas (y entrar si es carpeta)
+I              easyjump sin entrar
+T / Ctrl+T     terminal nueva en la carpeta actual
+F / Ctrl+O     revelar el archivo en Caja
+Enter en .md   abre en Zed
+```
 
 Comportamiento de `Alt+V` al elegir una entrada:
 
@@ -39,7 +51,8 @@ Distro        Linux Mint 22.3 (base Ubuntu 24.04 → paquetes vía apt)
 Escritorio    MATE, gestor de ventanas Marco, sesión X11
 Lanzador      rofi (repo apt, 1.7.5)  ← reemplaza bemenu + j4-dmenu-desktop de la bitácora CachyOS
 Clipboard     greenclip (binario) + rofi + xdotool  ← reemplaza cliphist + bemenu + wtype
-Terminal      mate-terminal  ← reemplaza foot (Wayland-only)
+Terminal      mate-terminal + IosevkaTerm Nerd Font + paleta tokyo-night  ← reemplaza foot (Wayland-only)
+Explorador    yazi (binario GitHub, /usr/local/bin) con flavor tokyo-night
 Atajos        dconf de MATE (/org/mate/desktop/keybindings/customN)  ← reemplaza rc.xml de labwc
 Usuario       andysierra (rutas absolutas en greenclip.toml y mate-keybindings.sh: ajustar si cambia)
 ```
@@ -50,7 +63,11 @@ Usuario       andysierra (rutas absolutas en greenclip.toml y mate-keybindings.s
 linux-mint/
 ├── bitacora.md
 ├── bashrc-devenv.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
-├── mate-keybindings.sh         → correr una vez (idempotente): Alt+Space, Alt+F3, Alt+V
+├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
+├── mate-keybindings.sh         → correr una vez (idempotente): Alt+Space, Alt+F3, Alt+V, Alt+E
+├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night
+├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
+├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
 ├── greenclip/greenclip.desktop → ~/.config/autostart/greenclip.desktop
@@ -137,13 +154,54 @@ Puntos de `greenclip.toml`:
 - `static_history = []` — la config que genera greenclip v4.2 trae un aviso obsoleto ("update to v4.1") como entrada fija.
 - `enable_image_support = true`.
 
-### 7. Atajos de MATE
+### 7. yazi — explorador de archivos
+
+```sh
+sudo ./install-yazi.sh      # apt: xclip ffmpeg jq fd-find ripgrep zoxide 7zip poppler-utils
+                            # GitHub: yazi+ya, fzf, resvg → /usr/local/bin ; IosevkaTerm Nerd Font
+./mate-terminal.sh          # sin Nerd Font en la terminal, yazi muestra símbolos raros en vez de íconos
+
+mkdir -p ~/.config/yazi
+cp ../yazi/config/{theme.toml,init.lua,package.toml} ~/.config/yazi/
+cp -r ../yazi/config/plugins ~/.config/yazi/
+cp yazi/yazi.toml yazi/keymap.toml ~/.config/yazi/      # variantes Linux (las de ../yazi/config son del Mac)
+(cd ~/.config/yazi && ya pkg install)                    # baja easyjump + flavor tokyo-night
+cp bin/yazi-term.sh ~/.local/bin/ && chmod +x ~/.local/bin/yazi-term.sh
+```
+
+Por qué así:
+- **yazi no está en apt** → binario oficial. **fzf de apt (0.44) es menor al mínimo de yazi (0.53)** → binario.
+  **ImageMagick de apt es 6.9, yazi pide ≥ 7.1** → se omite (solo aporta preview de fuentes/HEIC/JPEG XL;
+  PNG/JPG/GIF los decodifica yazi solo).
+- Todo a **`/usr/local/bin`**, no `~/.local/bin`: así lo encuentran también los atajos de MATE (ver gotcha del PATH).
+- `fd` en Debian se llama `fdfind` → el script crea el link `fd`.
+- El script resuelve siempre la última release vía la API de GitHub; correrlo de nuevo = actualizar.
+
+Diferencias Linux vs Mac en `yazi.toml` / `keymap.toml`:
+
+```text
+                 Mac (../yazi/config)          Linux (yazi/)
+.md              Readdown                      Zed (ruta absoluta ~/.local/bin/zed)
+.drawio          PWA draw.io                   — (draw.io no instalado)
+T / Ctrl+T       iTerm (~/bin/iterm-here.sh)   mate-terminal --window --working-directory="$PWD"
+F / Ctrl+O       open -R (Finder)              caja --select %s1
+placeholder      "$@"                          %s / %s1 / %d1 (yazi 26.9; "$@" = 0 archivos, sin error)
+```
+
+`mate-terminal` reutiliza un proceso servidor: sin `--working-directory` abriría en el cwd del servidor,
+no en la carpeta de yazi. **`mate-terminal` no tiene `-x`** (gnome-terminal sí): para ejecutar un comando
+se usa `-e "cmd args"` (un solo string).
+
+`Alt+E` → `yazi-term.sh`: **siempre ventana nueva** (mismo criterio que el Mac), `--maximize`, yazi lanzado
+directo con `-e` (sin bash detrás) → al salir con `q` la ventana se cierra. Arranca en `~/Escritorio`.
+
+### 8. Atajos de MATE
 
 ```sh
 ./mate-keybindings.sh
 ```
 
-Desactiva `activate-window-menu` de Marco (ocupaba `Alt+Space`) y crea `custom0..2`. Aplica en vivo,
+Desactiva `activate-window-menu` de Marco (ocupaba `Alt+Space`) y crea `custom0..3`. Aplica en vivo,
 sin cerrar sesión. Alternativa gráfica: *Centro de control → Atajos de teclado*.
 
 ### Gotchas (lo que costó descubrir)
@@ -163,6 +221,9 @@ sin cerrar sesión. Alternativa gráfica: *Centro de control → Atajos de tecla
 - **`Alt+V` global le gana a las apps**: se pierden los mnemónicos `Alt+V` (menú "Ver") y `Alt+V` en
   terminal/vim. **Choca con el spec opcional de keyd** (`../linux/spec-keyd-cmd-copypaste.md`, donde
   `Alt+V` = pegar): si se instala keyd, quitar la línea `v = C-v` de su `[alt]`.
+- **`Alt+E` global**: se pierde el mnemónico `Alt+E` (menú "Editar") dentro de las apps.
+- **Openers de yazi 26.x**: `%s` (todos), `%s1` (el primero), `%d1` (su carpeta). Verificable en el preset
+  embebido: `strings /usr/local/bin/yazi | grep xdg-open`. La sección es `[mgr]` (no `[manager]`).
 - **`.desktop` con varias categorías principales** (`Development;Utility;`) genera warning en
   `desktop-file-validate` y la app puede salir duplicada en el menú de MATE → una sola.
 
@@ -182,5 +243,5 @@ wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona panta
 
 Del inventario de configs del repo aún no aplicado en Mint: vim/neovim, Zed (`zed/settings_linux.json`,
 `keybindings_linux.json`), Claude (`claude/CLAUDE.md`, `settings.json`, hook Mermaid, skills),
-yazi, tmux, fuentes, atajos restantes de escritorio (`Super+Enter`, `Super+C`, `Super+Alt+E`, `Alt+N` → `~`),
+tmux, fuentes del repo (`fonts/`), atajos restantes de escritorio (`Super+Enter`, `Super+C`, `Alt+N` → `~`),
 captura de área, Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
