@@ -21,8 +21,8 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 | `Super+1` / `Super+2` | Cambiar de escritorio virtual (hay 2) |
 | `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
 | `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas de **todos** los escritorios |
-| `Super+Shift+S` | Captura de área → al soltar el mouse va **directo al clipboard** (queda en `Alt+V`) |
-| `Super+Shift+4` | Captura de área → al soltar el mouse se **guarda en `~/Imágenes`** (`captura_<fecha>_<hora>.png`) |
+| `Alt+Shift+S` | Captura de área → al soltar el mouse va **directo al clipboard** (queda en `Alt+V`) |
+| `Alt+Shift+4` | Captura de área → al soltar el mouse se **guarda en `~/Imágenes`** (`captura_<fecha>_<hora>.png`) |
 | `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
 
@@ -247,8 +247,8 @@ Reemplaza `grim + slurp + swappy`. **Sin clics extra**: los dos atajos usan `-s`
 captura termina al soltar el mouse (sin Enter ni botón de copiar; sin anotación):
 
 ```text
-Super+Shift+S   flameshot gui -c -s                       → clipboard
-Super+Shift+4   flameshot gui -s -p "$(xdg-user-dir PICTURES)"  (screenshot-save.sh) → ~/Imágenes
+Alt+Shift+S   flameshot gui -c -s                       → clipboard
+Alt+Shift+4   flameshot gui -s -p "$(xdg-user-dir PICTURES)"  (screenshot-save.sh) → ~/Imágenes
 ```
 
 Para anotar antes de copiar: `flameshot gui` sin `-s` (no tiene atajo). Config: sin ícono
@@ -268,10 +268,11 @@ Hace, en vivo y sin cerrar sesión:
 ```text
 custom0..8         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
                    Super+C (Zed en ~/Escritorio/DEV) · Alt+N (~) · Alt+Q (cerrar, wmctrl -c :ACTIVE:)
-                   Super+Shift+S (flameshot gui -c -s)
+                   Alt+Shift+S (flameshot gui -c -s)
 Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
                    Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
-                   run-command-1: Super+Shift+4 (screenshot-save.sh)
+                   run-command-1: Alt+Shift+4 (screenshot-save.sh)
+                   run-command-screenshot (captura completa de MATE, venía en Alt+Shift+4) → disabled
 ```
 
 Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `Super+V` → `Alt+V` (elegidos así);
@@ -328,7 +329,7 @@ al receptor sin errores (`pw-top`, columna ERR en 0) pero los auriculares no esc
   el `.ini`. Diagnóstico: `flameshot config --check`. Solución: no definir `savePath` (el default ya es la
   carpeta de imágenes XDG).
 - **Shift+número no funciona en los atajos propios (customN)** de mate-settings-daemon: `<Mod4><Shift>4` ni
-  `<Mod4><Shift>dollar` se disparan. Marco sí los toma (por eso `Super+Shift+1/2` andan): esos atajos van en
+  `<Mod4><Shift>dollar` se disparan (probado con Super; Alt+Shift+4 también va por Marco). Marco sí los toma (por eso `Super+Shift+1/2` andan): esos atajos van en
   `org.mate.Marco.keybinding-commands command-N` + `global-keybindings run-command-N`.
 - **Openers de yazi 26.x**: `%s` (todos), `%s1` (el primero), `%d1` (su carpeta). Verificable en el preset
   embebido: `strings /usr/local/bin/yazi | grep xdg-open`. La sección es `[mgr]` (no `[manager]`).
@@ -341,7 +342,7 @@ al receptor sin errores (`pw-top`, columna ERR en 0) pero los auriculares no esc
 labwc, rc.xml, themerc, environment     → MATE/Marco hace de escritorio
 foot / foot.ini                         → mate-terminal
 wl-copy, cliphist, wtype                → greenclip + xdotool
-grim + slurp + swappy                   → flameshot (Super+Shift+S)
+grim + slurp + swappy                   → flameshot (Alt+Shift+S)
 wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona pantallas
 .bash_profile (exec labwc)              → no crear (ver sección bash)
 .vimrc con wl-copy                      → vim-gtk3 (+clipboard nativo), ver sección vim

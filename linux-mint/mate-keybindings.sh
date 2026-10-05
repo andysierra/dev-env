@@ -26,15 +26,17 @@ bind custom6 'Escribir ~ (Alt+N)'         "$HOME/.local/bin/type-tilde.sh"      
 # Alt+Q = Alt+F4: Marco admite una sola tecla por acción → wmctrl cierra la ventana activa (cierre normal, no kill)
 bind custom7 'Cerrar ventana (Alt+Q)'     'wmctrl -c :ACTIVE:'                     '<Alt>q'
 # -s (--accept-on-select): la captura termina al soltar el mouse, sin Enter ni botón de copiar
-bind custom8 'Captura de área al clipboard (Super+Shift+S)' 'flameshot gui -c -s'          '<Mod4><Shift>s'
+bind custom8 'Captura de área al clipboard (Alt+Shift+S)' 'flameshot gui -c -s'          '<Alt><Shift>s'
 
 M=org.mate.Marco
 
-# --- Super+Shift+4: captura de área a ~/Imágenes ---
+# --- Alt+Shift+4: captura de área a ~/Imágenes ---
 # Va por Marco (run-command-N), no como customN: los atajos propios de mate-settings-daemon
 # no se disparan con Shift+número (ni como "4" ni como "dollar"); Marco sí los toma.
 gsettings set org.mate.Marco.keybinding-commands command-1 "$HOME/.local/bin/screenshot-save.sh"
-gsettings set org.mate.Marco.global-keybindings  run-command-1 '<Mod4><Shift>4'
+gsettings set org.mate.Marco.global-keybindings  run-command-1 '<Alt><Shift>4'
+# Alt+Shift+4 venía ocupado por la captura de pantalla completa de MATE (mate-screenshot)
+gsettings set org.mate.Marco.global-keybindings  run-command-screenshot 'disabled'
 
 # --- Escritorios virtuales: 2, como en la bitácora CachyOS ---
 gsettings set $M.general num-workspaces 2
