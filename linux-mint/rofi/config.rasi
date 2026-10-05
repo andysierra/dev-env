@@ -1,0 +1,12 @@
+/* rofi — lanzador estilo Spotlight (reemplazo de bemenu + j4-dmenu-desktop de la bitácora) */
+configuration {
+    modes: "drun,run,window";
+    show-icons: true;
+    case-sensitive: false;
+    drun-match-fields: "name,generic,exec,keywords";
+    display-drun: "apps";
+    display-run: "cmd";
+    display-window: "ventanas";
+    kb-cancel: "Escape,Alt+space";
+}
+@theme "gruvbox-dark-hard"

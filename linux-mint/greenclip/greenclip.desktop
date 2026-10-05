@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=greenclip
+Comment=Daemon de historial de clipboard (Alt+V con rofi)
+Exec=/home/andysierra/.local/bin/greenclip daemon
+X-MATE-Autostart-enabled=true
+NoDisplay=true

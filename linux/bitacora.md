@@ -1,5 +1,7 @@
 # CachyOS + labwc — Entorno de desarrollo minimalista
 
+> **¿Linux Mint?** Esta bitácora es para **CachyOS (Arch) + labwc (Wayland)**. Para Linux Mint (MATE, X11) ver [`../linux-mint/bitacora.md`](../linux-mint/bitacora.md).
+
 ## Para el humano
 
 Wayland minimalista para desarrollo backend/frontend/mobile. Sin DE, sin daemons innecesarios.
