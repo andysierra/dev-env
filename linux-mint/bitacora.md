@@ -12,7 +12,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 
 | Atajo | Acción |
 |---|---|
-| `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones |
+| `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones; `word` / `excel` / `powerpoint` abren FreeOffice |
 | `Alt+V` | Historial de clipboard (greenclip en rofi, con miniaturas de imágenes) — auto-pega lo elegido |
 | `Super+Enter` | Terminal (mate-terminal) |
 | `Super+C` | Zed abierto en `~/Escritorio/DEV` (Claude vive en su panel de agente) |
@@ -86,7 +86,7 @@ linux-mint/
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
 ├── greenclip/greenclip.desktop → ~/.config/autostart/greenclip.desktop
 ├── bin/clipboard.sh            → ~/.local/bin/clipboard.sh        (chmod +x)
-└── applications/claudia.desktop→ ~/.local/share/applications/claudia.desktop
+└── applications/*.desktop      → ~/.local/share/applications/  (claudia + FreeOffice renombrados)
 ```
 
 ### 1. Paquetes (humano, requiere sudo)
@@ -156,6 +156,32 @@ desktop-file-validate ~/.local/share/applications/claudia.desktop
 ```
 
 `bash -i` hace que se cargue `.bashrc` y resuelva el alias `claudia`. Aparece en rofi al escribir `claudia`.
+
+### 5b. FreeOffice 2024 — "word", "excel", "powerpoint" en rofi
+
+Instalar el `.deb` de https://www.freeoffice.com (paquete `softmaker-freeoffice-2024`). Luego:
+
+```sh
+cp applications/{textmaker,planmaker,presentations}-free24.desktop ~/.local/share/applications/
+```
+
+Mismos archivos que `/usr/share/applications/*-free24.desktop` con solo `Name=` cambiado (el de
+`~/.local/share/applications` con el mismo nombre de archivo tapa al del sistema):
+
+```text
+textmaker-free24.desktop       FreeOffice 2024 TextMaker      → Word (FreeOffice TextMaker)
+planmaker-free24.desktop       FreeOffice 2024 PlanMaker      → Excel (FreeOffice PlanMaker)
+presentations-free24.desktop   FreeOffice 2024 Presentations  → PowerPoint (FreeOffice Presentations)
+```
+
+- El de TextMaker trae una línea con un solo espacio (inválida): se borra. En CachyOS eso hacía que
+  `j4-dmenu-desktop` descartara el archivo entero; validar con `desktop-file-validate`.
+- Solo hay `GenericName[xx]` traducidos, no `Name[xx]` → cambiar `Name=` alcanza en español.
+- Diferencias con CachyOS: **no falta `libxmu`** (`ldd /usr/share/freeoffice2024/planmaker` sin "not found") y
+  el `.deb` **ya deja FreeOffice como app por defecto** de doc/docx/xls/xlsx/ppt/pptx (`xdg-mime query default …`).
+- El paquete trae también `*-2024.desktop` (versión de pago) sin cabecera `[Desktop Entry]`: inválidos, no aparecen.
+- Verificar sin interfaz (con el prefijo de rofi): listar los `Name=` de todas las apps y
+  `rofi -dmenu -i -filter word -dump` → solo "Word (FreeOffice TextMaker)".
 
 ### 6. greenclip — historial de clipboard
 
