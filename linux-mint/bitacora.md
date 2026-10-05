@@ -81,6 +81,7 @@ linux-mint/
 ├── bin/screenshot-save.sh      → ~/.local/bin/screenshot-save.sh  (chmod +x)
 ├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
 ├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
+├── icons/zed.svg               → ~/.local/share/icons/hicolor/scalable/apps/zed.svg
 ├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
@@ -182,6 +183,26 @@ presentations-free24.desktop   FreeOffice 2024 Presentations  → PowerPoint (Fr
 - El paquete trae también `*-2024.desktop` (versión de pago) sin cabecera `[Desktop Entry]`: inválidos, no aparecen.
 - Verificar sin interfaz (con el prefijo de rofi): listar los `Name=` de todas las apps y
   `rofi -dmenu -i -filter word -dump` → solo "Word (FreeOffice TextMaker)".
+
+### 5c. Zed — ícono visible
+
+El ícono oficial (cuadro gris oscuro con una Z de trazo fino) se pierde en el panel oscuro. `icons/zed.svg`:
+logo oficial en `#1a1b26` sobre cuadro azul tokyo-night `#7aa2f7`.
+
+```sh
+mkdir -p ~/.local/share/icons/hicolor/scalable/apps
+cp icons/zed.svg ~/.local/share/icons/hicolor/scalable/apps/zed.svg
+rm -f ~/.local/share/icons/hicolor/icon-theme.cache   # caché vieja → cae al ícono por defecto
+F=~/.local/share/applications/dev.zed.Zed.desktop     # lo crea el instalador de Zed
+sed -i 's|^Icon=.*|Icon=zed|' "$F"
+grep -q '^StartupWMClass=' "$F" || sed -i '0,/^Icon=zed$/s//Icon=zed\nStartupWMClass=dev.zed.Zed/' "$F"
+```
+
+- `Icon=` por **nombre** (resuelto vía tema hicolor), no por ruta: igual que en la bitácora CachyOS.
+- La ventana de Zed **no publica ícono propio** (`xprop _NET_WM_ICON` vacío) → el escritorio usa el del `.desktop`;
+  `StartupWMClass=dev.zed.Zed` (= `WM_CLASS`) asocia la ventana con él.
+- Si se reinstala Zed con `install.sh`, se regenera el `.desktop`: volver a correr los `sed`.
+- Verificar: `python3 -c "import gi; gi.require_version('Gtk','3.0'); from gi.repository import Gtk; print(Gtk.IconTheme.get_default().lookup_icon('zed',48,0).get_filename())"`.
 
 ### 6. greenclip — historial de clipboard
 
