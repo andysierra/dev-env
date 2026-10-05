@@ -25,6 +25,7 @@ bind custom5 'Zed en ~/Escritorio/DEV (Super+C)' "$HOME/.local/bin/zed $HOME/Esc
 bind custom6 'Escribir ~ (Alt+N)'         "$HOME/.local/bin/type-tilde.sh"         '<Alt>n'
 # Alt+Q = Alt+F4: Marco admite una sola tecla por acción → wmctrl cierra la ventana activa (cierre normal, no kill)
 bind custom7 'Cerrar ventana (Alt+Q)'     'wmctrl -c :ACTIVE:'                     '<Alt>q'
+bind custom8 'Captura de área (Super+Shift+S)' 'flameshot gui'                   '<Mod4><Shift>s'
 
 # --- Escritorios virtuales: 2, como en la bitácora CachyOS ---
 M=org.mate.Marco

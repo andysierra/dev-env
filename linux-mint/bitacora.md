@@ -21,6 +21,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 | `Super+1` / `Super+2` | Cambiar de escritorio virtual (hay 2) |
 | `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
 | `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas de **todos** los escritorios |
+| `Super+Shift+S` | Captura de área (flameshot): seleccionar → anotar → `Enter`/`Ctrl+C` copia (queda en `Alt+V`), `Ctrl+S` guarda en `~/Imágenes` |
 | `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
 
@@ -76,6 +77,7 @@ linux-mint/
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
 ├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
+├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
 ├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
@@ -87,7 +89,7 @@ linux-mint/
 ### 1. Paquetes (humano, requiere sudo)
 
 ```sh
-sudo apt install git curl zip unzip rofi xdotool vim-gtk3 neovim
+sudo apt install git curl zip unzip rofi xdotool vim-gtk3 neovim flameshot
 ```
 
 - **rofi**: usar el de apt (1.7.5). Bajar el tarball de GitHub (`rofi-2.0.0`) es **código fuente** —
@@ -227,7 +229,19 @@ vim -es -u ~/.vimrc -i NONE -c 'PlugInstall --sync' -c 'qa!'     # 9 plugins →
   `${EDITOR:-vi}` y lanzado con `Alt+E` (sin bash) no hay `EDITOR` → cae en `vi` = vim completo.
 - Verificar: `vim --version | grep clipboard` → `+clipboard`.
 
-### 9. Atajos de MATE
+### 9. flameshot — captura de área
+
+```sh
+mkdir -p ~/.config/flameshot && cp flameshot/flameshot.ini ~/.config/flameshot/
+flameshot config --check     # → "No errors detected."
+```
+
+Reemplaza `grim + slurp + swappy`: selección y anotación en un solo paso, sobre la pantalla. Config: sin ícono
+de bandeja, sin mensaje de inicio / notificaciones / ayuda, sin chequeo de updates, nombre `captura_<fecha>_<hora>`.
+El atajo (`flameshot gui`) lo crea `mate-keybindings.sh`. Tras copiar, flameshot queda corriendo en segundo plano:
+es el dueño del clipboard (en X11 el contenido vive en el proceso que copió) — normal.
+
+### 10. Atajos de MATE
 
 ```sh
 ./mate-keybindings.sh
@@ -237,15 +251,15 @@ Requiere antes en `~/.local/bin`: `clipboard.sh`, `yazi-term.sh`, `type-tilde.sh
 Hace, en vivo y sin cerrar sesión:
 
 ```text
-custom0..7         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
+custom0..8         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
                    Super+C (Zed en ~/Escritorio/DEV) · Alt+N (~) · Alt+Q (cerrar, wmctrl -c :ACTIVE:)
+                   Super+Shift+S (flameshot gui)
 Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
                    Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
 ```
 
 Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `Super+V` → `Alt+V` (elegidos así);
-`Super+M` (monitores) y `Fn+brillo/volumen` no aplican (un monitor; MATE maneja las teclas multimedia);
-`Super+Shift+S` (captura) sigue pendiente. Alternativa gráfica: *Centro de control → Atajos de teclado*.
+`Super+M` (monitores) y `Fn+brillo/volumen` no aplican (un monitor; MATE maneja las teclas multimedia); Alternativa gráfica: *Centro de control → Atajos de teclado*.
 
 ### Gotchas (lo que costó descubrir)
 
@@ -273,6 +287,10 @@ Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `S
 - **Marco admite una sola tecla por acción** (`close` = `Alt+F4`): `Alt+Q` va como atajo propio con
   `wmctrl -c :ACTIVE:` (cierre normal, como Alt+F4; no `xdotool windowclose`, que destruye la ventana).
 - **Alt+Tab en MATE recorre solo el escritorio actual** (`switch-windows`); para todos es `switch-windows-all`.
+- **flameshot no abría (proceso vivo, sin capa de selección):** había abierto un diálogo
+  *"Resolve configuration errors"* por `savePath=/home/andysierra/Imágenes`: Qt no lee bien la `á` cruda en
+  el `.ini`. Diagnóstico: `flameshot config --check`. Solución: no definir `savePath` (el default ya es la
+  carpeta de imágenes XDG).
 - **Openers de yazi 26.x**: `%s` (todos), `%s1` (el primero), `%d1` (su carpeta). Verificable en el preset
   embebido: `strings /usr/local/bin/yazi | grep xdg-open`. La sección es `[mgr]` (no `[manager]`).
 - **`.desktop` con varias categorías principales** (`Development;Utility;`) genera warning en
@@ -284,7 +302,7 @@ Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `S
 labwc, rc.xml, themerc, environment     → MATE/Marco hace de escritorio
 foot / foot.ini                         → mate-terminal
 wl-copy, cliphist, wtype                → greenclip + xdotool
-grim + slurp + swappy                   → pendiente (candidato: flameshot)
+grim + slurp + swappy                   → flameshot (Super+Shift+S)
 wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona pantallas
 .bash_profile (exec labwc)              → no crear (ver sección bash)
 .vimrc con wl-copy                      → vim-gtk3 (+clipboard nativo), ver sección vim
@@ -294,4 +312,4 @@ wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona panta
 
 Del inventario de configs del repo aún no aplicado en Mint: Zed (`zed/settings_linux.json`,
 `keybindings_linux.json`), Claude (`claude/CLAUDE.md`, `settings.json`, hook Mermaid, skills),
-tmux, fuentes del repo (`fonts/`), captura de área (`Super+Shift+S`), Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
+tmux, fuentes del repo (`fonts/`), Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
