@@ -21,7 +21,8 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 | `Super+1` / `Super+2` | Cambiar de escritorio virtual (hay 2) |
 | `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
 | `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas de **todos** los escritorios |
-| `Super+Shift+S` | Captura de área (flameshot): seleccionar → anotar → `Enter`/`Ctrl+C` copia (queda en `Alt+V`), `Ctrl+S` guarda en `~/Imágenes` |
+| `Super+Shift+S` | Captura de área → al soltar el mouse va **directo al clipboard** (queda en `Alt+V`) |
+| `Super+Shift+4` | Captura de área → al soltar el mouse se **guarda en `~/Imágenes`** (`captura_<fecha>_<hora>.png`) |
 | `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
 
@@ -76,6 +77,7 @@ linux-mint/
 ├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
+├── bin/screenshot-save.sh      → ~/.local/bin/screenshot-save.sh  (chmod +x)
 ├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
 ├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
 ├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
@@ -236,7 +238,19 @@ mkdir -p ~/.config/flameshot && cp flameshot/flameshot.ini ~/.config/flameshot/
 flameshot config --check     # → "No errors detected."
 ```
 
-Reemplaza `grim + slurp + swappy`: selección y anotación en un solo paso, sobre la pantalla. Config: sin ícono
+```sh
+cp bin/screenshot-save.sh ~/.local/bin/ && chmod +x ~/.local/bin/screenshot-save.sh
+```
+
+Reemplaza `grim + slurp + swappy`. **Sin clics extra**: los dos atajos usan `-s` (`--accept-on-select`), la
+captura termina al soltar el mouse (sin Enter ni botón de copiar; sin anotación):
+
+```text
+Super+Shift+S   flameshot gui -c -s                       → clipboard
+Super+Shift+4   flameshot gui -s -p "$(xdg-user-dir PICTURES)"  (screenshot-save.sh) → ~/Imágenes
+```
+
+Para anotar antes de copiar: `flameshot gui` sin `-s` (no tiene atajo). Config: sin ícono
 de bandeja, sin mensaje de inicio / notificaciones / ayuda, sin chequeo de updates, nombre `captura_<fecha>_<hora>`.
 El atajo (`flameshot gui`) lo crea `mate-keybindings.sh`. Tras copiar, flameshot queda corriendo en segundo plano:
 es el dueño del clipboard (en X11 el contenido vive en el proceso que copió) — normal.
@@ -253,9 +267,10 @@ Hace, en vivo y sin cerrar sesión:
 ```text
 custom0..8         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
                    Super+C (Zed en ~/Escritorio/DEV) · Alt+N (~) · Alt+Q (cerrar, wmctrl -c :ACTIVE:)
-                   Super+Shift+S (flameshot gui)
+                   Super+Shift+S (flameshot gui -c -s)
 Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
                    Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
+                   run-command-1: Super+Shift+4 (screenshot-save.sh)
 ```
 
 Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `Super+V` → `Alt+V` (elegidos así);
@@ -293,6 +308,9 @@ Alternativa gráfica: *Centro de control → Atajos de teclado*.
   *"Resolve configuration errors"* por `savePath=/home/andysierra/Imágenes`: Qt no lee bien la `á` cruda en
   el `.ini`. Diagnóstico: `flameshot config --check`. Solución: no definir `savePath` (el default ya es la
   carpeta de imágenes XDG).
+- **Shift+número no funciona en los atajos propios (customN)** de mate-settings-daemon: `<Mod4><Shift>4` ni
+  `<Mod4><Shift>dollar` se disparan. Marco sí los toma (por eso `Super+Shift+1/2` andan): esos atajos van en
+  `org.mate.Marco.keybinding-commands command-N` + `global-keybindings run-command-N`.
 - **Openers de yazi 26.x**: `%s` (todos), `%s1` (el primero), `%d1` (su carpeta). Verificable en el preset
   embebido: `strings /usr/local/bin/yazi | grep xdg-open`. La sección es `[mgr]` (no `[manager]`).
 - **`.desktop` con varias categorías principales** (`Development;Utility;`) genera warning en
