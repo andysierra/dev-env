@@ -259,7 +259,9 @@ Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (ven
 ```
 
 Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `Super+V` → `Alt+V` (elegidos así);
-`Super+M` (monitores) y `Fn+brillo/volumen` no aplican (un monitor; MATE maneja las teclas multimedia); Alternativa gráfica: *Centro de control → Atajos de teclado*.
+`Super+M` (monitores) y `Fn+brillo/volumen` no aplican (un monitor; MATE maneja las teclas multimedia).
+
+Alternativa gráfica: *Centro de control → Atajos de teclado*.
 
 ### Gotchas (lo que costó descubrir)
 
