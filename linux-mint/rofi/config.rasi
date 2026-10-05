@@ -3,6 +3,10 @@ configuration {
     modes: "drun,run,window";
     show-icons: true;
     case-sensitive: false;
+    /* "yo" → YouTube, no PolYOminoes: solo coincide al comienzo de cada palabra */
+    matching: "prefix";
+    sort: true;
+    sorting-method: "fzf";
     drun-match-fields: "name,generic,exec,keywords";
     display-drun: "apps";
     display-run: "cmd";

@@ -142,6 +142,10 @@ mkdir -p ~/.config/rofi && cp rofi/config.rasi ~/.config/rofi/
 ```
 
 Tema `gruvbox-dark-hard` (incluido en `/usr/share/rofi/themes`, mismo esquema que vim/Sublime).
+**Búsqueda por prefijo:** `matching: "prefix"` + `sort`/`sorting-method: "fzf"` → "yo" abre YouTube, no
+PolYOminoes (el default `normal` acepta el texto en cualquier parte). Solo en el lanzador: `clipboard.sh`
+pasa `-matching normal` para buscar en medio del texto copiado. Probar sin interfaz:
+`printf 'Polyominoes\nYouTube\n' | rofi -dmenu -i -filter yo -dump` (en dmenu `-i` es necesario).
 En rofi 1.7.5 la opción es `modes` (`modi` es el alias viejo). Verificar: `rofi -dump-config | grep -E 'modes|show-icons'`.
 
 ### 5. claudia — terminal Claude Code sin restricciones

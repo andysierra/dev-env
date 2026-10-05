@@ -7,10 +7,11 @@
 GREENCLIP="$HOME/.local/bin/greenclip"
 IMG_CACHE="$HOME/.cache/greenclip-img"   # = image_cache_directory de ~/.config/greenclip.toml
 
+# -matching normal: en el historial sí se busca en medio del texto (el lanzador usa prefix).
 # Las entradas "image/png ... <id>" llevan su PNG cacheado como ícono de rofi (\0icon\x1f<ruta>)
 sel=$("$GREENCLIP" print \
     | sed -E "s|^(image/.* ([0-9]+))$|\1\x00icon\x1f$IMG_CACHE/\2.png|" \
-    | rofi -dmenu -i -p clipboard -show-icons -theme-str 'element-icon { size: 3em; }')
+    | rofi -dmenu -i -matching normal -p clipboard -show-icons -theme-str 'element-icon { size: 3em; }')
 [ -z "$sel" ] && exit
 
 "$GREENCLIP" print "$sel"                  # deja la entrada en el clipboard
