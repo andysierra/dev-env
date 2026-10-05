@@ -15,8 +15,9 @@ set whichwrap=<,>,[,]
 
 runtime plugins.vim
 
-colorscheme gruvbox
+" gruvbox_contrast_dark debe ir ANTES de colorscheme (despues no tiene efecto)
 let g:gruvbox_contrast_dark = "hard"
+silent! colorscheme gruvbox
 let NERDTreeQuitOnOpen = 1
 let g:airline_powerline_fonts=1
 

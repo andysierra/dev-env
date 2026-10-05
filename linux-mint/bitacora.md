@@ -68,6 +68,7 @@ linux-mint/
 ├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
+├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
 ├── greenclip/greenclip.desktop → ~/.config/autostart/greenclip.desktop
@@ -78,7 +79,7 @@ linux-mint/
 ### 1. Paquetes (humano, requiere sudo)
 
 ```sh
-sudo apt install git curl zip unzip rofi xdotool
+sudo apt install git curl zip unzip rofi xdotool vim-gtk3 neovim
 ```
 
 - **rofi**: usar el de apt (1.7.5). Bajar el tarball de GitHub (`rofi-2.0.0`) es **código fuente** —
@@ -195,7 +196,30 @@ se usa `-e "cmd args"` (un solo string).
 `Alt+E` → `yazi-term.sh`: **siempre ventana nueva** (mismo criterio que el Mac), `--maximize`, yazi lanzado
 directo con `-e` (sin bash detrás) → al salir con `q` la ventana se cierra. Arranca en `~/Escritorio`.
 
-### 8. Atajos de MATE
+### 8. vim / neovim
+
+```sh
+sudo apt install vim-gtk3 neovim     # vim-gtk3, NO "vim": el de apt es -clipboard
+cp ../nvim/.vimrc ~/.vimrc
+mkdir -p ~/.vim/autoload ~/.config/nvim
+cp ../nvim/plugins.vim ~/.vim/plugins.vim
+cp nvim/init.vim ~/.config/nvim/init.vim
+curl -fsSLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+vim -es -u ~/.vimrc -i NONE -c 'PlugInstall --sync' -c 'qa!'     # 9 plugins → ~/.vim/plugged
+```
+
+- **Clipboard:** `vim-gtk3` trae `+clipboard`/`+xterm_clipboard` → `set clipboard=unnamedplus` del `.vimrc`
+  funciona nativo en X11. El `autocmd ... wl-copy` de `../linux/.vimrc` es solo Wayland: no se usa.
+  neovim usa `xclip` (instalado por install-yazi.sh). Lo copiado queda también en greenclip (`Alt+V`).
+- **neovim** comparte config y plugins con vim: `init.vim` agrega `~/.vim` al runtimepath y hace `source ~/.vimrc`.
+  (El `../nvim/init.vim` original apuntaba a `$HOME/vim`, sin punto y con comillas que vim no expande.)
+- **gruvbox:** `g:gruvbox_contrast_dark` tiene que ir **antes** de `colorscheme` (después no tiene efecto).
+  `silent! colorscheme` evita el error en el primer arranque, antes de `PlugInstall`.
+- **`vi` → vim.gtk3**: apt lo registra en `update-alternatives`. Importa para yazi: su opener `edit` usa
+  `${EDITOR:-vi}` y lanzado con `Alt+E` (sin bash) no hay `EDITOR` → cae en `vi` = vim completo.
+- Verificar: `vim --version | grep clipboard` → `+clipboard`.
+
+### 9. Atajos de MATE
 
 ```sh
 ./mate-keybindings.sh
@@ -236,12 +260,12 @@ wl-copy, cliphist, wtype                → greenclip + xdotool
 grim + slurp + swappy                   → pendiente (candidato: flameshot)
 wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona pantallas
 .bash_profile (exec labwc)              → no crear (ver sección bash)
-.vimrc con wl-copy                      → pendiente: vim-gtk3 (+clipboard) o xclip
+.vimrc con wl-copy                      → vim-gtk3 (+clipboard nativo), ver sección vim
 ```
 
 ### Pendiente de migrar
 
-Del inventario de configs del repo aún no aplicado en Mint: vim/neovim, Zed (`zed/settings_linux.json`,
+Del inventario de configs del repo aún no aplicado en Mint: Zed (`zed/settings_linux.json`,
 `keybindings_linux.json`), Claude (`claude/CLAUDE.md`, `settings.json`, hook Mermaid, skills),
 tmux, fuentes del repo (`fonts/`), atajos restantes de escritorio (`Super+Enter`, `Super+C`, `Alt+N` → `~`),
 captura de área, Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
