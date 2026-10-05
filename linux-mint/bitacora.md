@@ -14,6 +14,13 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 |---|---|
 | `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones |
 | `Alt+V` | Historial de clipboard (greenclip en rofi, con miniaturas de imágenes) — auto-pega lo elegido |
+| `Super+Enter` | Terminal (mate-terminal) |
+| `Super+C` | Zed abierto en `~/Escritorio/DEV` (Claude vive en su panel de agente) |
+| `Alt+N` | Escribe `~` (en latam es AltGr+4 / AltGr+ñ) |
+| `Alt+Q` / `Alt+F4` | Cerrar ventana |
+| `Super+1` / `Super+2` | Cambiar de escritorio virtual (hay 2) |
+| `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
+| `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas de **todos** los escritorios |
 | `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
 
@@ -64,10 +71,11 @@ linux-mint/
 ├── bitacora.md
 ├── bashrc-devenv.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
-├── mate-keybindings.sh         → correr una vez (idempotente): Alt+Space, Alt+F3, Alt+V, Alt+E
+├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
 ├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
+├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
 ├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
@@ -225,8 +233,19 @@ vim -es -u ~/.vimrc -i NONE -c 'PlugInstall --sync' -c 'qa!'     # 9 plugins →
 ./mate-keybindings.sh
 ```
 
-Desactiva `activate-window-menu` de Marco (ocupaba `Alt+Space`) y crea `custom0..3`. Aplica en vivo,
-sin cerrar sesión. Alternativa gráfica: *Centro de control → Atajos de teclado*.
+Requiere antes en `~/.local/bin`: `clipboard.sh`, `yazi-term.sh`, `type-tilde.sh` (y Zed instalado).
+Hace, en vivo y sin cerrar sesión:
+
+```text
+custom0..7         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
+                   Super+C (Zed en ~/Escritorio/DEV) · Alt+N (~) · Alt+Q (cerrar, wmctrl -c :ACTIVE:)
+Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
+                   Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
+```
+
+Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `Super+V` → `Alt+V` (elegidos así);
+`Super+M` (monitores) y `Fn+brillo/volumen` no aplican (un monitor; MATE maneja las teclas multimedia);
+`Super+Shift+S` (captura) sigue pendiente. Alternativa gráfica: *Centro de control → Atajos de teclado*.
 
 ### Gotchas (lo que costó descubrir)
 
@@ -246,6 +265,14 @@ sin cerrar sesión. Alternativa gráfica: *Centro de control → Atajos de tecla
   terminal/vim. **Choca con el spec opcional de keyd** (`../linux/spec-keyd-cmd-copypaste.md`, donde
   `Alt+V` = pegar): si se instala keyd, quitar la línea `v = C-v` de su `[alt]`.
 - **`Alt+E` global**: se pierde el mnemónico `Alt+E` (menú "Editar") dentro de las apps.
+- **Atajo que escribe texto (Alt+N) no escribía nada:** mientras la tecla del atajo sigue apretada,
+  mate-settings-daemon mantiene el teclado capturado (*passive grab*) y lo que tipea `xdotool` va a parar
+  al que capturó, no a la ventana. `type-tilde.sh` espera 0.25 s (a que se suelte la N) y usa
+  `--clearmodifiers` por si Alt sigue apretado. El atajo sí se disparaba (verificable cambiando la acción
+  por `sh -c "date >> /tmp/fired"`).
+- **Marco admite una sola tecla por acción** (`close` = `Alt+F4`): `Alt+Q` va como atajo propio con
+  `wmctrl -c :ACTIVE:` (cierre normal, como Alt+F4; no `xdotool windowclose`, que destruye la ventana).
+- **Alt+Tab en MATE recorre solo el escritorio actual** (`switch-windows`); para todos es `switch-windows-all`.
 - **Openers de yazi 26.x**: `%s` (todos), `%s1` (el primero), `%d1` (su carpeta). Verificable en el preset
   embebido: `strings /usr/local/bin/yazi | grep xdg-open`. La sección es `[mgr]` (no `[manager]`).
 - **`.desktop` con varias categorías principales** (`Development;Utility;`) genera warning en
@@ -267,5 +294,4 @@ wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona panta
 
 Del inventario de configs del repo aún no aplicado en Mint: Zed (`zed/settings_linux.json`,
 `keybindings_linux.json`), Claude (`claude/CLAUDE.md`, `settings.json`, hook Mermaid, skills),
-tmux, fuentes del repo (`fonts/`), atajos restantes de escritorio (`Super+Enter`, `Super+C`, `Alt+N` → `~`),
-captura de área, Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
+tmux, fuentes del repo (`fonts/`), captura de área (`Super+Shift+S`), Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
