@@ -74,6 +74,7 @@ linux-mint/
 ├── bashrc-devenv.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
+├── mate-no-lock.sh            → correr una vez (idempotente): la sesión nunca se bloquea
 ├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
@@ -277,6 +278,24 @@ Equivalencia con `rc.xml` de la bitácora CachyOS: `Super+Alt+E` → `Alt+E`, `S
 `Super+M` (monitores) y `Fn+brillo/volumen` no aplican (un monitor; MATE maneja las teclas multimedia).
 
 Alternativa gráfica: *Centro de control → Atajos de teclado*.
+
+### 11. Sin bloqueo de sesión
+
+```sh
+./mate-no-lock.sh
+```
+
+Mint MATE activa el salvapantallas tras 5 min de inactividad (`org.mate.session idle-delay`) y, con
+`org.mate.screensaver lock-enabled=true`, pide contraseña al volver. El script apaga eso y además el bloqueo
+al volver de suspender/hibernar y cuando el ahorro de energía apaga la pantalla (`org.mate.power-manager lock-*`).
+La pantalla igual se apaga a los 30 min sin uso (`sleep-display-ac 1800`), pero sin bloquear.
+
+### Audio — auriculares USB (Logitech G435)
+
+Si no suena con el receptor USB conectado: el kernel lo ve (`aplay -l` → tarjeta "G435") y PipeWire crea su
+salida, pero (1) Mint no cambia la salida por defecto sola → `pactl set-default-sink <alsa_output.usb-...>` o
+ícono de sonido; y (2) **el G435 puede estar en modo Bluetooth** (enlazado a otro equipo): el PC le manda audio
+al receptor sin errores (`pw-top`, columna ERR en 0) pero los auriculares no escuchan la radio del receptor.
 
 ### Gotchas (lo que costó descubrir)
 
