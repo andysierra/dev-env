@@ -1,0 +1,25 @@
+{
+  "description": "Option+Command+E -> iTerm con yazi en ~/Desktop",
+  "manipulators": [
+    {
+      "from": {
+        "key_code": "e",
+        "modifiers": {
+          "mandatory": [
+            "command",
+            "option"
+          ],
+          "optional": [
+            "caps_lock"
+          ]
+        }
+      },
+      "to": [
+        {
+          "shell_command": "/Users/andressierra/bin/yazi-desktop.sh"
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}

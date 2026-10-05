@@ -1,0 +1,9 @@
+[[plugin.deps]]
+use = "mikavilpas/easyjump.yazi:easyjump"
+rev = "d8093b9"
+hash = "49625b69287597c3b8093c9f1a2f7241"
+
+[[flavor.deps]]
+use = "BennyOe/tokyo-night"
+rev = "8e6296f"
+hash = "d9da921c3bd37ba32ee27a8a7a40461f"

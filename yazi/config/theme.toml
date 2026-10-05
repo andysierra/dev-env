@@ -1,0 +1,42 @@
+# yazi — flavor activo
+[flavor]
+dark  = "tokyo-night"
+light = "tokyo-night"
+
+# Carpetas en bold, archivos en peso normal (sin dim: se apagaba demasiado).
+# Se redefine el ruleset completo (no prepend) porque un prepend sobre `url = "*"`
+# atraparia todo y se perderian los colores por mime del flavor.
+# Colores copiados de flavors/tokyo-night.yazi/flavor.toml
+[filetype]
+rules = [
+  # Images
+  { mime = "image/*", fg = "#e0af68" },
+
+  # Media
+  { mime = "video/*", fg = "#f7768e" },
+  { mime = "audio/*", fg = "#f7768e" },
+
+  # Archives
+  { mime = "application/zip",             fg = "#bb9af7" },
+  { mime = "application/x-tar",           fg = "#bb9af7" },
+  { mime = "application/x-bzip*",         fg = "#bb9af7" },
+  { mime = "application/x-bzip2",         fg = "#bb9af7" },
+  { mime = "application/x-7z-compressed", fg = "#bb9af7" },
+  { mime = "application/x-rar",           fg = "#bb9af7" },
+  { mime = "application/x-xz",            fg = "#bb9af7" },
+
+  # Documents
+  { mime = "application/doc",      fg = "#9ece6a" },
+  { mime = "application/epub+zip", fg = "#9ece6a" },
+  { mime = "application/pdf",      fg = "#9ece6a" },
+  { mime = "application/rtf",      fg = "#9ece6a" },
+  { mime = "application/vnd.*",    fg = "#9ece6a" },
+
+  # Special files
+  { mime = "*", is = "orphan", fg = "#f29cb4", bg = "#93000a" },
+  { mime = "application/*exec*", fg = "#f7768e" },
+
+  # Fallback
+  { url = "*",  fg = "#c6d0f5" },
+  { url = "*/", fg = "#7aa2f7", bold = true },
+]

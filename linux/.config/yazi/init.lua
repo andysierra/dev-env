@@ -1,1 +1,0 @@
-ya.emit("hidden", { "toggle" })
