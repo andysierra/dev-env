@@ -75,6 +75,7 @@ linux-mint/
 ├── bashrc-envdev.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
+├── default-editor.sh          → correr una vez (idempotente): Sublime como editor de texto por defecto
 ├── hide-screensavers.sh       → correr una vez (idempotente): saca de rofi los ~250 salvapantallas
 ├── mate-no-lock.sh            → correr una vez (idempotente): la sesión nunca se bloquea
 ├── wezterm/wezterm.lua         → ~/.config/wezterm/wezterm.lua  (terminal por defecto)
@@ -370,6 +371,11 @@ open folder with sublime.reg                 — (Windows)
   `install-packages.sh` los baja del tag de GitHub y los deja como `.sublime-package` en `Installed Packages`
   (zip sin la carpeta raíz que agrega GitHub); Sublime los carga en caliente.
 - La variante Linux **no ignora Package Control** (el `settings.txt` original sí, en `ignored_packages`).
+- **Editor por defecto** (doble clic en Caja, `xdg-open`, "Abrir con"): `./default-editor.sh` → Sublime en vez
+  de **xed** (el de Mint). xed solo declara `text/plain` y el resto de tipos de texto lo heredaba por subtipo; el
+  script fija `text/plain` + formatos de desarrollo (json, yaml, toml, xml, md, código, scripts…) en
+  `~/.config/mimeapps.list`. `application/xml` lo tenía **Brave**. HTML y CSV no se tocan.
+  En yazi no cambia nada: `.md` → Zed y `e` → vim siguen igual.
 - `Super+S` → `subl --launch-or-new-window` (`mate-keybindings.sh`, custom9): ventana nueva aunque
   `open_files_in_new_window` sea false; si Sublime está cerrado lo abre (con `-n` saldrían dos ventanas).
 
