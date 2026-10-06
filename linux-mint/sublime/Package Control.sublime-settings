@@ -1,0 +1,9 @@
+// Paquetes que Package Control instala solo al arrancar Sublime si faltan.
+{
+	"installed_packages":
+	[
+		"Package Control",
+		"gruvbox",
+		"Terminus",
+	],
+}

@@ -27,6 +27,8 @@ bind custom6 'Escribir ~ (Alt+N)'         "$HOME/.local/bin/type-tilde.sh"      
 bind custom7 'Cerrar ventana (Alt+Q)'     'wmctrl -c :ACTIVE:'                     '<Alt>q'
 # -s (--accept-on-select): la captura termina al soltar el mouse, sin Enter ni botón de copiar
 bind custom8 'Captura de área al clipboard (Alt+Shift+S)' 'flameshot gui -c -s'          '<Alt><Shift>s'
+# --launch-or-new-window: si Sublime está cerrado lo abre; si está abierto, ventana nueva (no pestaña)
+bind custom9 'Sublime Text, ventana nueva (Super+S)' 'subl --launch-or-new-window'      '<Mod4>s'
 
 M=org.mate.Marco
 

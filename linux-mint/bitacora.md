@@ -23,6 +23,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 | `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas de **todos** los escritorios |
 | `Alt+Shift+S` | Captura de área → al soltar el mouse va **directo al clipboard** (queda en `Alt+V`) |
 | `Alt+Shift+4` | Captura de área → al soltar el mouse se **guarda en `~/Imágenes`** (`captura_<fecha>_<hora>.png`) |
+| `Super+S` | Sublime Text en ventana nueva (no pestaña); si está cerrado, lo abre |
 | `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
 
@@ -86,6 +87,7 @@ linux-mint/
 ├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
 ├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
 ├── icons/zed.svg               → ~/.local/share/icons/hicolor/scalable/apps/zed.svg
+├── sublime/                    → ~/.config/sublime-text/ (ver sección Sublime; resto en ../sublime/)
 ├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
@@ -338,6 +340,39 @@ vim -es -u ~/.vimrc -i NONE -c 'PlugInstall --sync' -c 'qa!'     # 9 plugins →
   `${EDITOR:-vi}` y lanzado con `Alt+E` (sin bash) no hay `EDITOR` → cae en `vi` = vim completo.
 - Verificar: `vim --version | grep clipboard` → `+clipboard`.
 
+### 8b. Sublime Text 4
+
+Instalar desde el repo apt oficial (https://www.sublimetext.com/docs/linux_repositories.html), paquete
+`sublime-text` (probado con build 4215). Luego:
+
+```sh
+U=~/.config/sublime-text/Packages/User; mkdir -p "$U"
+cp sublime/Preferences.sublime-settings "sublime/Package Control.sublime-settings" "$U/"
+cp ../sublime/keymap.txt "$U/Default (Linux).sublime-keymap"
+cp ../sublime/Terminus.sublime-settings.json "$U/Terminus.sublime-settings"
+cp ../sublime/auto_reveal_in_sidebar.py.paste_in_roaming_packages_user "$U/auto_reveal_in_sidebar.py"
+./sublime/install-packages.sh     # gruvbox 4.0.1 + Terminus v0.3.37 desde GitHub
+```
+
+```text
+repo (../sublime/, Windows)                  Linux (~/.config/sublime-text/Packages/User/)
+-------------------------------------------  -----------------------------------------------
+settings.txt                                 Preferences.sublime-settings  (sublime/ — variante)
+keymap.txt                                   Default (Linux).sublime-keymap
+Terminus.sublime-settings.json               Terminus.sublime-settings (Git Bash solo aplica a Windows)
+auto_reveal_in_sidebar.py.paste_in_...       auto_reveal_in_sidebar.py
+open folder with sublime.reg                 — (Windows)
+```
+
+- **Paquetes:** el `color_scheme` necesita **gruvbox** y `alt+3` necesita **Terminus**. Sin ellos, al abrir:
+  *"Error loading colour scheme … Unable to find Packages/gruvbox/…"*. Package Control con
+  `installed_packages` debería instalarlos solo, pero en la primera prueba no lo hizo (Sublime se cerró antes).
+  `install-packages.sh` los baja del tag de GitHub y los deja como `.sublime-package` en `Installed Packages`
+  (zip sin la carpeta raíz que agrega GitHub); Sublime los carga en caliente.
+- La variante Linux **no ignora Package Control** (el `settings.txt` original sí, en `ignored_packages`).
+- `Super+S` → `subl --launch-or-new-window` (`mate-keybindings.sh`, custom9): ventana nueva aunque
+  `open_files_in_new_window` sea false; si Sublime está cerrado lo abre (con `-n` saldrían dos ventanas).
+
 ### 9. flameshot — captura de área
 
 ```sh
@@ -372,9 +407,9 @@ Requiere antes en `~/.local/bin`: `clipboard.sh`, `yazi-term.sh`, `type-tilde.sh
 Hace, en vivo y sin cerrar sesión:
 
 ```text
-custom0..8         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
+custom0..9         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
                    Super+C (Zed en ~/Escritorio/DEV) · Alt+N (~) · Alt+Q (cerrar, wmctrl -c :ACTIVE:)
-                   Alt+Shift+S (flameshot gui -c -s)
+                   Alt+Shift+S (flameshot gui -c -s) · Super+S (subl --launch-or-new-window)
 Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
                    Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
                    run-command-1: Alt+Shift+4 (screenshot-save.sh)
