@@ -90,6 +90,7 @@ linux-mint/
 ├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
 ├── icons/zed.svg               → ~/.local/share/icons/hicolor/scalable/apps/zed.svg
 ├── sublime/                    → ~/.config/sublime-text/ (ver sección Sublime; resto en ../sublime/)
+├── vscode/settings.json, keybindings.json → ~/.config/Code/User/
 ├── nvim/init.vim               → ~/.config/nvim/init.vim  (vim: ../nvim/.vimrc y ../nvim/plugins.vim)
 ├── rofi/config.rasi            → ~/.config/rofi/config.rasi
 ├── greenclip/greenclip.toml    → ~/.config/greenclip.toml
@@ -380,6 +381,33 @@ open folder with sublime.reg                 — (Windows)
 - `Super+S` → `subl --launch-or-new-window` (`mate-keybindings.sh`, custom9): ventana nueva aunque
   `open_files_in_new_window` sea false; si Sublime está cerrado lo abre (con `-n` saldrían dos ventanas).
 
+### 8b2. VS Code
+
+Instalar el `.deb` oficial (https://code.visualstudio.com, agrega su repo apt; probado con 1.140). Luego:
+
+```sh
+cp vscode/settings.json vscode/keybindings.json ~/.config/Code/User/
+code --install-extension PKief.material-icon-theme      # workbench.iconTheme
+```
+
+`vscode/` = `../Visual Studio Code/settings.json` y `keybindings.json` (los de Windows, personales) adaptados:
+
+```text
+Windows (repo)                                   Linux
+-----------------------------------------------  ------------------------------------------------
+terminal.integrated.shell/shellArgs/default…     quitados (Git Bash) → la terminal integrada usa bash
+"ctrl+oem_2"  (scancode Windows de "/")          "ctrl+/"
+"ctrl+shift+oem_3"  (scancode de "`")            "ctrl+shift+`"
+ctrl+q → quickOpen archivos                      + "-workbench.action.quit": en Linux ctrl+q CIERRA VS Code
+```
+
+- `settings (work).json` (regla en 100, zoom -1, perfiles de terminal Windows) no se usa en este PC.
+- `keybindings_macos.json` es la variante Mac (cmd) de los mismos atajos.
+- Extensiones a las que se refiere la config, **no instaladas** (instalar según se necesiten):
+  Java (`vscjava.vscode-java-pack`, `vscjava.vscode-gradle`: alt+2, shift+f10), `ms-python.python`,
+  `ms-toolsai.jupyter`, `sonarsource.sonarlint-vscode`, `esbenp.prettier-vscode`, `ritwickdey.LiveServer`.
+  Obsoletas (sus settings quedan sin efecto): kite, bracket-pair-colorizer-2, IntelliCode, vscode-icons, autoHide.
+
 ### 8c. Fuentes
 
 ```sh
@@ -519,4 +547,4 @@ wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona panta
 
 Del inventario de configs del repo aún no aplicado en Mint: Zed (`zed/settings_linux.json`,
 `keybindings_linux.json`), Claude (`claude/CLAUDE.md`, `settings.json`, hook Mermaid, skills),
-tmux, Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
+tmux, Bruno, botón de encendido, Chromium, IDEs (IntelliJ, DBeaver, Eclipse, Antigravity).
