@@ -46,6 +46,11 @@ gsettings set $M.global-keybindings switch-to-workspace-1 '<Mod4>1'
 gsettings set $M.global-keybindings switch-to-workspace-2 '<Mod4>2'
 gsettings set $M.window-keybindings move-to-workspace-1  '<Mod4><Shift>1'
 gsettings set $M.window-keybindings move-to-workspace-2  '<Mod4><Shift>2'
+# Shift+Super+←/→: mover ventana al escritorio anterior/siguiente (Marco: una tecla por acción,
+# reemplaza la de fábrica Ctrl+Shift+Alt+←/→). Super+←/→ (mitad de pantalla) y Ctrl+Super+←/→ (ir a
+# escritorio) quedan como vienen en Mint.
+gsettings set $M.window-keybindings move-to-workspace-left  '<Mod4><Shift>Left'
+gsettings set $M.window-keybindings move-to-workspace-right '<Mod4><Shift>Right'
 
 # --- Alt+Tab recorre las ventanas de TODOS los escritorios (por defecto solo el actual) ---
 gsettings set $M.global-keybindings switch-windows              'disabled'

@@ -20,6 +20,9 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 | `Alt+Q` / `Alt+F4` | Cerrar ventana |
 | `Super+1` / `Super+2` | Cambiar de escritorio virtual (hay 2) |
 | `Super+Shift+1` / `Super+Shift+2` | Mover ventana a escritorio |
+| `Shift+Super+←` / `Shift+Super+→` | Mover ventana al escritorio anterior / siguiente |
+| `Ctrl+Super+←` / `Ctrl+Super+→` | Ir al escritorio anterior / siguiente (de fábrica en Mint) |
+| `Super+←` / `Super+→` / `Super+↑` / `Super+↓` | Ventana a mitad izquierda / derecha / maximizar / minimizar (de fábrica) |
 | `Alt+Tab` / `Alt+Shift+Tab` | Ciclar ventanas de **todos** los escritorios |
 | `Alt+Shift+S` | Captura de área → al soltar el mouse va **directo al clipboard** (queda en `Alt+V`) |
 | `Alt+Shift+4` | Captura de área → al soltar el mouse se **guarda en `~/Imágenes`** (`captura_<fecha>_<hora>.png`) |
@@ -484,6 +487,7 @@ custom0..9         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi)
                    Alt+Shift+S (flameshot gui -c -s) · Super+S (subl --launch-or-new-window)
 Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
                    Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
+                   Shift+Super+←/→ → move-to-workspace-left/right (reemplaza Ctrl+Shift+Alt+←/→)
                    run-command-1: Alt+Shift+4 (screenshot-save.sh)
                    run-command-screenshot (captura completa de MATE, venía en Alt+Shift+4) → disabled
 ```
