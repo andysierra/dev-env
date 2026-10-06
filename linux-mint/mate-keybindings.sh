@@ -29,6 +29,8 @@ bind custom7 'Cerrar ventana (Alt+Q)'     'wmctrl -c :ACTIVE:'                  
 bind custom8 'Captura de área al clipboard (Alt+Shift+S)' 'flameshot gui -c -s'          '<Alt><Shift>s'
 # --launch-or-new-window: si Sublime está cerrado lo abre; si está abierto, ventana nueva (no pestaña)
 bind custom9 'Sublime Text, ventana nueva (Super+S)' 'subl --launch-or-new-window'      '<Mod4>s'
+bind custom10 'Mover ventana al escritorio anterior (Shift+Super+←)'  "$HOME/.local/bin/move-window-ws.sh -1" '<Mod4><Shift>Left'
+bind custom11 'Mover ventana al escritorio siguiente (Shift+Super+→)' "$HOME/.local/bin/move-window-ws.sh +1" '<Mod4><Shift>Right'
 
 M=org.mate.Marco
 
@@ -46,11 +48,11 @@ gsettings set $M.global-keybindings switch-to-workspace-1 '<Mod4>1'
 gsettings set $M.global-keybindings switch-to-workspace-2 '<Mod4>2'
 gsettings set $M.window-keybindings move-to-workspace-1  '<Mod4><Shift>1'
 gsettings set $M.window-keybindings move-to-workspace-2  '<Mod4><Shift>2'
-# Shift+Super+←/→: mover ventana al escritorio anterior/siguiente (Marco: una tecla por acción,
-# reemplaza la de fábrica Ctrl+Shift+Alt+←/→). Super+←/→ (mitad de pantalla) y Ctrl+Super+←/→ (ir a
-# escritorio) quedan como vienen en Mint.
-gsettings set $M.window-keybindings move-to-workspace-left  '<Mod4><Shift>Left'
-gsettings set $M.window-keybindings move-to-workspace-right '<Mod4><Shift>Right'
+# Shift+Super+←/→: mover ventana al escritorio anterior/siguiente → bin/move-window-ws.sh (custom10/11).
+# Las acciones move-to-workspace-left/right de Marco no responden (ni con su tecla de fábrica).
+# Super+←/→ (mitad de pantalla) y Ctrl+Super+←/→ (ir a escritorio) quedan como vienen en Mint.
+gsettings reset $M.window-keybindings move-to-workspace-left
+gsettings reset $M.window-keybindings move-to-workspace-right
 
 # --- Alt+Tab recorre las ventanas de TODOS los escritorios (por defecto solo el actual) ---
 gsettings set $M.global-keybindings switch-windows              'disabled'

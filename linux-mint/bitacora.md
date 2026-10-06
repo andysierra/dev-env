@@ -89,6 +89,7 @@ linux-mint/
 ├── bin/screenshot-save.sh      → ~/.local/bin/screenshot-save.sh  (chmod +x)
 ├── bin/zed-icon.py             → ~/.local/bin/zed-icon.py  (chmod +x) + applications/zed-icon-autostart.desktop
 │                                 → ~/.config/autostart/zed-icon.desktop
+├── bin/move-window-ws.sh       → ~/.local/bin/move-window-ws.sh  (chmod +x)
 ├── bin/type-tilde.sh           → ~/.local/bin/type-tilde.sh       (chmod +x)
 ├── flameshot/flameshot.ini     → ~/.config/flameshot/flameshot.ini
 ├── icons/zed.svg               → ~/.local/share/icons/hicolor/scalable/apps/zed.svg
@@ -482,12 +483,12 @@ Requiere antes en `~/.local/bin`: `clipboard.sh`, `yazi-term.sh`, `type-tilde.sh
 Hace, en vivo y sin cerrar sesión:
 
 ```text
-custom0..9         Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
+custom0..11        Alt+Space, Alt+F3 (rofi) · Alt+V (clipboard) · Alt+E (yazi) · Super+Enter (terminal)
                    Super+C (Zed en ~/Escritorio/DEV) · Alt+N (~) · Alt+Q (cerrar, wmctrl -c :ACTIVE:)
                    Alt+Shift+S (flameshot gui -c -s) · Super+S (subl --launch-or-new-window)
 Marco              libera Alt+Space (activate-window-menu) · 2 escritorios (venía con 4)
                    Super+1/2 y Super+Shift+1/2 · Alt+Tab → switch-windows-all (todos los escritorios)
-                   Shift+Super+←/→ → move-to-workspace-left/right (reemplaza Ctrl+Shift+Alt+←/→)
+custom10/11        Shift+Super+←/→ → bin/move-window-ws.sh -1/+1 (wmctrl)
                    run-command-1: Alt+Shift+4 (screenshot-save.sh)
                    run-command-screenshot (captura completa de MATE, venía en Alt+Shift+4) → disabled
 ```
@@ -538,6 +539,9 @@ al receptor sin errores (`pw-top`, columna ERR en 0) pero los auriculares no esc
   al que capturó, no a la ventana. `type-tilde.sh` espera 0.25 s (a que se suelte la N) y usa
   `--clearmodifiers` por si Alt sigue apretado. El atajo sí se disparaba (verificable cambiando la acción
   por `sh -c "date >> /tmp/fired"`).
+- **`move-to-workspace-left/right` de Marco no hace nada** (ni con su tecla de fábrica Ctrl+Shift+Alt+←/→),
+  aunque `switch-to-workspace-left/right` (Ctrl+Super+←/→) y `move-to-workspace-1/2` sí andan. Shift+Super+←/→
+  va como atajo propio → `move-window-ws.sh` (wmctrl: escritorio de la ventana activa ±1, sin seguirla).
 - **Marco admite una sola tecla por acción** (`close` = `Alt+F4`): `Alt+Q` va como atajo propio con
   `wmctrl -c :ACTIVE:` (cierre normal, como Alt+F4; no `xdotool windowclose`, que destruye la ventana).
 - **Alt+Tab en MATE recorre solo el escritorio actual** (`switch-windows`); para todos es `switch-windows-all`.
