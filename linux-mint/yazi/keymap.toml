@@ -17,16 +17,16 @@ on   = "{"
 run  = "arrow -5"
 desc = "Subir 5 (estilo vim {)"
 
-# mate-terminal reutiliza un proceso servidor: sin --working-directory abriria en
-# el cwd de ese servidor, no en la carpeta actual de yazi. `shell` corre en el cwd de yazi.
+# WezTerm reutiliza el proceso GUI ya abierto: sin --cwd abriría en el cwd de ese proceso,
+# no en la carpeta actual de yazi. `shell` corre en el cwd de yazi.
 [[mgr.prepend_keymap]]
 on   = "T"
-run  = 'shell --orphan "mate-terminal --window --working-directory=\"$PWD\""'
+run  = 'shell --orphan "wezterm start --cwd \"$PWD\""'
 desc = "Abrir terminal (ventana nueva) en el directorio actual"
 
 [[mgr.prepend_keymap]]
 on   = "<C-t>"
-run  = 'shell --orphan "mate-terminal --window --working-directory=\"$PWD\""'
+run  = 'shell --orphan "wezterm start --cwd \"$PWD\""'
 desc = "Abrir terminal (ventana nueva) en el directorio actual"
 
 # "F" (shift+f) esta libre en el preset. "f" minuscula es filter.

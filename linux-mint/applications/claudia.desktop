@@ -2,7 +2,7 @@
 Name=claudia
 GenericName=Claude Code (skip permissions)
 Comment=Abre una terminal ejecutando claude --dangerously-skip-permissions
-Exec=mate-terminal --title=claudia -- bash -i -c "claudia; exec bash"
+Exec=wezterm start --class claudia -- bash -i -c "claudia; exec bash"
 Icon=utilities-terminal
 Type=Application
 Terminal=false

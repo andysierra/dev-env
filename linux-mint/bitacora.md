@@ -14,7 +14,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 |---|---|
 | `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones; `word` / `excel` / `powerpoint` abren FreeOffice |
 | `Alt+V` | Historial de clipboard (greenclip en rofi, con miniaturas de imágenes) — auto-pega lo elegido |
-| `Super+Enter` | Terminal (mate-terminal) |
+| `Super+Enter` / `Ctrl+Alt+T` | Terminal (WezTerm) |
 | `Super+C` | Zed abierto en `~/Escritorio/DEV` (Claude vive en su panel de agente) |
 | `Alt+N` | Escribe `~` (en latam es AltGr+4 / AltGr+ñ) |
 | `Alt+Q` / `Alt+F4` | Cerrar ventana |
@@ -60,7 +60,7 @@ Distro        Linux Mint 22.3 (base Ubuntu 24.04 → paquetes vía apt)
 Escritorio    MATE, gestor de ventanas Marco, sesión X11
 Lanzador      rofi (repo apt, 1.7.5)  ← reemplaza bemenu + j4-dmenu-desktop de la bitácora CachyOS
 Clipboard     greenclip (binario) + rofi + xdotool  ← reemplaza cliphist + bemenu + wtype
-Terminal      mate-terminal + IosevkaTerm Nerd Font + paleta tokyo-night  ← reemplaza foot (Wayland-only)
+Terminal      WezTerm + IosevkaTerm Nerd Font + Tokyo Night  ← reemplaza foot (Wayland-only); la más cercana a iTerm2
 Explorador    yazi (binario GitHub, /usr/local/bin) con flavor tokyo-night
 Atajos        dconf de MATE (/org/mate/desktop/keybindings/customN)  ← reemplaza rc.xml de labwc
 Usuario       andysierra (rutas absolutas en greenclip.toml y mate-keybindings.sh: ajustar si cambia)
@@ -76,7 +76,8 @@ linux-mint/
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
 ├── hide-screensavers.sh       → correr una vez (idempotente): saca de rofi los ~250 salvapantallas
 ├── mate-no-lock.sh            → correr una vez (idempotente): la sesión nunca se bloquea
-├── mate-terminal.sh            → correr una vez (idempotente): fuente Nerd + paleta tokyo-night + cerrar sin confirmar
+├── wezterm/wezterm.lua         → ~/.config/wezterm/wezterm.lua  (terminal por defecto)
+├── mate-terminal.sh            → (legado, opcional) mismo look en mate-terminal; ya no se usa
 ├── yazi/yazi.toml, keymap.toml → ~/.config/yazi/ (resto del config: ../yazi/config/)
 ├── bin/yazi-term.sh            → ~/.local/bin/yazi-term.sh        (chmod +x)
 ├── bin/screenshot-save.sh      → ~/.local/bin/screenshot-save.sh  (chmod +x)
@@ -242,7 +243,7 @@ Puntos de `greenclip.toml`:
 ```sh
 sudo ./install-yazi.sh      # apt: xclip ffmpeg jq fd-find ripgrep zoxide 7zip poppler-utils
                             # GitHub: yazi+ya, fzf, resvg → /usr/local/bin ; IosevkaTerm Nerd Font
-./mate-terminal.sh          # Nerd Font (sin ella yazi muestra símbolos raros) + tokyo-night + cerrar sin preguntar
+# terminal: WezTerm (sección 7b) — con Nerd Font; sin ella yazi muestra símbolos raros en vez de íconos
 
 mkdir -p ~/.config/yazi
 cp ../yazi/config/{theme.toml,init.lua,package.toml} ~/.config/yazi/
@@ -266,17 +267,53 @@ Diferencias Linux vs Mac en `yazi.toml` / `keymap.toml`:
                  Mac (../yazi/config)          Linux (yazi/)
 .md              Readdown                      Zed (ruta absoluta ~/.local/bin/zed)
 .drawio          PWA draw.io                   — (draw.io no instalado)
-T / Ctrl+T       iTerm (~/bin/iterm-here.sh)   mate-terminal --window --working-directory="$PWD"
+T / Ctrl+T       iTerm (~/bin/iterm-here.sh)   wezterm start --cwd "$PWD"
 F / Ctrl+O       open -R (Finder)              caja --select %s1
 placeholder      "$@"                          %s / %s1 / %d1 (yazi 26.9; "$@" = 0 archivos, sin error)
 ```
 
-`mate-terminal` reutiliza un proceso servidor: sin `--working-directory` abriría en el cwd del servidor,
-no en la carpeta de yazi. **`mate-terminal` no tiene `-x`** (gnome-terminal sí): para ejecutar un comando
-se usa `-e "cmd args"` (un solo string).
+WezTerm reutiliza el proceso GUI ya abierto: sin `--cwd` abriría en el cwd de ese proceso, no en la carpeta de yazi.
 
-`Alt+E` → `yazi-term.sh`: **siempre ventana nueva** (mismo criterio que el Mac), `--maximize`, yazi lanzado
-directo con `-e` (sin bash detrás) → al salir con `q` la ventana se cierra. Arranca en `~/Escritorio`.
+`Alt+E` → `yazi-term.sh`: **siempre ventana nueva** (mismo criterio que el Mac),
+`wezterm start --always-new-process --cwd ~/Escritorio -- yazi ~/Escritorio`. WezTerm no tiene `--maximize`:
+lo hace el evento `gui-startup` de `wezterm.lua` para las ventanas cuyo comando es `yazi`, y ese evento solo
+corre en un proceso nuevo (de ahí `--always-new-process`). yazi va directo (sin bash detrás) → `q` cierra la ventana.
+
+### 7b. WezTerm — terminal por defecto (reemplaza mate-terminal)
+
+Elegida por ser la más parecida a iTerm2 (tabs, splits, búsqueda, copy mode) y porque **muestra imágenes**:
+mate-terminal (VTE 0.76 de Ubuntu) no implementa ningún protocolo de imágenes → yazi dejaba la preview vacía.
+
+```sh
+# repo apt oficial (https://wezterm.org/install/linux.html#using-the-apt-repo)
+curl -fsSL https://apt.fury.io/wez/gpg.key | sudo gpg --yes --dearmor -o /usr/share/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | sudo tee /etc/apt/sources.list.d/wezterm.list
+sudo apt update && sudo apt install wezterm-nightly   # el instalado; "wezterm" (estable) es de 2024-02
+
+mkdir -p ~/.config/wezterm && cp wezterm/wezterm.lua ~/.config/wezterm/
+```
+
+`wezterm.lua`: IosevkaTerm Nerd Font Mono 12, esquema `Tokyo Night` (mismo fondo `#1a1b26` que el flavor de
+yazi), cerrar sin confirmar, 100k líneas de scroll, sin barra de tabs con una sola tab, sin campana, sin chequeo
+de updates (los trae apt), y el `gui-startup` que maximiza yazi.
+
+Dónde se usa (todo lo que antes abría mate-terminal):
+
+```text
+Super+Enter           custom4 → wezterm                              (mate-keybindings.sh)
+Ctrl+Alt+T            Marco run-command-terminal → org.mate.applications-terminal exec='wezterm' exec-arg='-e'
+                      (lo mismo usan "Abrir en terminal" de Caja y las apps con Terminal=true)
+Alt+E                 bin/yazi-term.sh (ver sección yazi)
+yazi T / Ctrl+T       wezterm start --cwd "$PWD"                     (yazi/keymap.toml)
+claudia (rofi)        wezterm start --class claudia -- bash -i -c "claudia; exec bash"
+```
+
+- `wezterm -e cmd` es alias de `wezterm start -- cmd` → sirve como `exec-arg` de MATE.
+- yazi detecta WezTerm por `TERM_PROGRAM=WezTerm` y usa **IIP** (protocolo de imágenes de iTerm2, igual que en
+  el Mac). Verificar dentro de WezTerm: `ya env` → `Adapter / Drivers.matches: Iip`.
+- `x-terminal-emulator` (alternativa de Debian) sigue en mate-terminal; MATE no la usa. Cambiarla es opcional:
+  `sudo update-alternatives --config x-terminal-emulator`.
+- Validar la config sin abrir ventana: `wezterm ls-fonts` (carga `wezterm.lua`; errores de Lua salen ahí).
 
 ### 8. vim / neovim
 
@@ -409,7 +446,7 @@ al receptor sin errores (`pw-top`, columna ERR en 0) pero los auriculares no esc
 
 ```text
 labwc, rc.xml, themerc, environment     → MATE/Marco hace de escritorio
-foot / foot.ini                         → mate-terminal
+foot / foot.ini                         → WezTerm (wezterm/wezterm.lua)
 wl-copy, cliphist, wtype                → greenclip + xdotool
 grim + slurp + swappy                   → flameshot (Alt+Shift+S)
 wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona pantallas

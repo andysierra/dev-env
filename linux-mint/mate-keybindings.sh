@@ -20,7 +20,7 @@ bind custom1 'rofi lanzador (Alt+F3)'    'rofi -show drun' '<Alt>F3'
 # Ruta absoluta: la sesión de MATE puede no tener ~/.local/bin en el PATH
 bind custom2 'Historial de clipboard (greenclip + rofi) Alt+V' "$HOME/.local/bin/clipboard.sh" '<Alt>v'
 bind custom3 'yazi en terminal maximizada (Alt+E)' "$HOME/.local/bin/yazi-term.sh" '<Alt>e'
-bind custom4 'Terminal (Super+Enter)'     'mate-terminal'                          '<Mod4>Return'
+bind custom4 'Terminal (Super+Enter)'     'wezterm'                                '<Mod4>Return'
 bind custom5 'Zed en ~/Escritorio/DEV (Super+C)' "$HOME/.local/bin/zed $HOME/Escritorio/DEV" '<Mod4>c'
 bind custom6 'Escribir ~ (Alt+N)'         "$HOME/.local/bin/type-tilde.sh"         '<Alt>n'
 # Alt+Q = Alt+F4: Marco admite una sola tecla por acción → wmctrl cierra la ventana activa (cierre normal, no kill)
@@ -50,5 +50,10 @@ gsettings set $M.global-keybindings switch-windows              'disabled'
 gsettings set $M.global-keybindings switch-windows-backward     'disabled'
 gsettings set $M.global-keybindings switch-windows-all          '<Alt>Tab'
 gsettings set $M.global-keybindings switch-windows-all-backward '<Shift><Alt>Tab'
+
+# --- Terminal por defecto de MATE = WezTerm (Ctrl+Alt+T, "Abrir en terminal" de Caja, apps Terminal=true) ---
+# exec-arg: cómo pasarle un comando; "wezterm -e cmd" es alias de "wezterm start -- cmd".
+gsettings set org.mate.applications-terminal exec     'wezterm'
+gsettings set org.mate.applications-terminal exec-arg '-e'
 
 dconf dump /org/mate/desktop/keybindings/
