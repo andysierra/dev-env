@@ -12,7 +12,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 
 | Atajo | Acción |
 |---|---|
-| `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones; `word` / `excel` / `powerpoint` abren FreeOffice |
+| `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones; `word` / `excel` / `powerpoint` abren FreeOffice; `crp` / `crd` abren Brave con el perfil Personal / dev |
 | `Alt+V` | Historial de clipboard (greenclip en rofi, con miniaturas de imágenes) — auto-pega lo elegido |
 | `Super+Enter` / `Ctrl+Alt+T` | Terminal (WezTerm) |
 | `Super+C` | Zed abierto en `~/Escritorio/DEV` (Claude vive en su panel de agente) |
@@ -197,6 +197,24 @@ presentations-free24.desktop   FreeOffice 2024 Presentations  → PowerPoint (Fr
 - El paquete trae también `*-2024.desktop` (versión de pago) sin cabecera `[Desktop Entry]`: inválidos, no aparecen.
 - Verificar sin interfaz (con el prefijo de rofi): listar los `Name=` de todas las apps y
   `rofi -dmenu -i -filter word -dump` → solo "Word (FreeOffice TextMaker)".
+
+### 5b2. Brave — perfiles desde rofi ("crp", "crd")
+
+```sh
+cp applications/brave-crp.desktop applications/brave-crd.desktop ~/.local/share/applications/
+```
+
+```text
+rofi   Name=                     Exec
+-----  ------------------------  ----------------------------------------------------------
+crp    crp (Brave · Personal)    brave-browser-stable --profile-directory="Default"
+crd    crd (Brave · dev)         brave-browser-stable --profile-directory="Profile 1"
+```
+
+- La carpeta del perfil (`Default`, `Profile 1`) y su nombre visible están en
+  `~/.config/BraveSoftware/Brave-Browser/Local State` → `profile.info_cache`. En otro PC pueden cambiar:
+  revisar ahí antes de copiar.
+- El `Name=` empieza con la palabra clave porque rofi busca por prefijo de palabra (`matching: "prefix"`).
 
 ### 5c. Zed — ícono visible
 

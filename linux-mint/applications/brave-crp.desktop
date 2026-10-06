@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=crp (Brave · Personal)
+Comment=Brave con el perfil "Default" (rofi: escribir crp)
+Exec=/usr/bin/brave-browser-stable --profile-directory="Default" %U
+Icon=brave-browser
+Type=Application
+Terminal=false
+Categories=Network;WebBrowser;
+StartupWMClass=brave-browser
+StartupNotify=true
