@@ -18,7 +18,7 @@ alias claudia='claude --dangerously-skip-permissions'
 alias s='open -n -a "Sublime Text"'
 
 # Ajuste de jq (en macOS normalmente no es .exe)
-alias jq="$HOME/Desktop/DEV/dev-env/git_bash/jq"
+alias jq="$HOME/Desktop/DEV/env-dev/git_bash/jq"
 
 # Bracketed paste (en zsh se maneja distinto)
 autoload -Uz bracketed-paste-magic

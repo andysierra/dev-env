@@ -1,4 +1,4 @@
-# ===================== dev-env (andysierra) =====================
+# ===================== env-dev (andysierra) =====================
 export PATH="$HOME/.local/bin:$PATH"
 export EDITOR=vim
 
@@ -60,4 +60,4 @@ y() {
 }
 
 complete -d go
-# =================== fin dev-env (andysierra) ===================
+# =================== fin env-dev (andysierra) ===================

@@ -71,7 +71,7 @@ Usuario       andysierra (rutas absolutas en greenclip.toml y mate-keybindings.s
 ```text
 linux-mint/
 ├── bitacora.md
-├── bashrc-devenv.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
+├── bashrc-envdev.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
 ├── hide-screensavers.sh       → correr una vez (idempotente): saca de rofi los ~250 salvapantallas
@@ -124,7 +124,7 @@ sdk install gradle
 
 ### 3. bash — `~/.bashrc`
 
-**Insertar** el contenido de `bashrc-devenv.sh` en el `~/.bashrc` que trae Mint, **justo antes**
+**Insertar** el contenido de `bashrc-envdev.sh` en el `~/.bashrc` que trae Mint, **justo antes**
 del bloque de SDKMAN (que debe quedar último). No reemplazar el archivo: el de Mint trae historial,
 bash-completion (necesario para `complete -d go`), lesspipe y colores. Respaldar antes:
 `cp ~/.bashrc ~/.bashrc.bak-mint`. Validar con `bash -n ~/.bashrc`.

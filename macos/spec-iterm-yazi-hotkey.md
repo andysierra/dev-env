@@ -75,8 +75,8 @@ Los 5 archivos viven **junto a este spec**, en el subdirectorio `iterm-yazi/`:
 └── karabiner-rule.json la regla, solo como referencia legible
 ```
 
-Repo: `git@github.com:andysierra/dev-env.git`, típicamente clonado en
-`~/Desktop/DEV/dev-env` (este spec es `macos/spec-iterm-yazi-hotkey.md`).
+Repo: `git@github.com:andysierra/env-dev.git`, típicamente clonado en
+`~/Desktop/DEV/env-dev` (este spec es `macos/spec-iterm-yazi-hotkey.md`).
 
 **Si NO tenés el repo a mano**: el contenido íntegro de los 4 archivos que se instalan está
 en el **Anexo A** al final. Creálos con ese contenido exacto y seguí el camino manual.
@@ -101,7 +101,7 @@ en el **Anexo A** al final. Creálos con ese contenido exacto y seguí el camino
 ## Camino rápido (recomendado)
 
 ```sh
-SPEC_DIR="<dir-donde-está-este-spec>"          # p.ej. ~/Desktop/DEV/dev-env/macos
+SPEC_DIR="<dir-donde-está-este-spec>"          # p.ej. ~/Desktop/DEV/env-dev/macos
 zsh "$SPEC_DIR/iterm-yazi/install.sh" --dry-run   # muestra qué haría, no escribe
 zsh "$SPEC_DIR/iterm-yazi/install.sh"             # aplica
 ```
@@ -128,7 +128,7 @@ Después de correrlo, salta al **paso 7 (verificación)**.
 Primero fijá `SPEC_DIR` = el directorio donde está **este** archivo (los pasos 3 y 6 lo usan):
 
 ```sh
-SPEC_DIR="$HOME/Desktop/DEV/dev-env/macos"        # ajustá si el repo está en otro lado
+SPEC_DIR="$HOME/Desktop/DEV/env-dev/macos"        # ajustá si el repo está en otro lado
 ls "$SPEC_DIR/iterm-yazi/"                        # deben aparecer los 6 archivos
 ```
 
