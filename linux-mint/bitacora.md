@@ -75,6 +75,7 @@ linux-mint/
 ├── bashrc-envdev.sh            → bloque a insertar en ~/.bashrc (ver sección bash)
 ├── install-yazi.sh            → sudo, una vez: yazi + deps + fzf/resvg + Nerd Font
 ├── mate-keybindings.sh         → correr una vez (idempotente): todos los atajos + 2 escritorios + Alt+Tab
+├── install-fonts.sh           → correr una vez: Comic Code (../fonts) + Fira Code → ~/.local/share/fonts
 ├── default-editor.sh          → correr una vez (idempotente): Sublime como editor de texto por defecto
 ├── hide-screensavers.sh       → correr una vez (idempotente): saca de rofi los ~250 salvapantallas
 ├── mate-no-lock.sh            → correr una vez (idempotente): la sesión nunca se bloquea
@@ -379,6 +380,25 @@ open folder with sublime.reg                 — (Windows)
 - `Super+S` → `subl --launch-or-new-window` (`mate-keybindings.sh`, custom9): ventana nueva aunque
   `open_files_in_new_window` sea false; si Sublime está cerrado lo abre (con `-n` saldrían dos ventanas).
 
+### 8c. Fuentes
+
+```sh
+./install-fonts.sh
+```
+
+```text
+Fuente                  Origen                                   Destino / estado
+----------------------  ---------------------------------------  ---------------------------------------
+Iosevka Term Nerd Font  release nerd-fonts (install-yazi.sh)     /usr/local/share/fonts — terminal, yazi
+Fira Code 6.2           release tonsky/FiraCode                  ~/.local/share/fonts/fira-code — Zed
+                                                                 (buffer_font_family), ligaduras
+Comic Code              ../fonts/*.otf                           ~/.local/share/fonts/comic-code
+Ubuntu Mono             ../fonts/*.ttf                           NO se instala: Mint ya la trae (variable)
+```
+
+- `../fonts/fira code/` solo tiene css/README: los TTF se sacaron de la historia del repo → se bajan del release.
+- Verificar: `fc-list : family | grep -E '^(Comic Code|Fira Code)'`.
+
 ### 9. flameshot — captura de área
 
 ```sh
@@ -499,4 +519,4 @@ wlr-randr, acpid (tapa), monitores      → un solo monitor; MATE gestiona panta
 
 Del inventario de configs del repo aún no aplicado en Mint: Zed (`zed/settings_linux.json`,
 `keybindings_linux.json`), Claude (`claude/CLAUDE.md`, `settings.json`, hook Mermaid, skills),
-tmux, fuentes del repo (`fonts/`), Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
+tmux, Bruno, FreeOffice, botón de encendido, Chromium, IDEs (VS Code, IntelliJ, DBeaver…).
