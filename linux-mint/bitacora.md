@@ -241,6 +241,21 @@ YouTube prefiere AV1, que esta GPU no decodifica → con AV1 bloqueado manda VP9
 
 Medido (mismo VP9 720p, Brave aislado): renderer **48 % CPU por software → 9 % por GPU**.
 
+Por qué había lag — **tres fallas en cadena**, cada una suficiente para que decodificara la CPU:
+
+```text
+#  Falla                                          Evidencia                                   Arreglo
+-  ---------------------------------------------  ------------------------------------------  ---------------------------
+1  Brave en Linux: decodificación por GPU apagada  ningún flag de video en su gpu-process      flags en los .desktop
+2  YouTube manda AV1; la GPU (2019) no hace AV1    media-internals: av1 → Dav1dVideoDecoder    enhanced-h264ify (sin AV1)
+3  Con OpenGL falla la conversión del cuadro       VaapiVideoDecoder vive 0,01 s →             --use-angle=vulkan
+   (NV12 → motor gráfico: ImageProcessor)          "fallback after initial decode error"
+```
+
+Con Vulkan el cuadro de la GPU se usa directo (sin ImageProcessor). Límites: si Brave lo arranca una PWA va sin
+flags; Vulkan en X11 es el camino menos usado (si aparecen parpadeos/negro, sospechar de esto); AV1 de otros
+sitios sigue por CPU (límite del hardware).
+
 Lo que costó descubrir (Brave 1.96, Chromium ~154, X11):
 - Con el camino OpenGL (`AcceleratedVideoDecodeLinuxGL[,ZeroCopyGL]`, con o sin `--use-gl=angle --use-angle=gl`)
   Brave elige `VaapiVideoDecoder` pero lo destruye a los 10 ms: falla al crear el *ImageProcessor* (conversión
