@@ -164,5 +164,19 @@
   {
     "key": "ctrl+s",
     "command": "-workbench.action.files.save"
+  },
+  {
+    "key": "ctrl+1",
+    "command": "-workbench.action.focusFirstEditorGroup"
+  },
+  {
+    "key": "ctrl+1",
+    "command": "workbench.view.explorer",
+    "when": "!filesExplorerFocus"
+  },
+  {
+    "key": "ctrl+1",
+    "command": "workbench.action.focusActiveEditorGroup",
+    "when": "filesExplorerFocus"
   }
 ]

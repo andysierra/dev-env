@@ -27,6 +27,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 | `Alt+Shift+S` | Captura de área → al soltar el mouse va **directo al clipboard** (queda en `Alt+V`) |
 | `Alt+Shift+4` | Captura de área → al soltar el mouse se **guarda en `~/Imágenes`** (`captura_<fecha>_<hora>.png`) |
 | `Super+S` | Sublime Text en ventana nueva (no pestaña); si está cerrado, lo abre |
+| `Ctrl+1` *(en VS Code, Sublime y Zed)* | Foco al panel de archivos, para elegir con flechas/Enter sin el mouse |
 | `Alt+E` | Explorador de archivos: yazi en terminal nueva maximizada, en `~/Escritorio` (`q` cierra la ventana) |
 | `Escape` / `Alt+Space` (dentro de rofi) | Cerrar rofi |
 
@@ -429,6 +430,26 @@ ctrl+q → quickOpen archivos                      + "-workbench.action.quit": e
   Java (`vscjava.vscode-java-pack`, `vscjava.vscode-gradle`: alt+2, shift+f10), `ms-python.python`,
   `ms-toolsai.jupyter`, `sonarsource.sonarlint-vscode`, `esbenp.prettier-vscode`, `ritwickdey.LiveServer`.
   Obsoletas (sus settings quedan sin efecto): kite, bracket-pair-colorizer-2, IntelliCode, vscode-icons, autoHide.
+
+### 8b3. Ctrl+1 — foco al panel de archivos (VS Code, Sublime, Zed)
+
+Mismo atajo en los tres editores: escribiendo en el editor, `Ctrl+1` lleva el foco al árbol de archivos para
+moverse con flechas y abrir con Enter, sin ir al mouse.
+
+```text
+Editor   Archivo (repo → destino)                                   Acción                         Volver
+-------  ---------------------------------------------------------  -----------------------------  -----------
+VS Code  vscode/keybindings.json → ~/.config/Code/User/              workbench.view.explorer        Ctrl+1
+                                                                    (abre la barra si está oculta)
+Sublime  ../sublime/keymap.txt → Packages/User/Default (Linux)…      focus_side_bar                 Esc
+Zed      ../zed/keybindings_linux.json → ~/.config/zed/keymap.json   project_panel::ToggleFocus     Ctrl+1
+```
+
+- Todos pisan el `Ctrl+1` de fábrica ("ir al grupo/pane 1"), que no se usaba.
+- VS Code: dos reglas con `when` — `!filesExplorerFocus` → explorador; `filesExplorerFocus` → volver al editor.
+- Sublime: `focus_side_bar` no muestra la barra si está oculta (`Alt+1` la alterna); no hay contexto para
+  "la barra tiene el foco", así que se vuelve con `Esc`.
+- Zed: en el contexto `Workspace`, junto a `ctrl-shift-e` (mismo comando). El keymap de Zed se recarga solo.
 
 ### 8c. Fuentes
 
