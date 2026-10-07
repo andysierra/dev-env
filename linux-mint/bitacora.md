@@ -577,6 +577,11 @@ Mint MATE activa el salvapantallas tras 5 min de inactividad (`org.mate.session 
 al volver de suspender/hibernar y cuando el ahorro de energía apaga la pantalla (`org.mate.power-manager lock-*`).
 La pantalla igual se apaga a los 30 min sin uso (`sleep-display-ac 1800`), pero sin bloquear.
 
+El mismo script evita que **el brillo baje solo** (laptop con batería): `idle-dim-battery` (atenuar al
+`idle-brightness` 30 % tras `idle-dim-time` 10 s sin uso), `backlight-battery-reduce` (−50 % al desenchufar) e
+`idle-dim-ac` → `false`. Subir el brillo sin sudo: `gdbus call --session --dest org.mate.PowerManager
+--object-path /org/mate/PowerManager/Backlight --method org.mate.PowerManager.Backlight.SetBrightness 100`.
+
 ### Audio — auriculares USB (Logitech G435)
 
 Si no suena con el receptor USB conectado: el kernel lo ve (`aplay -l` → tarjeta "G435") y PipeWire crea su
