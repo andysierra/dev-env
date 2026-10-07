@@ -61,7 +61,7 @@
   "workbench.colorCustomizations": {
     "editor.lineHighlightBackground": "#00000000",
     "editor.lineHighlightBorder": "#999999",
-    "editorWarning.foreground": "#5a5a5aa1",
+    "editorWarning.foreground": "#FFCC00",
     "editorWarning.border": "#5a5a5a00"
   },
   "autoHide.autoHidePanel": false,

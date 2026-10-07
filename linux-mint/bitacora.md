@@ -425,6 +425,15 @@ ctrl+q → quickOpen archivos                      + "-workbench.action.quit": e
 ```
 
 - `settings (work).json` (regla en 100, zoom -1, perfiles de terminal Windows) no se usa en este PC.
+- **"Sin usar" = ondulado amarillo** (no rojo, que parece error de sintaxis). VS Code ya muestra como warning los
+  chequeos de estilo de TS (`js/ts.reportStyleChecksAsWarnings`), pero su lista NO incluye `ts(6198)` "All
+  destructured elements are unused" (`({ title, subtitle }) =>`), que sale como error rojo. Ningún ajuste cambia
+  la severidad de un error de TS, así que:
+  1. `settings.json`: `workbench.colorCustomizations` → `"editorWarning.foreground": "#FFCC00"` (estaba en gris).
+  2. Extensión ESLint: `code --install-extension dbaeumer.vscode-eslint`.
+  3. **Por proyecto** (cada proyecto Vite nuevo): en `tsconfig.app.json` `noUnusedLocals`/`noUnusedParameters`
+     → `false`, y en `eslint.config.js` → `rules: { '@typescript-eslint/no-unused-vars': 'warn' }`.
+     El build ya no falla por lo no usado; `npm run lint` lo reporta como warning.
 - `keybindings_macos.json` es la variante Mac (cmd) de los mismos atajos.
 - Extensiones a las que se refiere la config, **no instaladas** (instalar según se necesiten):
   Java (`vscjava.vscode-java-pack`, `vscjava.vscode-gradle`: alt+2, shift+f10), `ms-python.python`,
