@@ -221,6 +221,28 @@ crd    crd (Brave · dev)         brave-browser-stable --profile-directory="Prof
   revisar ahí antes de copiar.
 - El `Name=` empieza con la palabra clave porque rofi busca por prefijo de palabra (`matching: "prefix"`).
 
+### 5b3. Brave — video por hardware (YouTube sin lag)
+
+GPU Intel UHD (Comet Lake): el driver VA-API `iHD` (intel-media-va-driver, ya en Mint) decodifica por hardware
+H.264, HEVC y VP9 (`vainfo`), **no AV1**. Brave en Linux trae la decodificación por GPU **apagada** y su
+lanzador no lee ningún `*-flags.conf` → las opciones van en el `Exec=` de cada `.desktop` que arranca Brave:
+
+```sh
+cp applications/brave-browser.desktop applications/brave-crp.desktop applications/brave-crd.desktop \
+   ~/.local/share/applications/      # brave-browser.desktop: copia del de /usr/share con las flags; tapa al del sistema
+```
+
+```text
+--enable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,VaapiVideoDecoder,VaapiVideoDecodeLinuxGL
+```
+
+- Las flags valen para el **proceso** de Brave: hay que cerrarlo entero y abrirlo desde el menú/rofi/crp/crd.
+  Si Brave ya estaba abierto (o lo abrió una PWA, cuyos `.desktop` genera Brave sin flags), no aplican.
+- **AV1**: YouTube lo prefiere y esta GPU no lo decodifica (va por CPU aunque haya VA-API). Extensión
+  *enhanced-h264ify* con solo "Block AV1" → YouTube manda VP9, que sí va por GPU.
+- Verificar: `brave://gpu` → *Video Decode: Hardware accelerated*; con un video sonando,
+  `brave://media-internals` → `kVideoDecoderName` = `VaapiVideoDecoder` (no `VpxVideoDecoder`/`Dav1dVideoDecoder`).
+
 ### 5c. Zed — ícono visible
 
 El ícono oficial (cuadro gris oscuro con una Z de trazo fino) se pierde en el panel oscuro. `icons/zed.svg`:

@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=crd (Brave · dev)
 Comment=Brave con el perfil "Profile 1" (rofi: escribir crd)
-Exec=/usr/bin/brave-browser-stable --profile-directory="Profile 1" %U
+Exec=/usr/bin/brave-browser-stable --enable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,VaapiVideoDecoder,VaapiVideoDecodeLinuxGL --profile-directory="Profile 1" %U
 Icon=brave-browser
 Type=Application
 Terminal=false
