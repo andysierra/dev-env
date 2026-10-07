@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=crp (Brave · Personal)
 Comment=Brave con el perfil "Default" (rofi: escribir crp)
-Exec=/usr/bin/brave-browser-stable --enable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,VaapiVideoDecoder,VaapiVideoDecodeLinuxGL --profile-directory="Default" %U
+Exec=/usr/bin/brave-browser-stable --use-angle=vulkan --enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan,AcceleratedVideoDecodeLinuxGL,VaapiVideoDecoder --profile-directory="Default" %U
 Icon=brave-browser
 Type=Application
 Terminal=false

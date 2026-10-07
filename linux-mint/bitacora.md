@@ -223,9 +223,9 @@ crd    crd (Brave · dev)         brave-browser-stable --profile-directory="Prof
 
 ### 5b3. Brave — video por hardware (YouTube sin lag)
 
-GPU Intel UHD (Comet Lake): el driver VA-API `iHD` (intel-media-va-driver, ya en Mint) decodifica por hardware
-H.264, HEVC y VP9 (`vainfo`), **no AV1**. Brave en Linux trae la decodificación por GPU **apagada** y su
-lanzador no lee ningún `*-flags.conf` → las opciones van en el `Exec=` de cada `.desktop` que arranca Brave:
+GPU Intel UHD (Comet Lake, i5-10210U): el driver VA-API `iHD` (intel-media-va-driver, ya en Mint) decodifica
+por hardware H.264, HEVC y VP9 (`vainfo`), **no AV1**. Brave en Linux trae la decodificación por GPU **apagada**
+y su lanzador no lee ningún `*-flags.conf` → las opciones van en el `Exec=` de cada `.desktop` que arranca Brave:
 
 ```sh
 cp applications/brave-browser.desktop applications/brave-crp.desktop applications/brave-crd.desktop \
@@ -233,15 +233,31 @@ cp applications/brave-browser.desktop applications/brave-crp.desktop application
 ```
 
 ```text
---enable-features=AcceleratedVideoDecodeLinuxGL,AcceleratedVideoDecodeLinuxZeroCopyGL,VaapiVideoDecoder,VaapiVideoDecodeLinuxGL
+--use-angle=vulkan --enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan,AcceleratedVideoDecodeLinuxGL,VaapiVideoDecoder
 ```
 
-- Las flags valen para el **proceso** de Brave: hay que cerrarlo entero y abrirlo desde el menú/rofi/crp/crd.
-  Si Brave ya estaba abierto (o lo abrió una PWA, cuyos `.desktop` genera Brave sin flags), no aplican.
-- **AV1**: YouTube lo prefiere y esta GPU no lo decodifica (va por CPU aunque haya VA-API). Extensión
-  *enhanced-h264ify* con solo "Block AV1" → YouTube manda VP9, que sí va por GPU.
-- Verificar: `brave://gpu` → *Video Decode: Hardware accelerated*; con un video sonando,
-  `brave://media-internals` → `kVideoDecoderName` = `VaapiVideoDecoder` (no `VpxVideoDecoder`/`Dav1dVideoDecoder`).
+Y la extensión **enhanced-h264ify** (Chrome Web Store) con *Block AV1* (y VP8) marcados y **VP9 permitido**:
+YouTube prefiere AV1, que esta GPU no decodifica → con AV1 bloqueado manda VP9, que sí va por GPU.
+
+Medido (mismo VP9 720p, Brave aislado): renderer **48 % CPU por software → 9 % por GPU**.
+
+Lo que costó descubrir (Brave 1.96, Chromium ~154, X11):
+- Con el camino OpenGL (`AcceleratedVideoDecodeLinuxGL[,ZeroCopyGL]`, con o sin `--use-gl=angle --use-angle=gl`)
+  Brave elige `VaapiVideoDecoder` pero lo destruye a los 10 ms: falla al crear el *ImageProcessor* (conversión
+  del formato de salida) → `media-internals`: *"video decoder fallback after initial decode error"* →
+  `VpxVideoDecoder` (CPU). Con **ANGLE sobre Vulkan** no necesita ImageProcessor y decodifica estable.
+- Diagnóstico sin tocar la sesión: Brave aislado (`--user-data-dir=/tmp/x`) con un VP9 de prueba
+  (`ffmpeg -f lavfi -i testsrc2=size=1280x720:rate=30 -t 20 -c:v libvpx-vp9 vp9test.webm`) y
+  `--enable-logging=stderr --vmodule='*/media/gpu/*=4'`: si `~VaapiVideoDecoder` aparece a los ms de
+  `VaapiVideoDecoder()`, falló.
+- Las flags valen para el **proceso**: cerrar Brave entero y abrirlo desde menú/rofi/crp/crd. Si lo abre una PWA
+  (sus `.desktop` los genera Brave, sin flags), no aplican.
+- **Reiniciar Brave sin perder nada**: con "¿Quién usa Brave?" al iniciar, `--restore-last-session` no restaura;
+  y las ventanas **PWA nunca** se restauran así (viven en `Sessions/Apps_*`, no en `Session_*`). Abrir con
+  `--profile-directory=Default` (salta el selector) y reabrir cada PWA en su página con
+  `--app-id=<id> --app-launch-url-for-shortcuts-menu-item=<url>` (las URLs: `strings Sessions/Apps_*`).
+- Verificar: con un video sonando, `brave://media-internals` → `kVideoDecoderName` = `VaapiVideoDecoder` y
+  `kIsPlatformVideoDecoder` = true (no `Dav1dVideoDecoder` = AV1, ni `VpxVideoDecoder` = VP9 por CPU).
 
 ### 5c. Zed — ícono visible
 
