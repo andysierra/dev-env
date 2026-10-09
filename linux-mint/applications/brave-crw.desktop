@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=crw (Brave · Work)
+Comment=Brave con el perfil "Profile 2" (rofi: escribir crw)
+Exec=/usr/bin/brave-browser-stable --use-angle=vulkan --enable-features=Vulkan,VulkanFromANGLE,DefaultANGLEVulkan,AcceleratedVideoDecodeLinuxGL,VaapiVideoDecoder --profile-directory="Profile 2" %U
+Icon=brave-browser
+Type=Application
+Terminal=false
+Categories=Network;WebBrowser;
+StartupWMClass=brave-browser
+StartupNotify=true

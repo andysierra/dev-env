@@ -12,7 +12,7 @@ Construido y verificado el 2026-10-05 (PC de escritorio, un monitor `HDMI-1` 192
 
 | Atajo | Acción |
 |---|---|
-| `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones; `word` / `excel` / `powerpoint` abren FreeOffice; `crp` / `crd` abren Brave con el perfil Personal / dev |
+| `Alt+Space` / `Alt+F3` | Lanzador de apps (rofi, estilo Spotlight) — `Shift+←/→` cambia entre apps / comandos / ventanas; escribir `claudia` abre terminal con Claude sin restricciones; `word` / `excel` / `powerpoint` abren FreeOffice; `crp` / `crd` / `crw` abren Brave con el perfil Personal / dev / Work |
 | `Alt+V` | Historial de clipboard (greenclip en rofi, con miniaturas de imágenes) — auto-pega lo elegido |
 | `Super+Enter` / `Ctrl+Alt+T` | Terminal (WezTerm) |
 | `Super+C` | Zed abierto en `~/Escritorio/DEV` (Claude vive en su panel de agente) |
@@ -203,10 +203,10 @@ presentations-free24.desktop   FreeOffice 2024 Presentations  → PowerPoint (Fr
 - Verificar sin interfaz (con el prefijo de rofi): listar los `Name=` de todas las apps y
   `rofi -dmenu -i -filter word -dump` → solo "Word (FreeOffice TextMaker)".
 
-### 5b2. Brave — perfiles desde rofi ("crp", "crd")
+### 5b2. Brave — perfiles desde rofi ("crp", "crd", "crw")
 
 ```sh
-cp applications/brave-crp.desktop applications/brave-crd.desktop ~/.local/share/applications/
+cp applications/brave-crp.desktop applications/brave-crd.desktop applications/brave-crw.desktop ~/.local/share/applications/
 ```
 
 ```text
@@ -214,6 +214,7 @@ rofi   Name=                     Exec
 -----  ------------------------  ----------------------------------------------------------
 crp    crp (Brave · Personal)    brave-browser-stable --profile-directory="Default"
 crd    crd (Brave · dev)         brave-browser-stable --profile-directory="Profile 1"
+crw    crw (Brave · Work)        brave-browser-stable --profile-directory="Profile 2"
 ```
 
 - La carpeta del perfil (`Default`, `Profile 1`) y su nombre visible están en
