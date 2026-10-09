@@ -224,6 +224,8 @@ crw    crw (Brave · Work)        brave-browser-stable --profile-directory="Prof
 
 ### 5b3. Brave — video por hardware (YouTube sin lag)
 
+> Versión completa e independiente de la distro: [`../brave/bitacora-linux.md`](../brave/bitacora-linux.md).
+
 GPU Intel UHD (Comet Lake, i5-10210U): el driver VA-API `iHD` (intel-media-va-driver, ya en Mint) decodifica
 por hardware H.264, HEVC y VP9 (`vainfo`), **no AV1**. Brave en Linux trae la decodificación por GPU **apagada**
 y su lanzador no lee ningún `*-flags.conf` → las opciones van en el `Exec=` de cada `.desktop` que arranca Brave:

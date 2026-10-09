@@ -735,6 +735,9 @@ exit
 
 ### Extras opcionales
 
+- **Brave con video por GPU** (YouTube sin lag), perfiles desde el lanzador y cómo reiniciarlo sin perder PWAs:
+  [`../brave/bitacora-linux.md`](../brave/bitacora-linux.md) (probado en X11/Mint; en Wayland revisar las flags).
+
 - **Alt como "Cmd" para Copiar/Pegar/Screenshot** (estilo macOS, vía `keyd`):
   spec aparte, autocontenido → [`spec-keyd-cmd-copypaste.md`](spec-keyd-cmd-copypaste.md).
 
